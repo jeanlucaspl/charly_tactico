@@ -13,8 +13,6 @@
     };
   </script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.0/es5/tex-mml-chtml.js" async></script>
-  
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
   <script>
     const script = document.createElement('script');
@@ -32,9 +30,9 @@
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
     
     body { background:var(--navy); color:var(--cream); font-family:'Crimson Pro',Georgia,serif; min-height:100vh; }
-    
-    .bg-effects { position:fixed; inset:0; z-index:0; pointer-events:none; background:radial-gradient(ellipse 80% 60% at 50% -10%,rgba(201,168,76,.12) 0%,transparent 70%), radial-gradient(ellipse 50% 40% at 90% 100%,rgba(155,35,53,.08) 0%,transparent 60%); }
+    .bg-effects { position:fixed; inset:0; z-index:0; background:radial-gradient(ellipse 80% 60% at 50% -10%,rgba(201,168,76,.12) 0%,transparent 70%), radial-gradient(ellipse 50% 40% at 90% 100%,rgba(155,35,53,.08) 0%,transparent 60%); pointer-events:none;}
     .screen-wrap { position:relative; z-index:1; display:flex; flex-direction:column; min-height:100vh; }
+    
     header { text-align:center; padding:2.5rem 1.5rem 2rem; border-bottom:1px solid rgba(201,168,76,.3); background:linear-gradient(180deg,rgba(0,0,0,.4) 0%,transparent 100%); }
     .badge { display:inline-block; border:1px solid var(--gold); color:var(--gold); font-family:'JetBrains Mono',monospace; font-size:.68rem; letter-spacing:.18em; padding:.22rem .9rem; text-transform:uppercase; margin-bottom:1rem; }
     .site-title { font-family:'Bebas Neue',sans-serif; font-size:clamp(2.8rem,8vw,6rem); line-height:.92; color:var(--white); }
@@ -47,12 +45,12 @@
 
     .nivel-group { display:grid; grid-template-columns:repeat(4,1fr); gap:.7rem; }
     .nivel-btn input { display:none; }
-    .nivel-btn label { display:block; text-align:center; padding:.9rem .3rem; border:1.5px solid rgba(201,168,76,.25); border-radius:3px; cursor:pointer; background:rgba(0,0,0,.2); }
+    .nivel-btn label { display:block; text-align:center; padding:.9rem .3rem; border:1.5px solid rgba(201,168,76,.25); border-radius:3px; cursor:pointer; background:rgba(0,0,0,.2); transition: 0.2s;}
     .nivel-icon { font-size:1.5rem; display:block; margin-bottom:.25rem; }
     .nivel-name { font-family:'Bebas Neue',sans-serif; font-size:1rem; letter-spacing:.12em; display:block; color:var(--cream); }
     .nivel-btn input:checked+label { border-color:var(--gold); background:rgba(201,168,76,.12); box-shadow:0 0 18px rgba(201,168,76,.2); }
 
-    .btn-generar { width:100%; padding:1rem; background:linear-gradient(135deg,var(--gold) 0%,var(--gold2) 50%,var(--gold) 100%); color:var(--navy); border:none; border-radius:3px; font-family:'Bebas Neue',sans-serif; font-size:1.35rem; cursor:pointer; margin-top:2rem; }
+    .btn-generar { width:100%; padding:1rem; background:linear-gradient(135deg,var(--gold) 0%,var(--gold2) 50%,var(--gold) 100%); color:var(--navy); border:none; border-radius:3px; font-family:'Bebas Neue',sans-serif; font-size:1.35rem; cursor:pointer; margin-top:2rem; box-shadow:0 4px 20px rgba(201,168,76,.35);}
     .spinner { display:none; text-align:center; padding:1.2rem; color:var(--gold); font-family:'Bebas Neue',sans-serif; letter-spacing:.15em; }
     .spinner.active { display:block; }
 
@@ -69,22 +67,16 @@
     .btn-back, .btn-download { padding:.8rem 1.5rem; border-radius:4px; font-family:'Bebas Neue',sans-serif; font-size:1.1rem; cursor:pointer; letter-spacing: 1px; transition: 0.2s;}
     .btn-back { background: #fff; color: var(--navy); border: 2px solid var(--navy); }
     .btn-download { background: var(--gold); color: var(--navy); border: none; font-weight: bold;}
-    .btn-download.loading { opacity: 0.6; pointer-events: none; }
-
-    #pdf-wrapper { width: 210mm; margin: 0 auto; background: transparent; }
 
     /* ════════════════════════════════════════════
-       LAS HOJAS A4 Y ALINEACIÓN DE TEXTO
+       LAS HOJAS A4
     ════════════════════════════════════════════ */
     .a4-page {
       width: 210mm; height: 297mm; background: #fff; color: #000;
       font-family: 'Crimson Pro', Georgia, serif; 
-      margin: 0 auto 20px auto; 
-      padding: 15mm; 
-      box-shadow: 0 8px 30px rgba(0,0,0,.4); 
-      box-sizing: border-box;
-      display: flex; flex-direction: column; position: relative; 
-      overflow: hidden; 
+      margin: 0 auto 20px auto; padding: 15mm; 
+      box-shadow: 0 8px 30px rgba(0,0,0,.4); box-sizing: border-box;
+      display: flex; flex-direction: column; position: relative; overflow: hidden; 
     }
 
     .exam-header { text-align:center; border-bottom:2.5px solid #0a1628; padding-bottom:5px; margin-bottom:8px; }
@@ -105,30 +97,50 @@
     }
     .seccion-pts { font-family:'JetBrains Mono',monospace;font-size:7.5pt;opacity:.85; }
 
-    .q-item, .sol-item { break-inside: avoid; page-break-inside: avoid; margin-bottom: 14px; line-height: 1.5; }
+    /* Interlineado ajustado para matemáticas perfectas */
+    .q-item, .sol-item { break-inside: avoid; page-break-inside: avoid; margin-bottom: 14px; line-height: 1.6; }
     .q-subtema { font-size:6.5pt; color:#333; font-family:'JetBrains Mono',monospace; text-transform:uppercase; font-weight:bold; margin-bottom:2px; line-height: 1; }
     .q-num { font-weight:700; color:#0a1628; font-size:9.5pt; }
-    .q-enunciado { margin-bottom:4px; font-size:9.5pt; color:#000; line-height: 1.5;}
+    .q-enunciado { margin-bottom:4px; font-size:9.5pt; color:#000;}
     .q-alts { list-style:none; display:grid; grid-template-columns:1fr 1fr; gap:2px 6px; }
-    .q-alts li { font-size:8.5pt; color:#000; line-height: 1.5;}
+    .q-alts li { font-size:8.5pt; color:#000;}
     
     .sol-rta { display:inline-block; background:#0a1628; color:#fff; font-family:'JetBrains Mono',monospace; font-size:7.5pt; padding:1px 5px; border-radius:2px; margin:0 4px 2px 0; vertical-align:middle; }
-    .sol-text { font-size:9pt; color:#111; margin-top:2px; line-height: 1.4; }
+    .sol-text { font-size:9pt; color:#111; margin-top:2px; line-height: 1.5; }
+
+    #render-buffer { width: 86mm; position: absolute; left: -9999px; top: -9999px; visibility: hidden; }
 
     /* ════════════════════════════════════════════
-       EL HACK DEFINITIVO PARA EL PDF (MATHJAX)
+       LA CLAVE MAGICA: MOTOR DE IMPRESIÓN NATIVO
+       Esto asegura que la impresora del celular
+       corte el A4 exacto sin páginas en blanco.
     ════════════════════════════════════════════ */
-    mjx-container { 
-      display: inline-block !important; 
-    }
+    @media print {
+      @page { size: A4 portrait; margin: 0; }
+      body { background: #fff; margin: 0; padding: 0; }
+      
+      /* Oculta los botones y fondo oscuro */
+      .bg-effects, .screen-wrap, .preview-actions { display: none !important; }
+      
+      #preview-overlay { display: block !important; padding: 0 !important; background: transparent !important; }
 
-    /* Cuando el botón activa la exportación, forzamos la bajada de la ecuación */
-    .modo-exportacion-pdf mjx-container {
-      transform: translateY(4px) !important;
-    }
-
-    #render-buffer { 
-      width: 86mm; position: absolute; left: -9999px; top: -9999px; visibility: hidden; 
+      /* La hoja se adapta al papel de la impresora exactamente */
+      .a4-page {
+        margin: 0 !important;
+        box-shadow: none !important;
+        border: none !important;
+        page-break-after: always !important; /* Salto de página obligatorio limpio */
+        page-break-inside: avoid !important;
+      }
+      
+      /* Forzar colores oscuros para que no salgan grises en papel */
+      * { color: #000 !important; }
+      .seccion-header, .sol-rta { 
+        background: #0a1628 !important; 
+        color: #fff !important; 
+        -webkit-print-color-adjust: exact; 
+        print-color-adjust: exact; 
+      }
     }
 
   </style>
@@ -139,7 +151,7 @@
 
 <div class="screen-wrap">
   <header>
-    <div class="badge">Academia PNP · Sistema de Evaluación16</div>
+    <div class="badge">Academia PNP · Sistema de Evaluación17</div>
     <h1 class="site-title">Charly<span>Táctico</span></h1>
     <p class="site-subtitle">Generador de Prácticas Semanales — Suboficiales &amp; Oficiales</p>
   </header>
@@ -165,7 +177,7 @@
   <div class="preview-container">
     <div class="preview-actions">
       <button class="btn-back" onclick="cerrarPreview()">← VOLVER AL MENÚ</button>
-      <button class="btn-download" id="btnDescargar" onclick="descargarComoPDF()">⬇ DESCARGAR PDF</button>
+      <button class="btn-download" onclick="window.print()">🖨 IMPRIMIR / GUARDAR PDF</button>
     </div>
     
     <div id="pdf-wrapper">
@@ -335,53 +347,6 @@ async function iniciarGeneracion() {
 
 function cerrarPreview() {
   document.body.classList.remove('preview-active');
-}
-
-function descargarComoPDF() {
-  const btn = document.getElementById('btnDescargar');
-  btn.textContent = '⏳ ALINEANDO ECUACIONES...';
-  btn.classList.add('loading');
-
-  // 1. Aplicamos la corrección de alineación agresiva usando Transform
-  document.body.classList.add('modo-exportacion-pdf');
-
-  // 2. Le damos tiempo (200ms) al navegador para repintar la pantalla ANTES de fotografiar
-  setTimeout(() => {
-    btn.textContent = '⏳ PROCESANDO PDF...';
-    const paginas = document.querySelectorAll('.a4-page');
-    paginas.forEach(p => {
-      p.style.margin = '0';
-      p.style.boxShadow = 'none';
-      p.style.border = 'none';
-    });
-
-    const elemento = document.getElementById('pdf-wrapper');
-    
-    const opciones = {
-      margin:       0,
-      filename:     `Examen_CharlyTactico_${new Date().getTime()}.pdf`,
-      image:        { type: 'jpeg', quality: 0.98 },
-      html2canvas:  { 
-        scale: 2, 
-        useCORS: true, 
-        scrollY: 0,
-        windowWidth: 794 
-      },
-      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-    };
-
-    html2pdf().set(opciones).from(elemento).save().then(() => {
-      btn.textContent = '⬇ DESCARGAR PDF';
-      btn.classList.remove('loading');
-      
-      // 3. Restauramos la vista normal en pantalla
-      document.body.classList.remove('modo-exportacion-pdf');
-      paginas.forEach(p => {
-        p.style.margin = '0 auto 20px auto';
-        p.style.boxShadow = '0 8px 30px rgba(0,0,0,.4)';
-      });
-    });
-  }, 200); // Este retraso es la solución mágica
 }
 </script>
 </body>
