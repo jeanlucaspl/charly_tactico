@@ -105,33 +105,31 @@
     }
     .seccion-pts { font-family:'JetBrains Mono',monospace;font-size:7.5pt;opacity:.85; }
 
-    .q-item, .sol-item { break-inside: avoid; page-break-inside: avoid; margin-bottom: 14px; line-height: 1.4; }
+    .q-item, .sol-item { break-inside: avoid; page-break-inside: avoid; margin-bottom: 14px; line-height: 1.5; }
     .q-subtema { font-size:6.5pt; color:#333; font-family:'JetBrains Mono',monospace; text-transform:uppercase; font-weight:bold; margin-bottom:2px; line-height: 1; }
     .q-num { font-weight:700; color:#0a1628; font-size:9.5pt; }
-    .q-enunciado { margin-bottom:4px; font-size:9.5pt; color:#000; }
+    .q-enunciado { margin-bottom:4px; font-size:9.5pt; color:#000; line-height: 1.5;}
     .q-alts { list-style:none; display:grid; grid-template-columns:1fr 1fr; gap:2px 6px; }
-    .q-alts li { font-size:8.5pt; color:#000; }
+    .q-alts li { font-size:8.5pt; color:#000; line-height: 1.5;}
     
     .sol-rta { display:inline-block; background:#0a1628; color:#fff; font-family:'JetBrains Mono',monospace; font-size:7.5pt; padding:1px 5px; border-radius:2px; margin:0 4px 2px 0; vertical-align:middle; }
-    .sol-text { font-size:9pt; color:#111; margin-top:2px; }
+    .sol-text { font-size:9pt; color:#111; margin-top:2px; line-height: 1.4; }
 
     /* ════════════════════════════════════════════
-       CORRECCIÓN DE ALINEACIÓN MATEMÁTICA
+       EL HACK DEFINITIVO PARA EL PDF (MATHJAX)
     ════════════════════════════════════════════ */
-    /* Dejamos que MathJax trabaje libremente en pantalla */
     mjx-container { 
       display: inline-block !important; 
     }
 
-    /* ESTE ES EL HACK PARA EL PDF: Cuando se activa el modo exportación, 
-       empujamos todas las fórmulas 2 píxeles hacia abajo para compensar 
-       el error visual de html2canvas. */
+    /* Cuando el botón activa la exportación, forzamos la bajada de la ecuación */
     .modo-exportacion-pdf mjx-container {
-      position: relative !important;
-      top: 2px !important;
+      transform: translateY(4px) !important;
     }
 
-    #render-buffer { width: 86mm; position: absolute; left: -9999px; top: -9999px; visibility: hidden; }
+    #render-buffer { 
+      width: 86mm; position: absolute; left: -9999px; top: -9999px; visibility: hidden; 
+    }
 
   </style>
 </head>
@@ -141,7 +139,7 @@
 
 <div class="screen-wrap">
   <header>
-    <div class="badge">Academia PNP · Sistema de Evaluación15</div>
+    <div class="badge">Academia PNP · Sistema de Evaluación16</div>
     <h1 class="site-title">Charly<span>Táctico</span></h1>
     <p class="site-subtitle">Generador de Prácticas Semanales — Suboficiales &amp; Oficiales</p>
   </header>
@@ -341,13 +339,15 @@ function cerrarPreview() {
 
 function descargarComoPDF() {
   const btn = document.getElementById('btnDescargar');
-  btn.textContent = '⏳ PROCESANDO PDF...';
+  btn.textContent = '⏳ ALINEANDO ECUACIONES...';
   btn.classList.add('loading');
 
-  setTimeout(() => {
-    // Activamos la clase especial que empuja las matemáticas 2px hacia abajo
-    document.body.classList.add('modo-exportacion-pdf');
+  // 1. Aplicamos la corrección de alineación agresiva usando Transform
+  document.body.classList.add('modo-exportacion-pdf');
 
+  // 2. Le damos tiempo (200ms) al navegador para repintar la pantalla ANTES de fotografiar
+  setTimeout(() => {
+    btn.textContent = '⏳ PROCESANDO PDF...';
     const paginas = document.querySelectorAll('.a4-page');
     paginas.forEach(p => {
       p.style.margin = '0';
@@ -374,15 +374,14 @@ function descargarComoPDF() {
       btn.textContent = '⬇ DESCARGAR PDF';
       btn.classList.remove('loading');
       
-      // Apagamos la clase especial y restauramos las sombras
+      // 3. Restauramos la vista normal en pantalla
       document.body.classList.remove('modo-exportacion-pdf');
-      
       paginas.forEach(p => {
         p.style.margin = '0 auto 20px auto';
         p.style.boxShadow = '0 8px 30px rgba(0,0,0,.4)';
       });
     });
-  }, 50);
+  }, 200); // Este retraso es la solución mágica
 }
 </script>
 </body>
