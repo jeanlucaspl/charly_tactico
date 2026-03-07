@@ -2,17 +2,19 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes"/>
   <title>Charly Táctico — Generador de Prácticas</title>
 
   <script>
     window.MathJax = {
       tex: { inlineMath:[['$','$'],['\\(','\\)']], displayMath:[['$$','$$']] },
       options: { skipHtmlTags:['script','noscript','style','textarea','pre'] },
-      startup: { typeset:false }
+      startup: { typeset:false },
+      svg: { fontCache: 'global' } // Optimiza la carga de las ecuaciones vectoriales
     };
   </script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.0/es5/tex-mml-chtml.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.0/es5/tex-mml-svg.js" async></script>
+  
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
   <script>
@@ -73,17 +75,18 @@
     #pdf-wrapper { width: 210mm; margin: 0 auto; background: transparent; }
 
     /* ════════════════════════════════════════════
-       LAS HOJAS A4 (FÍSICAS)
+       LAS HOJAS A4 Y ALINEACIÓN DE TEXTO
     ════════════════════════════════════════════ */
     .a4-page {
       width: 210mm; height: 297mm; background: #fff; color: #000;
       font-family: 'Crimson Pro', Georgia, serif; 
-      margin: 0 auto 20px auto; /* Separación en pantalla */
+      margin: 0 auto 20px auto; 
       padding: 15mm; 
       box-shadow: 0 8px 30px rgba(0,0,0,.4); 
       box-sizing: border-box;
       display: flex; flex-direction: column; position: relative; 
       overflow: hidden; 
+      page-break-after: always;
     }
 
     .exam-header { text-align:center; border-bottom:2.5px solid #0a1628; padding-bottom:5px; margin-bottom:8px; }
@@ -91,7 +94,6 @@
     .exam-institution { font-size:7pt; letter-spacing:.2em; text-transform:uppercase; color:#333; font-family:'JetBrains Mono',monospace; }
     .exam-title { font-family:'Bebas Neue',sans-serif; font-size:20pt; letter-spacing:.08em; color:#0a1628; line-height:1; margin:2px 0; }
     
-    /* CAMPO DE NOMBRES ACTUALIZADO (Sin Fecha) */
     .alumno-fields { margin: 12px 0 20px; font-size: 8pt; width: 100%;}
     .field-label { font-size: 7pt; text-transform: uppercase; letter-spacing: .1em; color: #444; margin-bottom: 2px; }
     .field-line { border-bottom: 1px solid #777; min-height: 18px; width: 100%;}
@@ -105,26 +107,26 @@
     }
     .seccion-pts { font-family:'JetBrains Mono',monospace;font-size:7.5pt;opacity:.85; }
 
-    .q-item, .sol-item { break-inside: avoid; page-break-inside: avoid; margin-bottom: 14px; line-height: 1.35; }
-    .q-subtema { font-size:6.5pt; color:#333; font-family:'JetBrains Mono',monospace; text-transform:uppercase; font-weight:bold; margin-bottom:2px; }
+    /* Ajustamos el line-height a 1.5 para dar espacio vertical a las raíces o fracciones */
+    .q-item, .sol-item { break-inside: avoid; page-break-inside: avoid; margin-bottom: 14px; line-height: 1.5; }
+    .q-subtema { font-size:6.5pt; color:#333; font-family:'JetBrains Mono',monospace; text-transform:uppercase; font-weight:bold; margin-bottom:2px; line-height: 1; }
     .q-num { font-weight:700; color:#0a1628; font-size:9.5pt; }
-    .q-enunciado { margin-bottom:4px; font-size:9.5pt; color:#000; }
+    .q-enunciado { margin-bottom:4px; font-size:9.5pt; color:#000; line-height: 1.5;}
     .q-alts { list-style:none; display:grid; grid-template-columns:1fr 1fr; gap:2px 6px; }
-    .q-alts li { font-size:8.5pt; color:#000; }
+    .q-alts li { font-size:8.5pt; color:#000; line-height: 1.5;}
     
     .sol-rta { display:inline-block; background:#0a1628; color:#fff; font-family:'JetBrains Mono',monospace; font-size:7.5pt; padding:1px 5px; border-radius:2px; margin:0 4px 2px 0; vertical-align:middle; }
-    .sol-text { font-size:9pt; color:#111; margin-top:2px; }
+    .sol-text { font-size:9pt; color:#111; margin-top:2px; line-height: 1.4; }
 
-    /* BUFFER INVISIBLE MAGICO:
-       Mide exactamente 86mm (el ancho de una columna).
-       Garantiza que MathJax dibuje el LaTeX perfecto antes de armar las hojas */
-    #render-buffer { 
-      width: 86mm; 
-      position: absolute; 
-      left: -9999px;
-      top: -9999px;
-      visibility: hidden; 
+    /* CORRECCIÓN EXACTA DE ALINEACIÓN PARA MATHJAX SVG: 
+       Fuerza a la imagen vectorial a alinearse con la base del texto */
+    mjx-container[jax="SVG"] {
+      display: inline-block;
+      vertical-align: middle; 
+      margin: 0 1px;
     }
+
+    #render-buffer { width: 86mm; position: absolute; left: -9999px; top: -9999px; visibility: hidden; }
 
   </style>
 </head>
@@ -134,7 +136,7 @@
 
 <div class="screen-wrap">
   <header>
-    <div class="badge">Academia PNP · Sistema de Evaluación12</div>
+    <div class="badge">Academia PNP · Sistema de Evaluación13</div>
     <h1 class="site-title">Charly<span>Táctico</span></h1>
     <p class="site-subtitle">Generador de Prácticas Semanales — Suboficiales &amp; Oficiales</p>
   </header>
@@ -171,14 +173,12 @@
 </div>
 
 <script>
-// Mezclador
 function shuffle(arr) {
   const a=[...arr];
   for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}
   return a;
 }
 
-// Extractor inteligente
 function extraerPreguntas(db, subtemasConfig, nivel, totalRequerido) {
   let seleccionadas = [];
   let poolSobrantes = [];
@@ -286,18 +286,16 @@ async function iniciarGeneracion() {
         pMat.forEach((q, i) => { itemsExamen.push(crearBloquePregunta(q, pRM.length+i+1)); itemsSolucion.push(crearBloqueSolucion(q, pRM.length+i+1)); });
       }
 
-      // 1. Mandamos todo al buffer para renderizar LaTeX
       itemsExamen.forEach(el => buffer.appendChild(el));
       itemsSolucion.forEach(el => buffer.appendChild(el));
 
-      // 2. OBLIGAMOS A MATHJAX A PROCESAR (Esto soluciona el código en bruto)
+      // Orden para que el motor vectorial dibuje las ecuaciones
       if (window.MathJax && window.MathJax.typesetPromise) {
         await MathJax.typesetPromise([buffer]);
       }
 
       document.body.classList.add('preview-active');
       
-      // 3. Paginamos calculando las alturas reales (post-MathJax)
       function paginarElementos(arrayDOM, contenedorDestinoID, isSol) {
         const destino = document.getElementById(contenedorDestinoID);
         destino.innerHTML = '';
@@ -330,22 +328,18 @@ async function iniciarGeneracion() {
       alert("Error: " + err.message);
       document.getElementById('spinner').classList.remove('active');
     }
-  }, 100);
+  }, 300);
 }
 
 function cerrarPreview() {
   document.body.classList.remove('preview-active');
 }
 
-/* ════════════════════════════════════════════
-   SOLUCIÓN DEFINITIVA A LAS HOJAS EN BLANCO
-════════════════════════════════════════════ */
 function descargarComoPDF() {
   const btn = document.getElementById('btnDescargar');
   btn.textContent = '⏳ PROCESANDO PDF...';
   btn.classList.add('loading');
 
-  // Antes de tomar la foto, quitamos los márgenes y sombras que rompen el salto de página
   const paginas = document.querySelectorAll('.a4-page');
   paginas.forEach(p => {
     p.style.margin = '0';
@@ -363,7 +357,6 @@ function descargarComoPDF() {
   };
 
   html2pdf().set(opciones).from(elemento).save().then(() => {
-    // Restaurar los botones y los estilos visuales en la web
     btn.textContent = '⬇ DESCARGAR PDF';
     btn.classList.remove('loading');
     paginas.forEach(p => {
