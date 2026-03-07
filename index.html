@@ -9,11 +9,10 @@
     window.MathJax = {
       tex: { inlineMath:[['$','$'],['\\(','\\)']], displayMath:[['$$','$$']] },
       options: { skipHtmlTags:['script','noscript','style','textarea','pre'] },
-      startup: { typeset:false },
-      svg: { fontCache: 'global' } // Optimiza la carga de las ecuaciones vectoriales
+      startup: { typeset:false }
     };
   </script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.0/es5/tex-mml-svg.js" async></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.0/es5/tex-mml-chtml.js" async></script>
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
@@ -86,7 +85,6 @@
       box-sizing: border-box;
       display: flex; flex-direction: column; position: relative; 
       overflow: hidden; 
-      page-break-after: always;
     }
 
     .exam-header { text-align:center; border-bottom:2.5px solid #0a1628; padding-bottom:5px; margin-bottom:8px; }
@@ -107,7 +105,7 @@
     }
     .seccion-pts { font-family:'JetBrains Mono',monospace;font-size:7.5pt;opacity:.85; }
 
-    /* Ajustamos el line-height a 1.5 para dar espacio vertical a las raíces o fracciones */
+    /* Ajuste de interlineado para matemáticas */
     .q-item, .sol-item { break-inside: avoid; page-break-inside: avoid; margin-bottom: 14px; line-height: 1.5; }
     .q-subtema { font-size:6.5pt; color:#333; font-family:'JetBrains Mono',monospace; text-transform:uppercase; font-weight:bold; margin-bottom:2px; line-height: 1; }
     .q-num { font-weight:700; color:#0a1628; font-size:9.5pt; }
@@ -118,15 +116,19 @@
     .sol-rta { display:inline-block; background:#0a1628; color:#fff; font-family:'JetBrains Mono',monospace; font-size:7.5pt; padding:1px 5px; border-radius:2px; margin:0 4px 2px 0; vertical-align:middle; }
     .sol-text { font-size:9pt; color:#111; margin-top:2px; line-height: 1.4; }
 
-    /* CORRECCIÓN EXACTA DE ALINEACIÓN PARA MATHJAX SVG: 
-       Fuerza a la imagen vectorial a alinearse con la base del texto */
-    mjx-container[jax="SVG"] {
-      display: inline-block;
-      vertical-align: middle; 
-      margin: 0 1px;
-    }
+    /* Forzar a MathJax a alinearse bien en la foto del PDF */
+    mjx-container { display: inline-block !important; vertical-align: middle !important; }
 
-    #render-buffer { width: 86mm; position: absolute; left: -9999px; top: -9999px; visibility: hidden; }
+    /* BUFFER TRANSPARENTE PERO EN PANTALLA:
+       Esto asegura que el celular procese MathJax perfectamente midiendo 210mm reales */
+    #render-buffer { 
+      width: 210mm; 
+      position: absolute; 
+      top: 0; left: 0; 
+      opacity: 0; 
+      pointer-events: none; 
+      z-index: -1;
+    }
 
   </style>
 </head>
@@ -136,7 +138,7 @@
 
 <div class="screen-wrap">
   <header>
-    <div class="badge">Academia PNP · Sistema de Evaluación13</div>
+    <div class="badge">Academia PNP · Sistema de Evaluación14</div>
     <h1 class="site-title">Charly<span>Táctico</span></h1>
     <p class="site-subtitle">Generador de Prácticas Semanales — Suboficiales &amp; Oficiales</p>
   </header>
@@ -151,7 +153,7 @@
         <div class="nivel-btn"><input type="radio" name="nivel" id="n-dificil" value="dificil"><label for="n-dificil"><span class="nivel-icon">🔴</span><span class="nivel-name">Difícil</span></label></div>
       </div>
       <button class="btn-generar" onclick="iniciarGeneracion()">▶ GENERAR Y PREVISUALIZAR</button>
-      <div class="spinner" id="spinner">Renderizando Matemáticas y Paginando...</div>
+      <div class="spinner" id="spinner">Dibujando fórmulas matemáticas...</div>
     </div>
   </main>
 </div>
@@ -252,7 +254,7 @@ function crearHojaA4(pageNum, isSol, nivelStr) {
 
 async function iniciarGeneracion() {
   if (typeof QUESTIONS_DB === 'undefined') {
-    alert("Cargando la base de datos desde GitHub. Por favor, espera 2 segundos e intenta de nuevo."); 
+    alert("Cargando la base de datos. Espera 2 segundos e intenta de nuevo."); 
     return;
   }
 
@@ -286,16 +288,18 @@ async function iniciarGeneracion() {
         pMat.forEach((q, i) => { itemsExamen.push(crearBloquePregunta(q, pRM.length+i+1)); itemsSolucion.push(crearBloqueSolucion(q, pRM.length+i+1)); });
       }
 
+      // Metemos al buffer invisible pero con dimensiones reales
       itemsExamen.forEach(el => buffer.appendChild(el));
       itemsSolucion.forEach(el => buffer.appendChild(el));
 
-      // Orden para que el motor vectorial dibuje las ecuaciones
+      // Esperar a MathJax
       if (window.MathJax && window.MathJax.typesetPromise) {
         await MathJax.typesetPromise([buffer]);
       }
 
       document.body.classList.add('preview-active');
       
+      // Paginación post-MathJax
       function paginarElementos(arrayDOM, contenedorDestinoID, isSol) {
         const destino = document.getElementById(contenedorDestinoID);
         destino.innerHTML = '';
@@ -328,42 +332,58 @@ async function iniciarGeneracion() {
       alert("Error: " + err.message);
       document.getElementById('spinner').classList.remove('active');
     }
-  }, 300);
+  }, 100); // Pequeño tiempo para que el DOM muestre el spinner
 }
 
 function cerrarPreview() {
   document.body.classList.remove('preview-active');
 }
 
+/* ════════════════════════════════════════════
+   SOLUCIÓN DEL BOTÓN CONGELADO Y HOJAS EN BLANCO
+════════════════════════════════════════════ */
 function descargarComoPDF() {
   const btn = document.getElementById('btnDescargar');
   btn.textContent = '⏳ PROCESANDO PDF...';
   btn.classList.add('loading');
 
-  const paginas = document.querySelectorAll('.a4-page');
-  paginas.forEach(p => {
-    p.style.margin = '0';
-    p.style.boxShadow = 'none';
-  });
-
-  const elemento = document.getElementById('pdf-wrapper');
-  
-  const opciones = {
-    margin:       0,
-    filename:     `Examen_CharlyTactico_${new Date().getTime()}.pdf`,
-    image:        { type: 'jpeg', quality: 1 },
-    html2canvas:  { scale: 2, useCORS: true, scrollY: 0 },
-    jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
-  };
-
-  html2pdf().set(opciones).from(elemento).save().then(() => {
-    btn.textContent = '⬇ DESCARGAR PDF';
-    btn.classList.remove('loading');
+  // Retrasamos la ejecución 50ms para que el celular alcance a cambiar el texto del botón 
+  // ANTES de que el procesador se congele creando el PDF.
+  setTimeout(() => {
+    const paginas = document.querySelectorAll('.a4-page');
+    
+    // Eliminamos márgenes para evitar páginas en blanco por desbordamiento de altura
     paginas.forEach(p => {
-      p.style.margin = '0 auto 20px auto';
-      p.style.boxShadow = '0 8px 30px rgba(0,0,0,.4)';
+      p.style.margin = '0';
+      p.style.boxShadow = 'none';
+      p.style.border = 'none';
     });
-  });
+
+    const elemento = document.getElementById('pdf-wrapper');
+    
+    const opciones = {
+      margin:       0,
+      filename:     `Examen_CharlyTactico_${new Date().getTime()}.pdf`,
+      image:        { type: 'jpeg', quality: 0.98 },
+      html2canvas:  { 
+        scale: 2, 
+        useCORS: true, 
+        scrollY: 0,
+        windowWidth: 794 // Forza al celular a interpretar la pantalla como monitor de PC
+      },
+      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+    };
+
+    html2pdf().set(opciones).from(elemento).save().then(() => {
+      // Devolvemos la vista a la normalidad
+      btn.textContent = '⬇ DESCARGAR PDF';
+      btn.classList.remove('loading');
+      paginas.forEach(p => {
+        p.style.margin = '0 auto 20px auto';
+        p.style.boxShadow = '0 8px 30px rgba(0,0,0,.4)';
+      });
+    });
+  }, 50);
 }
 </script>
 </body>
