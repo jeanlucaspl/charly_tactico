@@ -69,7 +69,7 @@
     .btn-download{padding:.55rem 1.4rem;background:var(--gold);color:var(--navy); border:none;border-radius:3px;font-family:'Bebas Neue',sans-serif; font-size:.95rem;cursor:pointer;}
 
     /* ════════════════════════════════════════════
-       NUEVO MOTOR DE PAGINACIÓN A4 EXACTA
+       MOTOR DE PAGINACIÓN FÍSICO A4
     ════════════════════════════════════════════ */
     .a4-page {
       width: 210mm;
@@ -84,7 +84,7 @@
       display: flex;
       flex-direction: column;
       position: relative;
-      overflow: hidden; /* Evita que el contenido desborde visualmente */
+      overflow: hidden; /* Corta visualmente si algo se excede */
     }
 
     .exam-header { text-align:center; border-bottom:2.5px solid #0a1628; padding-bottom:7px; margin-bottom:8px; }
@@ -96,18 +96,19 @@
     .field-label { font-size:6pt; text-transform:uppercase; letter-spacing:.1em; color:#444; margin-bottom:1px; }
     .field-line { border-bottom:1px solid #777; min-height:13px; }
 
-    /* EL CONTENEDOR DE COLUMNAS */
+    /* EL CONTENEDOR DE LAS 2 COLUMNAS DENTRO DE LA HOJA */
     .page-content {
       flex-grow: 1;
       column-count: 2;
       column-gap: 8mm;
       column-fill: auto;
       width: 100%;
-      overflow: hidden; /* Esto es clave: si algo no cabe, se esconde, y el JS lo detecta */
+      height: 100%;
+      overflow: hidden; 
     }
 
     .seccion-header {
-      column-span: all; /* Atraviesa la hoja */
+      column-span: all;
       -webkit-column-span: all;
       background: #0a1628;
       color: #fff;
@@ -119,6 +120,7 @@
       display: flex; justify-content: space-between; align-items: center;
       break-after: avoid; 
     }
+    .seccion-pts { font-family:'JetBrains Mono',monospace;font-size:7.5pt;opacity:.85; }
 
     .q-item, .sol-item {
       break-inside: avoid;
@@ -135,14 +137,12 @@
     .sol-rta { display:inline-block; background:#0a1628; color:#fff; font-family:'JetBrains Mono',monospace; font-size:7.5pt; padding:1px 5px; border-radius:2px; margin:0 4px 2px 0; vertical-align:middle; }
     .sol-text { font-size:9pt; color:#111; margin-top:2px; }
 
-    /* Buffer invisible para pre-renderizar matemáticas */
     #render-buffer { position: absolute; top: -9999px; left: -9999px; width: 180mm; visibility: hidden; }
 
     /* ════════════════════════════════════════════
-       MODO IMPRESIÓN (SIN ERRORES DE NAVEGADOR)
+       MODO IMPRESIÓN FÍSICA A4
     ════════════════════════════════════════════ */
     @media print{
-      /* Le decimos al navegador que NO meta márgenes, la hoja ya tiene tamaño exacto */
       @page{ size: A4 portrait; margin: 0; }
       body { background: #fff; }
       body > * { display: none !important; }
@@ -155,7 +155,7 @@
       
       .a4-page {
         margin: 0 !important; box-shadow: none !important; border: none !important;
-        page-break-after: always !important;
+        page-break-after: always !important; /* Fuerza salto de página obligatoriamente */
       }
       
       * { color: #000 !important; }
@@ -167,7 +167,7 @@
 
 <div class="screen-wrap">
   <header>
-    <div class="badge">Academia PNP · Sistema de Evaluación</div>
+    <div class="badge">Academia PNP · Sistema de Evaluación7</div>
     <h1 class="site-title">Charly<span>Táctico</span></h1>
     <p class="site-subtitle">Generador de Prácticas Semanales — Suboficiales &amp; Oficiales</p>
   </header>
@@ -181,8 +181,8 @@
         <div class="nivel-btn"><input type="radio" name="nivel" id="n-medio" value="medio" checked><label for="n-medio"><span class="nivel-icon">🟡</span><span class="nivel-name">Medio</span></label></div>
         <div class="nivel-btn"><input type="radio" name="nivel" id="n-dificil" value="dificil"><label for="n-dificil"><span class="nivel-icon">🔴</span><span class="nivel-name">Difícil</span></label></div>
       </div>
-      <button class="btn-generar" onclick="iniciarGeneracion()">▶ GENERAR PRÁCTICA EXACTA</button>
-      <div class="spinner" id="spinner">Calculando hojas, paginando y renderizando matemáticas...</div>
+      <button class="btn-generar" onclick="iniciarGeneracion()">▶ GENERAR PRÁCTICA (30 PREGUNTAS)</button>
+      <div class="spinner" id="spinner">Calculando métricas A4 y paginando...</div>
     </div>
   </main>
 </div>
@@ -192,16 +192,16 @@
   <div class="preview-container">
     <div class="preview-actions">
       <button class="btn-back" onclick="document.getElementById('preview-overlay').classList.remove('active')">← VOLVER</button>
-      <button class="btn-download" onclick="window.print()">⬇ IMPRIMIR PDF EXACTO</button>
+      <button class="btn-download" onclick="window.print()">⬇ IMPRIMIR PDF</button>
     </div>
     
     <div id="paginas-examen"></div>
+    
     <div id="paginas-soluciones"></div>
   </div>
 </div>
 
 <script>
-/* ══ 1. ALGORITMO DE SELECCIÓN EXACTA ══ */
 function shuffle(arr) {
   const a=[...arr];
   for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}
@@ -231,7 +231,6 @@ function extraerPreguntas(db, subtemasConfig, nivel, totalRequerido) {
   return shuffle(seleccionadas);
 }
 
-/* ══ 2. CREACIÓN DE BLOQUES HTML ══ */
 function crearBloquePregunta(q, num) {
   let div = document.createElement('div');
   div.className = 'q-item';
@@ -253,7 +252,6 @@ function crearEncabezadoSeccion(titulo, cantidad) {
   return div;
 }
 
-/* ══ 3. CREADOR FÍSICO DE HOJAS A4 ══ */
 function crearHojaA4(pageNum, isSol, nivelStr) {
   const page = document.createElement('div');
   page.className = 'a4-page';
@@ -282,7 +280,6 @@ function crearHojaA4(pageNum, isSol, nivelStr) {
   return { page, content };
 }
 
-/* ══ 4. EL MOTOR DE PAGINACIÓN ══ */
 async function iniciarGeneracion() {
   if (typeof QUESTIONS_DB === 'undefined' || typeof CONFIG === 'undefined') {
     alert("Error: Base de datos questions.js no encontrada."); return;
@@ -291,13 +288,11 @@ async function iniciarGeneracion() {
   const nivel = document.querySelector('input[name="nivel"]:checked')?.value || 'medio';
   document.getElementById('spinner').classList.add('active');
 
-  // Damos un pequeño respiro al navegador para mostrar el spinner
   setTimeout(async () => {
     try {
       const buffer = document.getElementById('render-buffer');
-      buffer.innerHTML = ''; // Limpiar
+      buffer.innerHTML = ''; 
 
-      // Recopilamos las preguntas requeridas
       let itemsExamen = [];
       let itemsSolucion = [];
       const esP = (nivel === 'principiante');
@@ -306,10 +301,7 @@ async function iniciarGeneracion() {
         let pPrinc = extraerPreguntas(QUESTIONS_DB, CONFIG.principiante.subtemas, 'principiante', 30);
         itemsExamen.push(crearEncabezadoSeccion('Matemática — Nivel Principiante', pPrinc.length));
         itemsSolucion.push(crearEncabezadoSeccion('Soluciones — Nivel Principiante', null));
-        pPrinc.forEach((q, i) => {
-          itemsExamen.push(crearBloquePregunta(q, i+1));
-          itemsSolucion.push(crearBloqueSolucion(q, i+1));
-        });
+        pPrinc.forEach((q, i) => { itemsExamen.push(crearBloquePregunta(q, i+1)); itemsSolucion.push(crearBloqueSolucion(q, i+1)); });
       } else {
         let pRM = extraerPreguntas(QUESTIONS_DB, CONFIG.razonamientoMatematico.subtemas, nivel, 15);
         let pMat = extraerPreguntas(QUESTIONS_DB, CONFIG.matematicas.subtemas, nivel, 15);
@@ -323,14 +315,18 @@ async function iniciarGeneracion() {
         pMat.forEach((q, i) => { itemsExamen.push(crearBloquePregunta(q, pRM.length+i+1)); itemsSolucion.push(crearBloqueSolucion(q, pRM.length+i+1)); });
       }
 
-      // Metemos todo al buffer invisible
       itemsExamen.forEach(el => buffer.appendChild(el));
       itemsSolucion.forEach(el => buffer.appendChild(el));
 
-      // ¡MAGIA! Convertimos el LaTeX antes de medir alturas
       if (window.MathJax) await MathJax.typesetPromise([buffer]);
 
-      // Función interna para paginar físicamente
+      // ¡AQUÍ ESTÁ LA MAGIA QUE ARREGLA EL PROBLEMA!
+      // Forzamos al navegador a mostrar el contenedor pero de forma invisible 
+      // para que pueda medir milimetricamente los anchos y altos
+      const overlay = document.getElementById('preview-overlay');
+      overlay.style.visibility = 'hidden';
+      overlay.classList.add('active');
+
       function paginarElementos(arrayDOM, contenedorDestinoID, isSol) {
         const destino = document.getElementById(contenedorDestinoID);
         destino.innerHTML = '';
@@ -343,30 +339,29 @@ async function iniciarGeneracion() {
           let item = arrayDOM[i];
           actual.content.appendChild(item);
           
-          // Si el ancho del scroll supera el ancho visible, significa que la columna
-          // se desbordó creando una "tercera columna invisible". ¡Es hora de cambiar de hoja!
-          if (Math.ceil(actual.content.scrollWidth) > Math.ceil(actual.content.clientWidth) + 5) {
-            actual.content.removeChild(item); // Lo quitamos porque no cupo
+          // Medición matemática: Si el contenido interno empuja hacia una "tercera columna imaginaria"
+          if (Math.ceil(actual.content.scrollWidth) > Math.ceil(actual.content.clientWidth) + 2) {
+            actual.content.removeChild(item); 
             
-            // Creamos nueva hoja
             pageNum++;
             actual = crearHojaA4(pageNum, isSol, nivel);
             destino.appendChild(actual.page);
             
-            // Lo metemos en la hoja nueva
             actual.content.appendChild(item);
           }
         }
       }
 
-      // Ejecutamos la paginación con los elementos ya renderizados por MathJax
+      // Paginamos primero el examen
       paginarElementos(itemsExamen, 'paginas-examen', false);
+      
+      // Paginamos las soluciones (esto las pone en su propio conjunto de hojas nuevas)
       paginarElementos(itemsSolucion, 'paginas-soluciones', true);
 
-      // Limpiamos y mostramos resultado
+      // Limpiamos y revelamos la pantalla
       buffer.innerHTML = '';
       document.getElementById('spinner').classList.remove('active');
-      document.getElementById('preview-overlay').classList.add('active');
+      overlay.style.visibility = 'visible';
 
     } catch(err) {
       alert("Error en el motor: " + err.message);
