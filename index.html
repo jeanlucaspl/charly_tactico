@@ -1,590 +1,527 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Charly Táctico — Generador de Prácticas</title>
-
-  <script>
-    window.MathJax = {
-      tex: { inlineMath: [['$','$'],['\\(','\\)']], displayMath:[['$$','$$']] },
-      options: { skipHtmlTags:['script','noscript','style','textarea','pre'] },
-      startup: { typeset: false }
-    };
-  </script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" async></script>
-  <script src="questions.js"></script>
-
-  <style>
-    /* ── Google Fonts ── */
-    @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;700&display=swap');
-
-    /* ── Variables ── */
-    :root {
-      --navy:  #0a1628;
-      --navy2: #0f2040;
-      --gold:  #c9a84c;
-      --gold2: #e8c97a;
-      --cream: #f5f0e8;
-      --silver:#8a9ab5;
-      --white: #ffffff;
-    }
-
-    *, *::before, *::after { box-sizing: border-box; margin:0; padding:0; }
-    html { font-size:16px; }
-
-    /* ════════════ PANTALLA ════════════ */
-    body {
-      background: var(--navy);
-      color: var(--cream);
-      font-family: 'Crimson Pro', Georgia, serif;
-      min-height: 100vh;
-    }
-
-    body::before {
-      content:'';
-      position:fixed; inset:0; z-index:0; pointer-events:none;
-      background:
-        radial-gradient(ellipse 80% 60% at 50% -10%, rgba(201,168,76,.12) 0%, transparent 70%),
-        radial-gradient(ellipse 50% 40% at 90% 100%, rgba(155,35,53,.08) 0%, transparent 60%),
-        repeating-linear-gradient(0deg, transparent, transparent 60px, rgba(201,168,76,.025) 60px, rgba(201,168,76,.025) 61px),
-        repeating-linear-gradient(90deg, transparent, transparent 60px, rgba(201,168,76,.025) 60px, rgba(201,168,76,.025) 61px);
-    }
-
-    .screen-wrap { position:relative; z-index:1; min-height:100vh; display:flex; flex-direction:column; }
-
-    /* ── Header ── */
-    header {
-      text-align:center;
-      padding:3rem 2rem 2rem;
-      border-bottom:1px solid rgba(201,168,76,.3);
-      background:linear-gradient(180deg, rgba(0,0,0,.4) 0%, transparent 100%);
-    }
-    .badge {
-      display:inline-block; border:1px solid var(--gold); color:var(--gold);
-      font-family:'JetBrains Mono',monospace; font-size:.7rem; letter-spacing:.18em;
-      padding:.25rem 1rem; text-transform:uppercase; margin-bottom:1.2rem; opacity:.85;
-    }
-    .site-title {
-      font-family:'Bebas Neue',sans-serif;
-      font-size:clamp(3rem,8vw,6.5rem);
-      letter-spacing:.06em; line-height:.92; color:var(--white);
-      text-shadow:0 2px 24px rgba(201,168,76,.25);
-    }
-    .site-title span { color:var(--gold); display:block; }
-    .site-subtitle { margin-top:.8rem; font-size:1rem; color:var(--silver); letter-spacing:.08em; font-style:italic; }
-
-    /* ── Panel ── */
-    main { flex:1; max-width:860px; margin:3rem auto; padding:0 1.5rem; width:100%; }
-
-    .panel {
-      background:rgba(15,32,64,.85);
-      border:1px solid rgba(201,168,76,.2);
-      border-radius:4px; padding:2.5rem;
-      box-shadow:0 4px 32px rgba(0,0,0,.45);
-      backdrop-filter:blur(6px);
-    }
-    .panel-title { font-family:'Bebas Neue',sans-serif; font-size:1.6rem; letter-spacing:.1em; color:var(--gold); margin-bottom:.4rem; }
-    .panel-desc { color:var(--silver); font-size:.95rem; margin-bottom:2rem; border-bottom:1px solid rgba(201,168,76,.15); padding-bottom:1.2rem; }
-
-    /* Nivel selector */
-    .nivel-group { display:grid; grid-template-columns:repeat(4,1fr); gap:.9rem; margin-bottom:2rem; }
-    .nivel-btn input { display:none; }
-    .nivel-btn label {
-      display:block; text-align:center; padding:1.1rem .4rem;
-      border:1.5px solid rgba(201,168,76,.25); border-radius:3px; cursor:pointer;
-      transition:all .25s; background:rgba(0,0,0,.2);
-    }
-    .nivel-icon  { font-size:1.6rem; display:block; margin-bottom:.3rem; }
-    .nivel-name  { font-family:'Bebas Neue',sans-serif; font-size:1.1rem; letter-spacing:.12em; display:block; color:var(--cream); }
-    .nivel-desc  { font-size:.7rem; color:var(--silver); display:block; margin-top:.15rem; }
-    .nivel-btn input:checked + label { border-color:var(--gold); background:rgba(201,168,76,.12); box-shadow:0 0 18px rgba(201,168,76,.2); }
-    .nivel-btn label:hover { border-color:rgba(201,168,76,.6); background:rgba(201,168,76,.07); }
-
-    /* Botón generar */
-    .btn-generar {
-      width:100%; padding:1.1rem;
-      background:linear-gradient(135deg, var(--gold) 0%, var(--gold2) 50%, var(--gold) 100%);
-      background-size:200% auto; color:var(--navy); border:none; border-radius:3px;
-      font-family:'Bebas Neue',sans-serif; font-size:1.4rem; letter-spacing:.15em; cursor:pointer;
-      transition:background-position .4s, transform .15s, box-shadow .3s;
-      box-shadow:0 4px 20px rgba(201,168,76,.35);
-    }
-    .btn-generar:hover { background-position:right center; transform:translateY(-2px); box-shadow:0 8px 28px rgba(201,168,76,.5); }
-    .btn-generar:active { transform:translateY(0); }
-
-    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
-    .spinner { display:none; text-align:center; padding:1.5rem; color:var(--gold); font-family:'Bebas Neue',sans-serif; letter-spacing:.15em; animation:pulse 1.2s infinite; }
-    .spinner.active { display:block; }
-
-    /* Temas info */
-    .temas-info { margin-top:2rem; display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
-    .tema-card { border:1px solid rgba(201,168,76,.15); border-radius:3px; padding:1rem 1.2rem; background:rgba(0,0,0,.15); }
-    .tema-card h4 { font-family:'Bebas Neue',sans-serif; font-size:1rem; letter-spacing:.1em; color:var(--gold); margin-bottom:.5rem; }
-    .tema-card ul { list-style:none; }
-    .tema-card li { font-size:.82rem; color:var(--silver); padding:.18rem 0 .18rem 1rem; position:relative; }
-    .tema-card li::before { content:'›'; position:absolute; left:0; color:var(--gold); }
-
-    /* ════════════ OVERLAY ════════════ */
-    #preview-overlay {
-      display:none; position:fixed; inset:0; z-index:100;
-      background:rgba(5,12,28,.92); backdrop-filter:blur(4px);
-      overflow-y:auto; padding:2rem 1rem;
-    }
-    #preview-overlay.active { display:block; }
-
-    .preview-container { max-width:900px; margin:0 auto; }
-
-    .preview-actions { display:flex; gap:1rem; margin-bottom:1.5rem; align-items:center; flex-wrap:wrap; }
-    .btn-back {
-      padding:.6rem 1.4rem; border:1.5px solid rgba(201,168,76,.4); background:transparent;
-      color:var(--gold); border-radius:3px; font-family:'Bebas Neue',sans-serif;
-      font-size:1rem; letter-spacing:.1em; cursor:pointer; transition:all .2s;
-    }
-    .btn-back:hover { background:rgba(201,168,76,.1); border-color:var(--gold); }
-    .btn-download {
-      padding:.6rem 1.8rem; background:var(--gold); color:var(--navy);
-      border:none; border-radius:3px; font-family:'Bebas Neue',sans-serif;
-      font-size:1rem; letter-spacing:.12em; cursor:pointer;
-      box-shadow:0 3px 14px rgba(201,168,76,.4); transition:all .2s;
-    }
-    .btn-download:hover { background:var(--gold2); transform:translateY(-1px); box-shadow:0 6px 20px rgba(201,168,76,.55); }
-    .preview-label { margin-left:auto; font-size:.8rem; color:var(--silver); font-family:'JetBrains Mono',monospace; }
-
-    /* ════════════ HOJA IMPRIMIBLE ════════════ */
-    /*
-      El truco para el layout de 2 columnas correcto en impresión:
-      - Usamos CSS columns en vez de CSS grid
-      - column-fill: auto → llena la col izquierda antes de pasar a la derecha
-      - Cada .question-item tiene break-inside: avoid
-      - El contenedor tiene una altura explícita en px equivalente a A4
-    */
-
-    #practica-sheet {
-      background: #fff;
-      color: #111;
-      font-family: 'Crimson Pro', Georgia, serif;
-      border-radius: 3px;
-      box-shadow: 0 8px 48px rgba(0,0,0,.6);
-
-      /* Medidas A4 a 96dpi para vista en pantalla */
-      width: 794px;
-      padding: 28px 36px 32px;
-      margin: 0 auto;
-    }
-
-    /* Encabezado del examen */
-    .exam-header {
-      text-align:center;
-      border-bottom:2.5px solid #0a1628;
-      padding-bottom:.7rem;
-      margin-bottom:.6rem;
-    }
-    .exam-institution {
-      font-size:.72rem; letter-spacing:.18em; text-transform:uppercase;
-      color:#444; font-family:'JetBrains Mono',monospace; margin-bottom:.2rem;
-    }
-    .exam-title {
-      font-family:'Bebas Neue',sans-serif; font-size:2rem;
-      letter-spacing:.08em; color:#0a1628; line-height:1;
-    }
-    .exam-meta-row {
-      display:flex; justify-content:center; gap:2rem; margin-top:.5rem;
-      font-size:.78rem; color:#444; flex-wrap:wrap;
-    }
-    .exam-meta-item { display:flex; align-items:center; gap:.35rem; }
-    .exam-meta-label { font-weight:700; text-transform:uppercase; font-size:.62rem; letter-spacing:.1em; color:#888; }
-
-    .nivel-badge {
-      display:inline-block; padding:.12rem .6rem; border-radius:2px;
-      font-size:.68rem; font-family:'JetBrains Mono',monospace; font-weight:700;
-      letter-spacing:.12em; text-transform:uppercase;
-    }
-    .nivel-badge.principiante { background:#dbeafe; color:#1e40af; }
-    .nivel-badge.facil   { background:#d4edda; color:#155724; }
-    .nivel-badge.medio   { background:#fff3cd; color:#856404; }
-    .nivel-badge.dificil { background:#f8d7da; color:#721c24; }
-
-    /* Campos del alumno — solo nombre y fecha */
-    .alumno-fields {
-      display:grid; grid-template-columns:2fr 1fr;
-      gap:.5rem; margin:.6rem 0 .8rem; font-size:.8rem;
-    }
-    .field-label { font-size:.62rem; text-transform:uppercase; letter-spacing:.1em; color:#777; margin-bottom:.12rem; }
-    .field-line  { border-bottom:1px solid #aaa; padding-bottom:.18rem; min-height:1rem; }
-
-    /* Sección header */
-    .seccion-header {
-      background:#0a1628; color:#fff;
-      font-family:'Bebas Neue',sans-serif; font-size:.88rem; letter-spacing:.12em;
-      padding:.3rem .7rem; margin:.8rem 0 .5rem;
-      display:flex; justify-content:space-between; align-items:center;
-    }
-    .seccion-pts { font-family:'JetBrains Mono',monospace; font-size:.68rem; opacity:.7; }
-
-    /*
-      ─── COLUMNAS — clave del layout correcto ───
-      Se usa CSS Multi-column para que el flujo
-      llene la columna izquierda antes de pasar a la derecha,
-      y luego salte a la siguiente página automáticamente.
-    */
-    .questions-cols {
-      column-count: 2;
-      column-gap: 20px;
-      column-fill: auto;       /* llena una columna antes de pasar a la siguiente */
-      column-rule: 1px solid #e0e0e0;
-    }
-
-    .question-item {
-      font-size: .79rem;
-      line-height: 1.42;
-      break-inside: avoid;        /* nunca partir una pregunta entre columnas */
-      page-break-inside: avoid;
-      margin-bottom: 7px;
-      padding-bottom: 5px;
-      border-bottom: .5px solid #ececec;
-    }
-
-    .question-item:last-child { border-bottom: none; }
-
-    .q-subtema {
-      font-size:.58rem; color:#999; font-family:'JetBrains Mono',monospace;
-      text-transform:uppercase; letter-spacing:.05em; margin-bottom:.15rem;
-    }
-    .q-enunciado { margin-bottom:.28rem; color:#1a1a1a; }
-    .q-number    { font-weight:700; color:#0a1628; }
-
-    .q-alternativas {
-      list-style:none; display:grid; grid-template-columns:1fr 1fr; gap:0 .3rem;
-    }
-    .q-alternativas li { font-size:.73rem; color:#333; padding:.03rem 0; }
-
-    /* Responsive pantalla */
-    @media(max-width:860px) {
-      #practica-sheet { width:100%; }
-      .nivel-group    { grid-template-columns:1fr 1fr; }
-      .temas-info     { grid-template-columns:1fr; }
-    }
-    @media(max-width:480px) {
-      .nivel-group { grid-template-columns:1fr; }
-    }
-
-    /* ════════════ ESTILOS DE IMPRESIÓN ════════════ */
-    @media print {
-      /* Ocultar TODO excepto la hoja */
-      body { margin:0 !important; padding:0 !important; background:#fff !important; }
-      body::before { display:none !important; }
-      .screen-wrap, header, main { display:none !important; }
-
-      #preview-overlay {
-        display:block !important;
-        position:static !important;
-        background:#fff !important;
-        backdrop-filter:none !important;
-        padding:0 !important;
-        overflow:visible !important;
-      }
-
-      .preview-actions, .preview-label { display:none !important; }
-      .preview-container { max-width:none !important; margin:0 !important; padding:0 !important; }
-
-      #practica-sheet {
-        width:100% !important;
-        padding:10mm 14mm 12mm !important;
-        margin:0 !important;
-        box-shadow:none !important;
-        border-radius:0 !important;
-        /* Evitar la hoja en blanco inicial */
-        page-break-before: avoid !important;
-        break-before: avoid !important;
-      }
-
-      /* Columnas en papel A4 */
-      .questions-cols {
-        column-count: 2 !important;
-        column-gap: 12mm !important;
-        column-fill: auto !important;
-        /* Altura = A4(297mm) - márgenes - encabezado - sección-header */
-        /* Se deja que el navegador calcule el salto de página */
-        height: auto !important;
-      }
-
-      .question-item {
-        break-inside: avoid !important;
-        page-break-inside: avoid !important;
-      }
-
-      /* Salto de página antes de la sección II si es necesario */
-      .seccion-header.seccion-ii {
-        break-before: auto;
-        page-break-before: auto;
-      }
-
-      /* Suprimir headers/footers del navegador via @page */
-      @page {
-        size: A4 portrait;
-        margin: 0;            /* quita encabezado y pie del navegador */
-      }
-    }
-  </style>
-</head>
-<body>
-
-<div class="screen-wrap">
-
-  <!-- ══ HEADER PANTALLA ══ -->
-  <header>
-    <div class="badge">Academia PNP · Sistema de Evaluación</div>
-    <h1 class="site-title">Charly<span>Táctico</span></h1>
-    <p class="site-subtitle">Generador de Prácticas Semanales — Suboficiales &amp; Oficiales</p>
-  </header>
-
-  <!-- ══ PANEL CONTROL ══ -->
-  <main>
-    <div class="panel">
-      <div class="panel-title">⚙ Generar Práctica</div>
-      <p class="panel-desc">Seleccione el nivel de exigencia y presione el botón. El sistema elegirá preguntas de todos los subtemas de forma aleatoria.</p>
-
-      <div class="nivel-group">
-        <div class="nivel-btn">
-          <input type="radio" name="nivel" id="n-principiante" value="principiante" />
-          <label for="n-principiante">
-            <span class="nivel-icon">🔵</span>
-            <span class="nivel-name">Principiante</span>
-            <span class="nivel-desc">Fundamentos básicos</span>
-          </label>
-        </div>
-        <div class="nivel-btn">
-          <input type="radio" name="nivel" id="n-facil" value="facil" />
-          <label for="n-facil">
-            <span class="nivel-icon">🟢</span>
-            <span class="nivel-name">Fácil</span>
-            <span class="nivel-desc">Conceptos directos</span>
-          </label>
-        </div>
-        <div class="nivel-btn">
-          <input type="radio" name="nivel" id="n-medio" value="medio" checked />
-          <label for="n-medio">
-            <span class="nivel-icon">🟡</span>
-            <span class="nivel-name">Medio</span>
-            <span class="nivel-desc">Aplicación y razonamiento</span>
-          </label>
-        </div>
-        <div class="nivel-btn">
-          <input type="radio" name="nivel" id="n-dificil" value="dificil" />
-          <label for="n-dificil">
-            <span class="nivel-icon">🔴</span>
-            <span class="nivel-name">Difícil</span>
-            <span class="nivel-desc">Alta exigencia</span>
-          </label>
-        </div>
-      </div>
-
-      <button class="btn-generar" onclick="generarPractica()">▶ GENERAR PRÁCTICA</button>
-      <div class="spinner" id="spinner">Generando práctica...</div>
-
-      <div class="temas-info">
-        <div class="tema-card">
-          <h4>📐 Razonamiento Matemático · 15 preg.</h4>
-          <ul>
-            <li>Sucesiones</li>
-            <li>Razonamiento Lógico</li>
-            <li>Planteo de Ecuaciones</li>
-            <li>Fracciones</li>
-            <li>Tanto por ciento</li>
-          </ul>
-        </div>
-        <div class="tema-card">
-          <h4>📏 Matemáticas · 15 preg.</h4>
-          <ul>
-            <li>Operaciones Algebraicas</li>
-            <li>Suma de ángulos en el triángulo</li>
-            <li>Teorema de Pitágoras</li>
-            <li>Funciones Trigonométricas</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </main>
-
-</div><!-- end screen-wrap -->
-
-<!-- ══ OVERLAY PREVISUALIZACIÓN ══ -->
-<div id="preview-overlay">
-  <div class="preview-container">
-
-    <div class="preview-actions">
-      <button class="btn-back"     onclick="cerrarPreview()">← VOLVER</button>
-      <button class="btn-download" onclick="descargarPractica()">⬇ DESCARGAR / IMPRIMIR</button>
-      <span class="preview-label" id="preview-meta-label"></span>
-    </div>
-
-    <!-- ══ HOJA IMPRIMIBLE ══ -->
-    <div id="practica-sheet">
-
-      <div class="exam-header">
-        <div class="exam-institution">Academia Charly Táctico</div>
-        <div class="exam-title">Examen General de Práctica</div>
-        <div class="exam-meta-row">
-          <div class="exam-meta-item">
-            <span class="exam-meta-label">Nivel</span>
-            <span id="sheet-nivel-badge" class="nivel-badge medio">MEDIO</span>
-          </div>
-          <div class="exam-meta-item">
-            <span class="exam-meta-label">Fecha</span>
-            <span id="sheet-fecha">—</span>
-          </div>
-          <div class="exam-meta-item">
-            <span class="exam-meta-label">Curso</span>
-            <span>Razonamiento Matemático &amp; Matemáticas</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Solo nombre -->
-      <div class="alumno-fields">
-        <div>
-          <div class="field-label">Apellidos y Nombres</div>
-          <div class="field-line">&nbsp;</div>
-        </div>
-        <div>
-          <div class="field-label">Duración</div>
-          <div class="field-line" style="padding-top:.1rem;color:#555;">90 minutos</div>
-        </div>
-      </div>
-
-      <!-- SECCIÓN I -->
-      <div class="seccion-header">
-        <span>SECCIÓN I — Razonamiento Matemático</span>
-        <span class="seccion-pts">15 preguntas</span>
-      </div>
-      <div class="questions-cols" id="cols-rm"></div>
-
-      <!-- SECCIÓN II -->
-      <div class="seccion-header seccion-ii">
-        <span>SECCIÓN II — Matemáticas</span>
-        <span class="seccion-pts">15 preguntas</span>
-      </div>
-      <div class="questions-cols" id="cols-mat"></div>
-
-    </div><!-- end practica-sheet -->
-  </div>
-</div>
-
-<script>
-/* ══════════════════════════════════════════════════
-   UTILIDADES
-══════════════════════════════════════════════════ */
-function shuffle(arr) {
-  const a = [...arr];
-  for (let i = a.length-1; i > 0; i--) {
-    const j = Math.floor(Math.random()*(i+1));
-    [a[i],a[j]] = [a[j],a[i]];
-  }
-  return a;
-}
-
-function distribuir(total, n) {
-  const base = Math.floor(total/n), extra = total%n;
-  return Array.from({length:n}, (_,i) => base + (i<extra?1:0));
-}
-
-function elegirDeSubtema(key, nivel, cantidad) {
-  const pool = (QUESTIONS_DB[key]||[]).filter(q => q.nivel === nivel);
-  return shuffle(pool).slice(0, cantidad);
-}
-
-/* Para nivel principiante los subtemas tienen su propio banco sin filtro de nivel */
-function elegirDeSubtemaPrincipiante(key, cantidad) {
-  const pool = QUESTIONS_DB[key] || [];
-  return shuffle(pool).slice(0, cantidad);
-}
-
-/* ══════════════════════════════════════════════════
-   RENDER HTML de una pregunta
-══════════════════════════════════════════════════ */
-function renderPregunta(q, numero) {
-  const alts = q.alternativas.map(a => `<li>${a}</li>`).join('');
-  return `
-    <div class="question-item">
-      <div class="q-subtema">${q.subtema}</div>
-      <div class="q-enunciado"><span class="q-number">${numero}.</span> ${q.enunciado}</div>
-      <ul class="q-alternativas">${alts}</ul>
-    </div>`;
-}
-
-/* ══════════════════════════════════════════════════
-   GENERAR PRÁCTICA
-══════════════════════════════════════════════════ */
-function generarPractica() {
-  const nivel = document.querySelector('input[name="nivel"]:checked')?.value || 'medio';
-  const cfg = CONFIG[nivel];
-
-  document.getElementById('spinner').classList.add('active');
-
-  setTimeout(() => {
-    try {
-      let preguntas_rm  = [];
-      let preguntas_mat = [];
-
-      if (nivel === 'principiante') {
-        /* Principiante: distribuye entre subtemas del banco principiante */
-        const dist_rm  = distribuir(cfg.totalRM,  cfg.subtemas_rm.length);
-        const dist_mat = distribuir(cfg.totalMat, cfg.subtemas_mat.length);
-        cfg.subtemas_rm.forEach((s,i)  => preguntas_rm.push( ...elegirDeSubtemaPrincipiante(s.key, dist_rm[i])));
-        cfg.subtemas_mat.forEach((s,i) => preguntas_mat.push(...elegirDeSubtemaPrincipiante(s.key, dist_mat[i])));
-      } else {
-        const nivelDB = cfg.nivelDB;
-        const dist_rm  = distribuir(cfg.totalRM,  cfg.subtemas_rm.length);
-        const dist_mat = distribuir(cfg.totalMat, cfg.subtemas_mat.length);
-        cfg.subtemas_rm.forEach((s,i)  => preguntas_rm.push( ...elegirDeSubtema(s.key, nivelDB, dist_rm[i])));
-        cfg.subtemas_mat.forEach((s,i) => preguntas_mat.push(...elegirDeSubtema(s.key, nivelDB, dist_mat[i])));
-      }
-
-      preguntas_rm  = shuffle(preguntas_rm);
-      preguntas_mat = shuffle(preguntas_mat);
-
-      /* Renderizar */
-      document.getElementById('cols-rm').innerHTML  = preguntas_rm.map((q,i) => renderPregunta(q,i+1)).join('');
-      document.getElementById('cols-mat').innerHTML = preguntas_mat.map((q,i) => renderPregunta(q,i+16)).join('');
-
-      /* Badge y fecha */
-      const badge = document.getElementById('sheet-nivel-badge');
-      badge.textContent = cfg.label.toUpperCase();
-      badge.className   = `nivel-badge ${nivel}`;
-
-      const fecha = new Date().toLocaleDateString('es-PE',{year:'numeric',month:'long',day:'numeric'});
-      document.getElementById('sheet-fecha').textContent = fecha;
-      document.getElementById('preview-meta-label').textContent = `Nivel: ${cfg.label} · 30 preguntas · ${fecha}`;
-
-      /* Mostrar overlay */
-      document.getElementById('preview-overlay').classList.add('active');
-      document.getElementById('preview-overlay').scrollTop = 0;
-      document.getElementById('spinner').classList.remove('active');
-
-      /* Re-render MathJax sobre el sheet */
-      if (window.MathJax) {
-        MathJax.typesetPromise([document.getElementById('practica-sheet')]).catch(e => console.warn(e));
-      }
-
-    } catch(err) {
-      console.error(err);
-      document.getElementById('spinner').classList.remove('active');
-      alert('Error al generar la práctica. Revise la consola.');
-    }
-  }, 300);
-}
-
-function cerrarPreview() {
-  document.getElementById('preview-overlay').classList.remove('active');
-}
-
-function descargarPractica() {
-  window.print();
-}
-
-document.addEventListener('keydown', e => { if(e.key==='Escape') cerrarPreview(); });
-</script>
-
-</body>
-</html>
+// ============================================================
+// BASE DE DATOS DE PREGUNTAS — CHARLY TÁCTICO
+// Niveles: "principiante" | "facil" | "medio" | "dificil"
+// ============================================================
+
+const QUESTIONS_DB = {
+
+  // ══════════════════════════════════════════════════════════
+  // SUBTEMAS NIVEL PRINCIPIANTE (banco propio)
+  // ══════════════════════════════════════════════════════════
+
+  operBasicasNeg: [
+    { id:"obn_p1", nivel:"principiante", tema:"Matemáticas", subtema:"Operaciones con negativos",
+      enunciado:"Calcule: $(-3) + (-5)$",
+      alternativas:["A) $-8$","B) $8$","C) $-2$","D) $2$"], respuesta:"A" },
+    { id:"obn_p2", nivel:"principiante", tema:"Matemáticas", subtema:"Operaciones con negativos",
+      enunciado:"Calcule: $(-4) \\times (-6)$",
+      alternativas:["A) $-24$","B) $24$","C) $-10$","D) $10$"], respuesta:"B" },
+    { id:"obn_p3", nivel:"principiante", tema:"Matemáticas", subtema:"Operaciones con negativos",
+      enunciado:"Calcule: $8 - (-3)$",
+      alternativas:["A) $5$","B) $11$","C) $-5$","D) $-11$"], respuesta:"B" },
+    { id:"obn_p4", nivel:"principiante", tema:"Matemáticas", subtema:"Operaciones con negativos",
+      enunciado:"Calcule: $\\dfrac{-12}{4}$",
+      alternativas:["A) $3$","B) $-3$","C) $-8$","D) $8$"], respuesta:"B" },
+    { id:"obn_p5", nivel:"principiante", tema:"Matemáticas", subtema:"Operaciones con negativos",
+      enunciado:"¿Cuánto es $(-2)^3$?",
+      alternativas:["A) $6$","B) $-6$","C) $-8$","D) $8$"], respuesta:"C" },
+  ],
+
+  fraccionesNeg: [
+    { id:"fn_p1", nivel:"principiante", tema:"Matemáticas", subtema:"Fracciones negativas",
+      enunciado:"Calcule: $\\dfrac{-1}{2} + \\dfrac{-1}{4}$",
+      alternativas:["A) $\\dfrac{-3}{4}$","B) $\\dfrac{3}{4}$","C) $\\dfrac{-1}{6}$","D) $\\dfrac{1}{6}$"], respuesta:"A" },
+    { id:"fn_p2", nivel:"principiante", tema:"Matemáticas", subtema:"Fracciones negativas",
+      enunciado:"Calcule: $\\dfrac{-2}{3} \\times \\dfrac{3}{4}$",
+      alternativas:["A) $\\dfrac{1}{2}$","B) $\\dfrac{-1}{2}$","C) $\\dfrac{-6}{12}$","D) $\\dfrac{2}{1}$"], respuesta:"B" },
+    { id:"fn_p3", nivel:"principiante", tema:"Matemáticas", subtema:"Fracciones negativas",
+      enunciado:"Simplifique: $\\dfrac{-6}{-9}$",
+      alternativas:["A) $\\dfrac{-2}{3}$","B) $\\dfrac{2}{3}$","C) $\\dfrac{3}{2}$","D) $\\dfrac{-3}{2}$"], respuesta:"B" },
+    { id:"fn_p4", nivel:"principiante", tema:"Matemáticas", subtema:"Fracciones negativas",
+      enunciado:"Calcule: $\\dfrac{5}{6} - \\dfrac{3}{4}$",
+      alternativas:["A) $\\dfrac{2}{2}$","B) $\\dfrac{1}{12}$","C) $\\dfrac{-1}{12}$","D) $\\dfrac{2}{10}$"], respuesta:"B" },
+  ],
+
+  factorizacionBasica: [
+    { id:"fb_p1", nivel:"principiante", tema:"Matemáticas", subtema:"Factorización básica",
+      enunciado:"Factorice: $6x^2 + 9x$",
+      alternativas:["A) $3x(2x+3)$","B) $6x(x+9)$","C) $3(2x^2+9x)$","D) $9x(x+6)$"], respuesta:"A" },
+    { id:"fb_p2", nivel:"principiante", tema:"Matemáticas", subtema:"Factorización básica",
+      enunciado:"Factorice: $x^2 - 25$",
+      alternativas:["A) $(x-5)^2$","B) $(x+5)(x-5)$","C) $(x+25)(x-1)$","D) No factoriza"], respuesta:"B" },
+    { id:"fb_p3", nivel:"principiante", tema:"Matemáticas", subtema:"Factorización básica",
+      enunciado:"Factorice: $x^2 + 5x + 6$",
+      alternativas:["A) $(x+2)(x+3)$","B) $(x+1)(x+6)$","C) $(x+5)(x+1)$","D) $(x-2)(x-3)$"], respuesta:"A" },
+    { id:"fb_p4", nivel:"principiante", tema:"Matemáticas", subtema:"Factorización básica",
+      enunciado:"Factorice: $4a^2 - 12a$",
+      alternativas:["A) $4(a^2-3a)$","B) $4a(a-3)$","C) $2a(2a-6)$","D) $12a(a-1)$"], respuesta:"B" },
+    { id:"fb_p5", nivel:"principiante", tema:"Matemáticas", subtema:"Factorización básica",
+      enunciado:"Factorice: $x^2 - 6x + 9$",
+      alternativas:["A) $(x-3)^2$","B) $(x+3)^2$","C) $(x-9)(x+1)$","D) $(x-3)(x+3)$"], respuesta:"A" },
+  ],
+
+  sumaExpAlg: [
+    { id:"sea_p1", nivel:"principiante", tema:"Matemáticas", subtema:"Suma de expresiones algebraicas",
+      enunciado:"Simplifique: $5x + 3y - 2x + y$",
+      alternativas:["A) $3x+4y$","B) $7x+4y$","C) $3x+2y$","D) $7x+2y$"], respuesta:"A" },
+    { id:"sea_p2", nivel:"principiante", tema:"Matemáticas", subtema:"Suma de expresiones algebraicas",
+      enunciado:"Calcule: $(3a - 2b) + (a + 5b)$",
+      alternativas:["A) $4a+3b$","B) $4a-3b$","C) $2a+3b$","D) $2a-3b$"], respuesta:"A" },
+    { id:"sea_p3", nivel:"principiante", tema:"Matemáticas", subtema:"Suma de expresiones algebraicas",
+      enunciado:"Reste: $(5x^2 + 3x) - (2x^2 - x)$",
+      alternativas:["A) $3x^2+2x$","B) $3x^2+4x$","C) $7x^2+2x$","D) $3x^2-4x$"], respuesta:"B" },
+    { id:"sea_p4", nivel:"principiante", tema:"Matemáticas", subtema:"Suma de expresiones algebraicas",
+      enunciado:"Simplifique: $2a^2 - 3a + a^2 + 5a - 1$",
+      alternativas:["A) $3a^2+2a-1$","B) $3a^2-8a-1$","C) $a^2+2a-1$","D) $3a^2+2a+1$"], respuesta:"A" },
+  ],
+
+  enunciadosAlg: [
+    { id:"ea_p1", nivel:"principiante", tema:"Razonamiento Matemático", subtema:"Enunciados a expresiones",
+      enunciado:"«El triple de un número $n$ disminuido en $7$» se expresa como:",
+      alternativas:["A) $3n-7$","B) $7-3n$","C) $3(n-7)$","D) $3n+7$"], respuesta:"A" },
+    { id:"ea_p2", nivel:"principiante", tema:"Razonamiento Matemático", subtema:"Enunciados a expresiones",
+      enunciado:"«La suma de dos números consecutivos» con primer número $x$ es:",
+      alternativas:["A) $2x$","B) $x+(x+2)$","C) $x+(x+1)$","D) $2x+2$"], respuesta:"C" },
+    { id:"ea_p3", nivel:"principiante", tema:"Razonamiento Matemático", subtema:"Enunciados a expresiones",
+      enunciado:"«El doble del cuadrado de $a$ más $5$» se escribe:",
+      alternativas:["A) $2a+5$","B) $2a^2+5$","C) $(2a)^2+5$","D) $2(a+5)^2$"], respuesta:"B" },
+    { id:"ea_p4", nivel:"principiante", tema:"Razonamiento Matemático", subtema:"Enunciados a expresiones",
+      enunciado:"«El cociente de $m$ entre $4$, aumentado en $3$» es:",
+      alternativas:["A) $\\dfrac{m+3}{4}$","B) $\\dfrac{m}{4}+3$","C) $\\dfrac{m}{4+3}$","D) $4m+3$"], respuesta:"B" },
+    { id:"ea_p5", nivel:"principiante", tema:"Razonamiento Matemático", subtema:"Enunciados a expresiones",
+      enunciado:"Si un rectángulo tiene largo $l$ y ancho $a$, su perímetro es:",
+      alternativas:["A) $l \\cdot a$","B) $2l + 2a$","C) $l + a$","D) $4(l+a)$"], respuesta:"B" },
+  ],
+
+  mcdMcm: [
+    { id:"mm_p1", nivel:"principiante", tema:"Matemáticas", subtema:"MCD y MCM",
+      enunciado:"Halle el MCD de $12$ y $18$.",
+      alternativas:["A) $3$","B) $6$","C) $9$","D) $36$"], respuesta:"B" },
+    { id:"mm_p2", nivel:"principiante", tema:"Matemáticas", subtema:"MCD y MCM",
+      enunciado:"Halle el MCM de $4$ y $6$.",
+      alternativas:["A) $2$","B) $12$","C) $24$","D) $10$"], respuesta:"B" },
+    { id:"mm_p3", nivel:"principiante", tema:"Matemáticas", subtema:"MCD y MCM",
+      enunciado:"El MCD de $24$, $36$ y $48$ es:",
+      alternativas:["A) $6$","B) $8$","C) $12$","D) $24$"], respuesta:"C" },
+    { id:"mm_p4", nivel:"principiante", tema:"Matemáticas", subtema:"MCD y MCM",
+      enunciado:"El MCM de $3$, $4$ y $5$ es:",
+      alternativas:["A) $12$","B) $20$","C) $60$","D) $30$"], respuesta:"C" },
+  ],
+
+  decimales: [
+    { id:"dec_p1", nivel:"principiante", tema:"Matemáticas", subtema:"Cálculo con decimales",
+      enunciado:"Calcule: $3{,}5 + 1{,}25$",
+      alternativas:["A) $4{,}75$","B) $4{,}65$","C) $5{,}75$","D) $4{,}50$"], respuesta:"A" },
+    { id:"dec_p2", nivel:"principiante", tema:"Matemáticas", subtema:"Cálculo con decimales",
+      enunciado:"Calcule: $7{,}2 \\times 0{,}5$",
+      alternativas:["A) $3{,}6$","B) $36$","C) $0{,}36$","D) $3{,}06$"], respuesta:"A" },
+    { id:"dec_p3", nivel:"principiante", tema:"Matemáticas", subtema:"Cálculo con decimales",
+      enunciado:"Calcule: $8{,}4 \\div 0{,}4$",
+      alternativas:["A) $2{,}1$","B) $21$","C) $0{,}21$","D) $3{,}36$"], respuesta:"B" },
+    { id:"dec_p4", nivel:"principiante", tema:"Matemáticas", subtema:"Cálculo con decimales",
+      enunciado:"Convierta $\\dfrac{3}{8}$ a decimal.",
+      alternativas:["A) $0{,}38$","B) $0{,}375$","C) $0{,}25$","D) $0{,}333\\ldots$"], respuesta:"B" },
+  ],
+
+  divisibilidad: [
+    { id:"div_p1", nivel:"principiante", tema:"Matemáticas", subtema:"Divisibilidad básica",
+      enunciado:"¿Cuál de estos números es divisible por $3$?",
+      alternativas:["A) $124$","B) $135$","C) $142$","D) $151$"], respuesta:"B" },
+    { id:"div_p2", nivel:"principiante", tema:"Matemáticas", subtema:"Divisibilidad básica",
+      enunciado:"Un número es divisible por $6$ si es divisible por:",
+      alternativas:["A) $2$ y $4$","B) $3$ y $4$","C) $2$ y $3$","D) Solo por $6$"], respuesta:"C" },
+    { id:"div_p3", nivel:"principiante", tema:"Matemáticas", subtema:"Divisibilidad básica",
+      enunciado:"¿Es $2\\,340$ divisible por $9$?",
+      alternativas:["A) Sí, porque la suma de dígitos es $9$","B) No","C) Solo por $3$","D) Depende"], respuesta:"A" },
+    { id:"div_p4", nivel:"principiante", tema:"Matemáticas", subtema:"Divisibilidad básica",
+      enunciado:"¿Cuántos divisores tiene el número $12$?",
+      alternativas:["A) $4$","B) $5$","C) $6$","D) $3$"], respuesta:"C" },
+  ],
+
+  multExpAlg: [
+    { id:"mea_p1", nivel:"principiante", tema:"Matemáticas", subtema:"Multiplicación algebraica",
+      enunciado:"Expanda: $2x(3x - 5)$",
+      alternativas:["A) $6x^2-10x$","B) $6x-10x$","C) $5x^2-10x$","D) $6x^2+10x$"], respuesta:"A" },
+    { id:"mea_p2", nivel:"principiante", tema:"Matemáticas", subtema:"Multiplicación algebraica",
+      enunciado:"Expanda: $(x+4)(x-2)$",
+      alternativas:["A) $x^2+2x-8$","B) $x^2-2x-8$","C) $x^2+2x+8$","D) $x^2-8$"], respuesta:"A" },
+    { id:"mea_p3", nivel:"principiante", tema:"Matemáticas", subtema:"Multiplicación algebraica",
+      enunciado:"Calcule: $(2a)^2 \\cdot 3a$",
+      alternativas:["A) $6a^3$","B) $12a^3$","C) $6a^2$","D) $12a^2$"], respuesta:"B" },
+    { id:"mea_p4", nivel:"principiante", tema:"Matemáticas", subtema:"Multiplicación algebraica",
+      enunciado:"Expanda: $(3x-1)^2$",
+      alternativas:["A) $9x^2-1$","B) $9x^2-3x+1$","C) $9x^2-6x+1$","D) $9x^2+6x+1$"], respuesta:"C" },
+  ],
+
+  despejarX: [
+    { id:"dx_p1", nivel:"principiante", tema:"Matemáticas", subtema:"Despejar x",
+      enunciado:"Despeje $x$: $\\;3x + 7 = 16$",
+      alternativas:["A) $x=2$","B) $x=3$","C) $x=4$","D) $x=5$"], respuesta:"B" },
+    { id:"dx_p2", nivel:"principiante", tema:"Matemáticas", subtema:"Despejar x",
+      enunciado:"Despeje $x$: $\\;2x - 5 = x + 3$",
+      alternativas:["A) $x=6$","B) $x=7$","C) $x=8$","D) $x=9$"], respuesta:"C" },
+    { id:"dx_p3", nivel:"principiante", tema:"Matemáticas", subtema:"Despejar x",
+      enunciado:"Despeje $x$: $\\;\\dfrac{x}{4} = 5$",
+      alternativas:["A) $x=9$","B) $x=20$","C) $x=1{,}25$","D) $x=40$"], respuesta:"B" },
+    { id:"dx_p4", nivel:"principiante", tema:"Matemáticas", subtema:"Despejar x",
+      enunciado:"Despeje $x$: $\\;5(x-2) = 15$",
+      alternativas:["A) $x=1$","B) $x=3$","C) $x=5$","D) $x=7$"], respuesta:"C" },
+    { id:"dx_p5", nivel:"principiante", tema:"Matemáticas", subtema:"Despejar x",
+      enunciado:"Despeje $x$: $\\;\\dfrac{2x+1}{3} = 3$",
+      alternativas:["A) $x=2$","B) $x=3$","C) $x=4$","D) $x=5$"], respuesta:"C" },
+  ],
+
+  angulosNotables: [
+    { id:"an_p1", nivel:"principiante", tema:"Matemáticas", subtema:"Ángulos notables",
+      enunciado:"¿Cuánto mide $\\sin(90°)$?",
+      alternativas:["A) $0$","B) $\\dfrac{1}{2}$","C) $1$","D) $\\dfrac{\\sqrt{2}}{2}$"], respuesta:"C" },
+    { id:"an_p2", nivel:"principiante", tema:"Matemáticas", subtema:"Ángulos notables",
+      enunciado:"¿Cuánto mide $\\cos(0°)$?",
+      alternativas:["A) $0$","B) $1$","C) $-1$","D) $\\dfrac{\\sqrt{3}}{2}$"], respuesta:"B" },
+    { id:"an_p3", nivel:"principiante", tema:"Matemáticas", subtema:"Ángulos notables",
+      enunciado:"¿Cuánto mide $\\tan(45°)$?",
+      alternativas:["A) $0$","B) $\\sqrt{3}$","C) $1$","D) $\\dfrac{1}{\\sqrt{2}}$"], respuesta:"C" },
+    { id:"an_p4", nivel:"principiante", tema:"Matemáticas", subtema:"Ángulos notables",
+      enunciado:"¿Cuánto mide $\\sin(30°)$?",
+      alternativas:["A) $\\dfrac{\\sqrt{3}}{2}$","B) $\\dfrac{1}{2}$","C) $\\dfrac{\\sqrt{2}}{2}$","D) $1$"], respuesta:"B" },
+    { id:"an_p5", nivel:"principiante", tema:"Matemáticas", subtema:"Ángulos notables",
+      enunciado:"¿Cuánto mide $\\cos(60°)$?",
+      alternativas:["A) $\\dfrac{\\sqrt{3}}{2}$","B) $0$","C) $\\dfrac{1}{2}$","D) $1$"], respuesta:"C" },
+  ],
+
+  // ══════════════════════════════════════════════════════════
+  // RAZONAMIENTO MATEMÁTICO — niveles facil/medio/dificil
+  // ══════════════════════════════════════════════════════════
+
+  sucesiones: [
+    { id:"suc_f1", nivel:"facil", tema:"Razonamiento Matemático", subtema:"Sucesiones",
+      enunciado:"Halle el término faltante: $2, 4, 6, 8, \\_, 12$",
+      alternativas:["A) 9","B) 10","C) 11","D) 7"], respuesta:"B" },
+    { id:"suc_f2", nivel:"facil", tema:"Razonamiento Matemático", subtema:"Sucesiones",
+      enunciado:"Continúe la serie: $1, 3, 9, 27, \\_$",
+      alternativas:["A) 54","B) 81","C) 63","D) 72"], respuesta:"B" },
+    { id:"suc_f3", nivel:"facil", tema:"Razonamiento Matemático", subtema:"Sucesiones",
+      enunciado:"¿Cuál es el siguiente? $5, 10, 15, 20, \\_$",
+      alternativas:["A) 24","B) 30","C) 25","D) 28"], respuesta:"C" },
+    { id:"suc_m1", nivel:"medio", tema:"Razonamiento Matemático", subtema:"Sucesiones",
+      enunciado:"Halle el término faltante: $2, 6, 12, 20, 30, \\_$",
+      alternativas:["A) 40","B) 42","C) 44","D) 38"], respuesta:"B" },
+    { id:"suc_m2", nivel:"medio", tema:"Razonamiento Matemático", subtema:"Sucesiones",
+      enunciado:"En la sucesión $1, 1, 2, 3, 5, 8, 13, \\_$, el siguiente es:",
+      alternativas:["A) 18","B) 19","C) 21","D) 20"], respuesta:"C" },
+    { id:"suc_m3", nivel:"medio", tema:"Razonamiento Matemático", subtema:"Sucesiones",
+      enunciado:"Determine $x$: $\\;3, 7, 13, 21, x, 43$",
+      alternativas:["A) 29","B) 31","C) 33","D) 35"], respuesta:"B" },
+    { id:"suc_d1", nivel:"dificil", tema:"Razonamiento Matemático", subtema:"Sucesiones",
+      enunciado:"Halle el término: $\\dfrac{1}{2},\\;\\dfrac{2}{3},\\;\\dfrac{3}{5},\\;\\dfrac{5}{8},\\;\\_$",
+      alternativas:["A) $\\dfrac{8}{13}$","B) $\\dfrac{7}{11}$","C) $\\dfrac{6}{10}$","D) $\\dfrac{9}{14}$"], respuesta:"A" },
+    { id:"suc_d2", nivel:"dificil", tema:"Razonamiento Matemático", subtema:"Sucesiones",
+      enunciado:"Si $a_n = a_{n-1}+3n-1$ y $a_1=2$, ¿cuánto vale $a_4$?",
+      alternativas:["A) 30","B) 28","C) 32","D) 26"], respuesta:"A" },
+  ],
+
+  razonamientoLogico: [
+    { id:"rl_f1", nivel:"facil", tema:"Razonamiento Matemático", subtema:"Razonamiento Lógico",
+      enunciado:"Si $p \\Rightarrow q$ es verdadero y $p$ es verdadero, entonces $q$ es:",
+      alternativas:["A) Falso","B) Verdadero","C) Indeterminado","D) Ninguna"], respuesta:"B" },
+    { id:"rl_f2", nivel:"facil", tema:"Razonamiento Matemático", subtema:"Razonamiento Lógico",
+      enunciado:"Todos los gatos son animales. Firulais es un gato. Por lo tanto:",
+      alternativas:["A) Firulais no es animal","B) Firulais es animal","C) Algunos gatos no son animales","D) Ninguna"], respuesta:"B" },
+    { id:"rl_f3", nivel:"facil", tema:"Razonamiento Matemático", subtema:"Razonamiento Lógico",
+      enunciado:"La negación de «Todos los policías son honestos» es:",
+      alternativas:["A) Ningún policía es honesto","B) Algún policía no es honesto","C) Todos son honestos","D) Algunos son honestos"], respuesta:"B" },
+    { id:"rl_m1", nivel:"medio", tema:"Razonamiento Matemático", subtema:"Razonamiento Lógico",
+      enunciado:"Si $\\neg p \\vee q$ es falso, podemos afirmar que:",
+      alternativas:["A) $p$ falso, $q$ verdadero","B) $p$ verdadero, $q$ falso","C) Ambos verdaderos","D) Ambos falsos"], respuesta:"B" },
+    { id:"rl_m2", nivel:"medio", tema:"Razonamiento Matemático", subtema:"Razonamiento Lógico",
+      enunciado:"¿Cuál es el contrarrecíproco de $p \\Rightarrow q$?",
+      alternativas:["A) $q \\Rightarrow p$","B) $\\neg p \\Rightarrow \\neg q$","C) $\\neg q \\Rightarrow \\neg p$","D) $\\neg p \\Rightarrow q$"], respuesta:"C" },
+    { id:"rl_m3", nivel:"medio", tema:"Razonamiento Matemático", subtema:"Razonamiento Lógico",
+      enunciado:"$A$ y $B$ dicen la verdad; $C$ siempre miente. Si $C$ dice «$A$ es mentiroso», entonces:",
+      alternativas:["A) $A$ miente","B) $A$ dice la verdad","C) No se sabe","D) $B$ miente"], respuesta:"B" },
+    { id:"rl_d1", nivel:"dificil", tema:"Razonamiento Matemático", subtema:"Razonamiento Lógico",
+      enunciado:"Dado $[(p \\wedge q) \\Rightarrow r] \\wedge [\\neg r]$, ¿qué se concluye?",
+      alternativas:["A) $p \\wedge q$","B) $\\neg p \\vee \\neg q$","C) $p \\vee q$","D) $r$"], respuesta:"B" },
+    { id:"rl_d2", nivel:"dificil", tema:"Razonamiento Matemático", subtema:"Razonamiento Lógico",
+      enunciado:"¿Cuántas filas hacen verdadera a $(p \\oplus q) \\wedge (q \\Rightarrow r)$?",
+      alternativas:["A) 2","B) 3","C) 4","D) 5"], respuesta:"B" },
+  ],
+
+  planteoEcuaciones: [
+    { id:"pe_f1", nivel:"facil", tema:"Razonamiento Matemático", subtema:"Planteo de Ecuaciones",
+      enunciado:"El doble de un número más $5$ es $17$. ¿Cuál es el número?",
+      alternativas:["A) 5","B) 6","C) 7","D) 8"], respuesta:"B" },
+    { id:"pe_f2", nivel:"facil", tema:"Razonamiento Matemático", subtema:"Planteo de Ecuaciones",
+      enunciado:"La suma de dos números consecutivos es $37$. ¿Cuál es el mayor?",
+      alternativas:["A) 17","B) 18","C) 19","D) 20"], respuesta:"C" },
+    { id:"pe_f3", nivel:"facil", tema:"Razonamiento Matemático", subtema:"Planteo de Ecuaciones",
+      enunciado:"Pedro tiene el triple de la edad de Luis. Juntos tienen $40$ años. ¿Cuántos años tiene Luis?",
+      alternativas:["A) 8","B) 10","C) 12","D) 15"], respuesta:"B" },
+    { id:"pe_m1", nivel:"medio", tema:"Razonamiento Matemático", subtema:"Planteo de Ecuaciones",
+      enunciado:"A un número sumado su tercera parte y restado $4$, se obtiene $20$. ¿Cuál es el número?",
+      alternativas:["A) 15","B) 18","C) 21","D) 24"], respuesta:"B" },
+    { id:"pe_m2", nivel:"medio", tema:"Razonamiento Matemático", subtema:"Planteo de Ecuaciones",
+      enunciado:"Hay el doble de manzanas que naranjas. Total $60$ frutas. ¿Cuántas naranjas hay?",
+      alternativas:["A) 15","B) 20","C) 25","D) 30"], respuesta:"B" },
+    { id:"pe_m3", nivel:"medio", tema:"Razonamiento Matemático", subtema:"Planteo de Ecuaciones",
+      enunciado:"La diferencia entre el cuadrado de $n$ y $10n$ es $24$. ¿Cuál es $n$ positivo?",
+      alternativas:["A) 10","B) 12","C) 14","D) 16"], respuesta:"B" },
+    { id:"pe_d1", nivel:"dificil", tema:"Razonamiento Matemático", subtema:"Planteo de Ecuaciones",
+      enunciado:"Dos canillas llenan un tanque en $4\\,h$ y $6\\,h$ respectivamente. Juntas lo llenan en:",
+      alternativas:["A) $\\dfrac{12}{5}\\,h$","B) $2\\,h$","C) $3\\,h$","D) $\\dfrac{8}{3}\\,h$"], respuesta:"A" },
+    { id:"pe_d2", nivel:"dificil", tema:"Razonamiento Matemático", subtema:"Planteo de Ecuaciones",
+      enunciado:"Dos trenes salen en sentido contrario a $80$ y $60\\,km/h$. Distancia $420\\,km$. Se encuentran en:",
+      alternativas:["A) 2 h","B) 3 h","C) 3,5 h","D) 4 h"], respuesta:"B" },
+  ],
+
+  fracciones: [
+    { id:"fr_f1", nivel:"facil", tema:"Razonamiento Matemático", subtema:"Fracciones",
+      enunciado:"Calcule: $\\dfrac{1}{2} + \\dfrac{1}{4}$",
+      alternativas:["A) $\\dfrac{1}{3}$","B) $\\dfrac{3}{4}$","C) $\\dfrac{2}{6}$","D) $\\dfrac{1}{6}$"], respuesta:"B" },
+    { id:"fr_f2", nivel:"facil", tema:"Razonamiento Matemático", subtema:"Fracciones",
+      enunciado:"¿Cuánto es $\\dfrac{3}{5}$ de $25$?",
+      alternativas:["A) 10","B) 12","C) 15","D) 20"], respuesta:"C" },
+    { id:"fr_f3", nivel:"facil", tema:"Razonamiento Matemático", subtema:"Fracciones",
+      enunciado:"Simplifique: $\\dfrac{12}{18}$",
+      alternativas:["A) $\\dfrac{2}{3}$","B) $\\dfrac{3}{4}$","C) $\\dfrac{1}{2}$","D) $\\dfrac{4}{6}$"], respuesta:"A" },
+    { id:"fr_m1", nivel:"medio", tema:"Razonamiento Matemático", subtema:"Fracciones",
+      enunciado:"Calcule: $\\dfrac{3}{4} \\div \\dfrac{9}{16}$",
+      alternativas:["A) $\\dfrac{4}{3}$","B) $\\dfrac{3}{4}$","C) $\\dfrac{27}{64}$","D) $\\dfrac{16}{12}$"], respuesta:"A" },
+    { id:"fr_m2", nivel:"medio", tema:"Razonamiento Matemático", subtema:"Fracciones",
+      enunciado:"Si $\\dfrac{2}{3}$ de un número es $18$, ¿cuánto es $\\dfrac{3}{4}$ de dicho número?",
+      alternativas:["A) 18","B) 20","C) 24","D) 27"], respuesta:"A" },
+    { id:"fr_m3", nivel:"medio", tema:"Razonamiento Matemático", subtema:"Fracciones",
+      enunciado:"Ordene de mayor a menor: $\\dfrac{5}{6},\\;\\dfrac{3}{4},\\;\\dfrac{7}{9}$",
+      alternativas:["A) $\\dfrac{7}{9}>\\dfrac{5}{6}>\\dfrac{3}{4}$","B) $\\dfrac{5}{6}>\\dfrac{7}{9}>\\dfrac{3}{4}$","C) $\\dfrac{3}{4}>\\dfrac{5}{6}>\\dfrac{7}{9}$","D) Todas iguales"], respuesta:"B" },
+    { id:"fr_d1", nivel:"dificil", tema:"Razonamiento Matemático", subtema:"Fracciones",
+      enunciado:"Simplifique: $\\dfrac{\\frac{1}{2}+\\frac{1}{3}}{\\frac{1}{4}-\\frac{1}{6}}$",
+      alternativas:["A) $10$","B) $5$","C) $\\dfrac{5}{2}$","D) $2$"], respuesta:"A" },
+    { id:"fr_d2", nivel:"dificil", tema:"Razonamiento Matemático", subtema:"Fracciones",
+      enunciado:"Halle $x$: $\\;\\dfrac{x+1}{3} - \\dfrac{x-1}{4} = \\dfrac{5}{6}$",
+      alternativas:["A) $3$","B) $5$","C) $7$","D) $9$"], respuesta:"B" },
+  ],
+
+  tantoPorCiento: [
+    { id:"tp_f1", nivel:"facil", tema:"Razonamiento Matemático", subtema:"Tanto por ciento",
+      enunciado:"¿Cuánto es el $20\\%$ de $150$?",
+      alternativas:["A) 25","B) 30","C) 35","D) 40"], respuesta:"B" },
+    { id:"tp_f2", nivel:"facil", tema:"Razonamiento Matemático", subtema:"Tanto por ciento",
+      enunciado:"Un artículo cuesta S/ $80$ con $25\\%$ de descuento. ¿Cuánto se paga?",
+      alternativas:["A) S/ 55","B) S/ 60","C) S/ 65","D) S/ 70"], respuesta:"B" },
+    { id:"tp_f3", nivel:"facil", tema:"Razonamiento Matemático", subtema:"Tanto por ciento",
+      enunciado:"$15$ es el $\\_\\%$ de $60$.",
+      alternativas:["A) 20%","B) 25%","C) 30%","D) 15%"], respuesta:"B" },
+    { id:"tp_m1", nivel:"medio", tema:"Razonamiento Matemático", subtema:"Tanto por ciento",
+      enunciado:"Un precio sube $10\\%$ y luego baja $10\\%$. Respecto al original es:",
+      alternativas:["A) Igual","B) $1\\%$ menor","C) $1\\%$ mayor","D) $2\\%$ menor"], respuesta:"B" },
+    { id:"tp_m2", nivel:"medio", tema:"Razonamiento Matemático", subtema:"Tanto por ciento",
+      enunciado:"En $40$ preguntas un alumno acierta el $85\\%$. ¿Cuántas acierta?",
+      alternativas:["A) 32","B) 34","C) 36","D) 38"], respuesta:"B" },
+    { id:"tp_m3", nivel:"medio", tema:"Razonamiento Matemático", subtema:"Tanto por ciento",
+      enunciado:"Tras un aumento del $20\\%$, un sueldo es S/ $2\\,400$. ¿Cuánto era antes?",
+      alternativas:["A) S/ 1 800","B) S/ 2 000","C) S/ 2 100","D) S/ 2 200"], respuesta:"B" },
+    { id:"tp_d1", nivel:"dificil", tema:"Razonamiento Matemático", subtema:"Tanto por ciento",
+      enunciado:"Descuento de $30\\%$ y luego $20\\%$ adicional. ¿Descuento total equivalente?",
+      alternativas:["A) $44\\%$","B) $50\\%$","C) $46\\%$","D) $48\\%$"], respuesta:"A" },
+    { id:"tp_d2", nivel:"dificil", tema:"Razonamiento Matemático", subtema:"Tanto por ciento",
+      enunciado:"S/ $5\\,000$ al $8\\%$ anual compuesto. Monto al cabo de $2$ años ($C_f=C_0(1+r)^n$):",
+      alternativas:["A) S/ 5 700","B) S/ 5 832","C) S/ 5 850","D) S/ 6 000"], respuesta:"B" },
+  ],
+
+  // ══════════════════════════════════════════════════════════
+  // MATEMÁTICAS — niveles facil/medio/dificil
+  // ══════════════════════════════════════════════════════════
+
+  operacionesAlgebraicas: [
+    { id:"oa_f1", nivel:"facil", tema:"Matemáticas", subtema:"Operaciones Algebraicas",
+      enunciado:"Simplifique: $3x + 5x - 2x$",
+      alternativas:["A) $6x$","B) $7x$","C) $5x$","D) $4x$"], respuesta:"A" },
+    { id:"oa_f2", nivel:"facil", tema:"Matemáticas", subtema:"Operaciones Algebraicas",
+      enunciado:"Expanda: $(x+3)^2$",
+      alternativas:["A) $x^2+9$","B) $x^2+6x+9$","C) $x^2+3x+9$","D) $x^2+6x+6$"], respuesta:"B" },
+    { id:"oa_f3", nivel:"facil", tema:"Matemáticas", subtema:"Operaciones Algebraicas",
+      enunciado:"Factorice: $x^2 - 9$",
+      alternativas:["A) $(x-3)^2$","B) $(x+3)(x-3)$","C) $(x+9)(x-1)$","D) No factoriza"], respuesta:"B" },
+    { id:"oa_m1", nivel:"medio", tema:"Matemáticas", subtema:"Operaciones Algebraicas",
+      enunciado:"Si $P(x)=2x^3-3x^2+x-5$, halle $P(2)$.",
+      alternativas:["A) 1","B) 3","C) 5","D) 7"], respuesta:"A" },
+    { id:"oa_m2", nivel:"medio", tema:"Matemáticas", subtema:"Operaciones Algebraicas",
+      enunciado:"Simplifique: $\\dfrac{x^2-4}{x+2}$, con $x \\neq -2$.",
+      alternativas:["A) $x-2$","B) $x+2$","C) $x^2-2$","D) $x-4$"], respuesta:"A" },
+    { id:"oa_m3", nivel:"medio", tema:"Matemáticas", subtema:"Operaciones Algebraicas",
+      enunciado:"Resuelva: $2x^2-5x+3=0$. Las raíces son:",
+      alternativas:["A) $x=1$ y $x=\\frac{3}{2}$","B) $x=2$ y $x=3$","C) $x=-1$ y $x=-3$","D) $x=0$ y $x=3$"], respuesta:"A" },
+    { id:"oa_d1", nivel:"dificil", tema:"Matemáticas", subtema:"Operaciones Algebraicas",
+      enunciado:"Si $x+\\dfrac{1}{x}=3$, halle $x^2+\\dfrac{1}{x^2}$.",
+      alternativas:["A) 7","B) 9","C) 11","D) 6"], respuesta:"A" },
+    { id:"oa_d2", nivel:"dificil", tema:"Matemáticas", subtema:"Operaciones Algebraicas",
+      enunciado:"Halle el residuo de dividir $P(x)=x^4-2x^3+x-1$ entre $(x-1)$.",
+      alternativas:["A) $-1$","B) $0$","C) $1$","D) $-2$"], respuesta:"A" },
+  ],
+
+  sumaAngulosTriangulo: [
+    { id:"sat_f1", nivel:"facil", tema:"Matemáticas", subtema:"Suma de ángulos",
+      enunciado:"En un triángulo, dos ángulos miden $60°$ y $80°$. ¿El tercero mide?",
+      alternativas:["A) $30°$","B) $40°$","C) $50°$","D) $60°$"], respuesta:"B" },
+    { id:"sat_f2", nivel:"facil", tema:"Matemáticas", subtema:"Suma de ángulos",
+      enunciado:"Un triángulo equilátero tiene todos sus ángulos iguales a:",
+      alternativas:["A) $45°$","B) $60°$","C) $90°$","D) $120°$"], respuesta:"B" },
+    { id:"sat_f3", nivel:"facil", tema:"Matemáticas", subtema:"Suma de ángulos",
+      enunciado:"La suma de los ángulos interiores de cualquier triángulo es:",
+      alternativas:["A) $90°$","B) $270°$","C) $360°$","D) $180°$"], respuesta:"D" },
+    { id:"sat_m1", nivel:"medio", tema:"Matemáticas", subtema:"Suma de ángulos",
+      enunciado:"Los ángulos de un triángulo están en razón $1:2:3$. ¿El mayor mide?",
+      alternativas:["A) $60°$","B) $90°$","C) $80°$","D) $120°$"], respuesta:"B" },
+    { id:"sat_m2", nivel:"medio", tema:"Matemáticas", subtema:"Suma de ángulos",
+      enunciado:"Ángulo exterior $110°$. Uno de los no adyacentes es $50°$. ¿El otro mide?",
+      alternativas:["A) $50°$","B) $60°$","C) $70°$","D) $40°$"], respuesta:"B" },
+    { id:"sat_m3", nivel:"medio", tema:"Matemáticas", subtema:"Suma de ángulos",
+      enunciado:"En $\\triangle ABC$, $\\angle A=2\\angle B$ y $\\angle C=\\angle B+20°$. Halle $\\angle B$.",
+      alternativas:["A) $30°$","B) $40°$","C) $50°$","D) $60°$"], respuesta:"B" },
+    { id:"sat_d1", nivel:"dificil", tema:"Matemáticas", subtema:"Suma de ángulos",
+      enunciado:"La bisectriz desde $A$ divide $BC$ en $BD=6$ y $DC=9$. Si $AB=8$, halle $AC$.",
+      alternativas:["A) 10","B) 12","C) 14","D) 16"], respuesta:"B" },
+    { id:"sat_d2", nivel:"dificil", tema:"Matemáticas", subtema:"Suma de ángulos",
+      enunciado:"En isósceles con $\\alpha=36°$ (vértice), la base mide $\\beta = \\dfrac{180°-36°}{2} =$",
+      alternativas:["A) $72°$","B) $54°$","C) $60°$","D) $36°$"], respuesta:"A" },
+  ],
+
+  teoremaPitagoras: [
+    { id:"tp2_f1", nivel:"facil", tema:"Matemáticas", subtema:"Teorema de Pitágoras",
+      enunciado:"Catetos $3$ y $4$. La hipotenusa mide:",
+      alternativas:["A) 6","B) 7","C) 5","D) 8"], respuesta:"C" },
+    { id:"tp2_f2", nivel:"facil", tema:"Matemáticas", subtema:"Teorema de Pitágoras",
+      enunciado:"Hipotenusa $13$, cateto $5$. El otro cateto mide:",
+      alternativas:["A) 10","B) 11","C) 12","D) 8"], respuesta:"C" },
+    { id:"tp2_f3", nivel:"facil", tema:"Matemáticas", subtema:"Teorema de Pitágoras",
+      enunciado:"En $c^2=a^2+b^2$, $c$ es:",
+      alternativas:["A) Un cateto","B) La hipotenusa","C) El perímetro","D) El área"], respuesta:"B" },
+    { id:"tp2_m1", nivel:"medio", tema:"Matemáticas", subtema:"Teorema de Pitágoras",
+      enunciado:"Escalera de $10\\,m$, base a $6\\,m$ del muro. ¿A qué altura llega?",
+      alternativas:["A) $6\\,m$","B) $7\\,m$","C) $8\\,m$","D) $9\\,m$"], respuesta:"C" },
+    { id:"tp2_m2", nivel:"medio", tema:"Matemáticas", subtema:"Teorema de Pitágoras",
+      enunciado:"¿Forman triángulo rectángulo los lados $7, 24, 25$?",
+      alternativas:["A) No","B) Sí, $7^2+24^2=25^2$","C) No se puede saber","D) Solo si isósceles"], respuesta:"B" },
+    { id:"tp2_m3", nivel:"medio", tema:"Matemáticas", subtema:"Teorema de Pitágoras",
+      enunciado:"Diagonal de un cuadrado de lado $5\\,cm$:",
+      alternativas:["A) $5\\sqrt{2}\\,cm$","B) $10\\,cm$","C) $5\\sqrt{3}\\,cm$","D) $25\\,cm$"], respuesta:"A" },
+    { id:"tp2_d1", nivel:"dificil", tema:"Matemáticas", subtema:"Teorema de Pitágoras",
+      enunciado:"Altura sobre hipotenusa: $h^2=m \\cdot n$. Si $m=4$ y $n=9$, entonces $h=$",
+      alternativas:["A) 5","B) 6","C) 7","D) 8"], respuesta:"B" },
+    { id:"tp2_d2", nivel:"dificil", tema:"Matemáticas", subtema:"Teorema de Pitágoras",
+      enunciado:"Rombo con diagonales $24$ y $10$. El lado mide:",
+      alternativas:["A) 11","B) 12","C) 13","D) 14"], respuesta:"C" },
+  ],
+
+  funcionesTrigonometricas: [
+    { id:"ft_f1", nivel:"facil", tema:"Matemáticas", subtema:"Funciones Trigonométricas",
+      enunciado:"El valor de $\\sin(30°)$ es:",
+      alternativas:["A) $\\dfrac{\\sqrt{3}}{2}$","B) $\\dfrac{1}{2}$","C) $\\dfrac{\\sqrt{2}}{2}$","D) $1$"], respuesta:"B" },
+    { id:"ft_f2", nivel:"facil", tema:"Matemáticas", subtema:"Funciones Trigonométricas",
+      enunciado:"¿Cuánto es $\\cos(60°)$?",
+      alternativas:["A) $\\dfrac{\\sqrt{3}}{2}$","B) $0$","C) $\\dfrac{1}{2}$","D) $1$"], respuesta:"C" },
+    { id:"ft_f3", nivel:"facil", tema:"Matemáticas", subtema:"Funciones Trigonométricas",
+      enunciado:"Si cateto opuesto $=3$ y adyacente $=4$, entonces $\\tan\\theta=$",
+      alternativas:["A) $\\dfrac{4}{3}$","B) $\\dfrac{3}{5}$","C) $\\dfrac{3}{4}$","D) $\\dfrac{5}{3}$"], respuesta:"C" },
+    { id:"ft_m1", nivel:"medio", tema:"Matemáticas", subtema:"Funciones Trigonométricas",
+      enunciado:"$\\sin^2\\theta + \\cos^2\\theta =$",
+      alternativas:["A) $0$","B) $2$","C) $1$","D) Depende de $\\theta$"], respuesta:"C" },
+    { id:"ft_m2", nivel:"medio", tema:"Matemáticas", subtema:"Funciones Trigonométricas",
+      enunciado:"$\\sin\\theta=\\dfrac{4}{5}$ (1er cuadrante). ¿Cuánto es $\\cos\\theta$?",
+      alternativas:["A) $\\dfrac{3}{5}$","B) $\\dfrac{4}{5}$","C) $\\dfrac{3}{4}$","D) $\\dfrac{5}{3}$"], respuesta:"A" },
+    { id:"ft_m3", nivel:"medio", tema:"Matemáticas", subtema:"Funciones Trigonométricas",
+      enunciado:"¿En qué cuadrante es $\\sin\\theta < 0$ y $\\cos\\theta > 0$?",
+      alternativas:["A) I","B) II","C) III","D) IV"], respuesta:"D" },
+    { id:"ft_d1", nivel:"dificil", tema:"Matemáticas", subtema:"Funciones Trigonométricas",
+      enunciado:"Simplifique: $\\dfrac{\\sin^2\\theta-\\cos^2\\theta}{\\sin\\theta+\\cos\\theta}$",
+      alternativas:["A) $\\sin\\theta+\\cos\\theta$","B) $\\sin\\theta-\\cos\\theta$","C) $1$","D) $\\tan\\theta$"], respuesta:"B" },
+    { id:"ft_d2", nivel:"dificil", tema:"Matemáticas", subtema:"Funciones Trigonométricas",
+      enunciado:"Resuelva en $[0°,360°]$: $2\\cos^2\\theta-\\cos\\theta-1=0$",
+      alternativas:["A) $60°$ y $180°$","B) $60°, 180°, 300°$","C) $90°$ y $270°$","D) $0°$ y $180°$"], respuesta:"B" },
+  ],
+};
+
+// ── Configuración de niveles y subtemas ──────────────────────
+const CONFIG = {
+  principiante: {
+    label: "Principiante",
+    color: "#4a90d9",
+    subtemas_rm: [
+      { key: "enunciadosAlg",   label: "Enunciados a expresiones" },
+      { key: "mcdMcm",          label: "MCD y MCM" },
+      { key: "decimales",       label: "Cálculo con decimales" },
+      { key: "divisibilidad",   label: "Divisibilidad básica" },
+      { key: "despejarX",       label: "Despejar x" },
+    ],
+    subtemas_mat: [
+      { key: "operBasicasNeg",   label: "Operaciones con negativos" },
+      { key: "fraccionesNeg",    label: "Fracciones negativas" },
+      { key: "factorizacionBasica", label: "Factorización básica" },
+      { key: "sumaExpAlg",       label: "Suma de expresiones algebraicas" },
+      { key: "multExpAlg",       label: "Multiplicación algebraica" },
+      { key: "angulosNotables",  label: "Ángulos notables" },
+    ],
+    totalRM: 15,
+    totalMat: 15,
+  },
+  facil: {
+    label: "Fácil",
+    color: "#27ae60",
+    subtemas_rm: [
+      { key: "sucesiones",        label: "Sucesiones" },
+      { key: "razonamientoLogico",label: "Razonamiento Lógico" },
+      { key: "planteoEcuaciones", label: "Planteo de Ecuaciones" },
+      { key: "fracciones",        label: "Fracciones" },
+      { key: "tantoPorCiento",    label: "Tanto por ciento" },
+    ],
+    subtemas_mat: [
+      { key: "operacionesAlgebraicas",   label: "Operaciones Algebraicas" },
+      { key: "sumaAngulosTriangulo",     label: "Suma de ángulos" },
+      { key: "teoremaPitagoras",         label: "Teorema de Pitágoras" },
+      { key: "funcionesTrigonometricas", label: "Funciones Trigonométricas" },
+    ],
+    totalRM: 15,
+    totalMat: 15,
+    nivelDB: "facil",
+  },
+  medio: {
+    label: "Medio",
+    color: "#e67e22",
+    subtemas_rm: [
+      { key: "sucesiones",        label: "Sucesiones" },
+      { key: "razonamientoLogico",label: "Razonamiento Lógico" },
+      { key: "planteoEcuaciones", label: "Planteo de Ecuaciones" },
+      { key: "fracciones",        label: "Fracciones" },
+      { key: "tantoPorCiento",    label: "Tanto por ciento" },
+    ],
+    subtemas_mat: [
+      { key: "operacionesAlgebraicas",   label: "Operaciones Algebraicas" },
+      { key: "sumaAngulosTriangulo",     label: "Suma de ángulos" },
+      { key: "teoremaPitagoras",         label: "Teorema de Pitágoras" },
+      { key: "funcionesTrigonometricas", label: "Funciones Trigonométricas" },
+    ],
+    totalRM: 15,
+    totalMat: 15,
+    nivelDB: "medio",
+  },
+  dificil: {
+    label: "Difícil",
+    color: "#c0392b",
+    subtemas_rm: [
+      { key: "sucesiones",        label: "Sucesiones" },
+      { key: "razonamientoLogico",label: "Razonamiento Lógico" },
+      { key: "planteoEcuaciones", label: "Planteo de Ecuaciones" },
+      { key: "fracciones",        label: "Fracciones" },
+      { key: "tantoPorCiento",    label: "Tanto por ciento" },
+    ],
+    subtemas_mat: [
+      { key: "operacionesAlgebraicas",   label: "Operaciones Algebraicas" },
+      { key: "sumaAngulosTriangulo",     label: "Suma de ángulos" },
+      { key: "teoremaPitagoras",         label: "Teorema de Pitágoras" },
+      { key: "funcionesTrigonometricas", label: "Funciones Trigonométricas" },
+    ],
+    totalRM: 15,
+    totalMat: 15,
+    nivelDB: "dificil",
+  },
+};
