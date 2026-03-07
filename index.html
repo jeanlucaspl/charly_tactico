@@ -13,8 +13,6 @@
     };
   </script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" async></script>
-  <script src="questions.js"></script>
-
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;700&display=swap');
 
@@ -72,19 +70,10 @@
        MOTOR DE PAGINACIÓN FÍSICO A4
     ════════════════════════════════════════════ */
     .a4-page {
-      width: 210mm;
-      height: 297mm;
-      background: #fff;
-      color: #000;
-      font-family: 'Crimson Pro', Georgia, serif;
-      margin: 0 auto 20px auto;
-      padding: 15mm;
-      box-shadow: 0 8px 48px rgba(0,0,0,.6);
-      box-sizing: border-box;
-      display: flex;
-      flex-direction: column;
-      position: relative;
-      overflow: hidden; /* Corta visualmente si algo se excede */
+      width: 210mm; height: 297mm; background: #fff; color: #000;
+      font-family: 'Crimson Pro', Georgia, serif; margin: 0 auto 20px auto;
+      padding: 15mm; box-shadow: 0 8px 48px rgba(0,0,0,.6); box-sizing: border-box;
+      display: flex; flex-direction: column; position: relative; overflow: hidden;
     }
 
     .exam-header { text-align:center; border-bottom:2.5px solid #0a1628; padding-bottom:7px; margin-bottom:8px; }
@@ -96,38 +85,16 @@
     .field-label { font-size:6pt; text-transform:uppercase; letter-spacing:.1em; color:#444; margin-bottom:1px; }
     .field-line { border-bottom:1px solid #777; min-height:13px; }
 
-    /* EL CONTENEDOR DE LAS 2 COLUMNAS DENTRO DE LA HOJA */
-    .page-content {
-      flex-grow: 1;
-      column-count: 2;
-      column-gap: 8mm;
-      column-fill: auto;
-      width: 100%;
-      height: 100%;
-      overflow: hidden; 
-    }
+    .page-content { flex-grow: 1; column-count: 2; column-gap: 8mm; column-fill: auto; width: 100%; height: 100%; overflow: hidden; }
 
     .seccion-header {
-      column-span: all;
-      -webkit-column-span: all;
-      background: #0a1628;
-      color: #fff;
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 10pt;
-      letter-spacing: .12em;
-      padding: 5px 10px;
-      margin: 10px 0 12px 0;
-      display: flex; justify-content: space-between; align-items: center;
-      break-after: avoid; 
+      column-span: all; -webkit-column-span: all; background: #0a1628; color: #fff;
+      font-family: 'Bebas Neue', sans-serif; font-size: 10pt; letter-spacing: .12em;
+      padding: 5px 10px; margin: 10px 0 12px 0; display: flex; justify-content: space-between; align-items: center; break-after: avoid; 
     }
     .seccion-pts { font-family:'JetBrains Mono',monospace;font-size:7.5pt;opacity:.85; }
 
-    .q-item, .sol-item {
-      break-inside: avoid;
-      page-break-inside: avoid;
-      margin-bottom: 12px;
-      line-height: 1.35;
-    }
+    .q-item, .sol-item { break-inside: avoid; page-break-inside: avoid; margin-bottom: 12px; line-height: 1.35; }
     .q-subtema { font-size:6.5pt; color:#333; font-family:'JetBrains Mono',monospace; text-transform:uppercase; font-weight:bold; margin-bottom:2px; }
     .q-num { font-weight:700; color:#0a1628; font-size:9.5pt; }
     .q-enunciado { margin-bottom:4px; font-size:9.5pt; color:#000; }
@@ -146,18 +113,9 @@
       @page{ size: A4 portrait; margin: 0; }
       body { background: #fff; }
       body > * { display: none !important; }
-      
-      #preview-overlay {
-        display: block !important; position: static !important;
-        background: white !important; padding: 0 !important; overflow: visible !important;
-      }
+      #preview-overlay { display: block !important; position: static !important; background: white !important; padding: 0 !important; overflow: visible !important; }
       .preview-actions { display: none !important; }
-      
-      .a4-page {
-        margin: 0 !important; box-shadow: none !important; border: none !important;
-        page-break-after: always !important; /* Fuerza salto de página obligatoriamente */
-      }
-      
+      .a4-page { margin: 0 !important; box-shadow: none !important; border: none !important; page-break-after: always !important; }
       * { color: #000 !important; }
       .seccion-header, .sol-rta { background: #0a1628 !important; color: #fff !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
     }
@@ -167,7 +125,7 @@
 
 <div class="screen-wrap">
   <header>
-    <div class="badge">Academia PNP · Sistema de Evaluación8</div>
+    <div class="badge">Academia PNP · Sistema de Evaluación9</div>
     <h1 class="site-title">Charly<span>Táctico</span></h1>
     <p class="site-subtitle">Generador de Prácticas Semanales — Suboficiales &amp; Oficiales</p>
   </header>
@@ -181,8 +139,8 @@
         <div class="nivel-btn"><input type="radio" name="nivel" id="n-medio" value="medio" checked><label for="n-medio"><span class="nivel-icon">🟡</span><span class="nivel-name">Medio</span></label></div>
         <div class="nivel-btn"><input type="radio" name="nivel" id="n-dificil" value="dificil"><label for="n-dificil"><span class="nivel-icon">🔴</span><span class="nivel-name">Difícil</span></label></div>
       </div>
-      <button class="btn-generar" onclick="iniciarGeneracion()">▶ GENERAR PRÁCTICA (30 PREGUNTAS)</button>
-      <div class="spinner" id="spinner">Calculando métricas A4 y paginando...</div>
+      <button class="btn-generar" onclick="iniciarGeneracion()">▶ GENERAR PRÁCTICA EXACTA</button>
+      <div class="spinner" id="spinner">Cargando base de datos, paginando y renderizando matemáticas...</div>
     </div>
   </main>
 </div>
@@ -194,14 +152,262 @@
       <button class="btn-back" onclick="document.getElementById('preview-overlay').classList.remove('active')">← VOLVER</button>
       <button class="btn-download" onclick="window.print()">⬇ IMPRIMIR PDF</button>
     </div>
-    
     <div id="paginas-examen"></div>
-    
     <div id="paginas-soluciones"></div>
   </div>
 </div>
 
 <script>
+/* =========================================================================
+   1. MEGA BASE DE DATOS INCRUSTADA (Para evitar problemas de caché)
+   ========================================================================= */
+const QUESTIONS_DB = {
+  // --- PRINCIPIANTE ---
+  operBasicasNeg: [
+    { nivel:"principiante", subtema:"Operaciones con negativos", enunciado:"Calcule: $(-3)+(-5)$", alternativas:["A) $-8$","B) $8$","C) $-2$","D) $2$"], respuesta:"A", solucion:"Suma de negativos: $-8$." },
+    { nivel:"principiante", subtema:"Operaciones con negativos", enunciado:"Calcule: $(-4)\\times(-6)$", alternativas:["A) $-24$","B) $24$","C) $-10$","D) $10$"], respuesta:"B", solucion:"Menos por menos es más: $24$." },
+    { nivel:"principiante", subtema:"Operaciones con negativos", enunciado:"Calcule: $8-(-3)$", alternativas:["A) $5$","B) $11$","C) $-5$","D) $-11$"], respuesta:"B", solucion:"Restar negativo es sumar: $11$." },
+    { nivel:"principiante", subtema:"Operaciones con negativos", enunciado:"Calcule: $\\dfrac{-12}{4}$", alternativas:["A) $3$","B) $-3$","C) $-8$","D) $8$"], respuesta:"B", solucion:"Negativo entre positivo: $-3$." },
+    { nivel:"principiante", subtema:"Operaciones con negativos", enunciado:"¿Cuánto es $(-2)^3$?", alternativas:["A) $6$","B) $-6$","C) $-8$","D) $8$"], respuesta:"C", solucion:"$(-2)(-2)(-2)=-8$." }
+  ],
+  fraccionesNeg: [
+    { nivel:"principiante", subtema:"Fracciones negativas", enunciado:"Calcule: $\\dfrac{-1}{2}+\\dfrac{-1}{4}$", alternativas:["A) $\\dfrac{-3}{4}$","B) $\\dfrac{3}{4}$","C) $\\dfrac{-1}{6}$","D) $\\dfrac{1}{6}$"], respuesta:"A", solucion:"$\\dfrac{-2-1}{4}=\\dfrac{-3}{4}$." },
+    { nivel:"principiante", subtema:"Fracciones negativas", enunciado:"Calcule: $\\dfrac{-2}{3}\\times\\dfrac{3}{4}$", alternativas:["A) $\\dfrac{1}{2}$","B) $\\dfrac{-1}{2}$","C) $\\dfrac{-2}{7}$","D) $\\dfrac{2}{7}$"], respuesta:"B", solucion:"$\\dfrac{-6}{12}=\\dfrac{-1}{2}$." },
+    { nivel:"principiante", subtema:"Fracciones negativas", enunciado:"Simplifique: $\\dfrac{-6}{-9}$", alternativas:["A) $\\dfrac{-2}{3}$","B) $\\dfrac{2}{3}$","C) $\\dfrac{3}{2}$","D) $\\dfrac{-3}{2}$"], respuesta:"B", solucion:"Se cancelan signos: $\\dfrac{2}{3}$." },
+    { nivel:"principiante", subtema:"Fracciones negativas", enunciado:"Calcule: $\\dfrac{5}{6}-\\dfrac{3}{4}$", alternativas:["A) $\\dfrac{2}{2}$","B) $\\dfrac{1}{12}$","C) $\\dfrac{-1}{12}$","D) $\\dfrac{2}{10}$"], respuesta:"B", solucion:"MCM 12: $\\dfrac{10-9}{12}=\\dfrac{1}{12}$." }
+  ],
+  factorizacionBasica: [
+    { nivel:"principiante", subtema:"Factorización básica", enunciado:"Factorice: $6x^2+9x$", alternativas:["A) $3x(2x+3)$","B) $6x(x+9)$","C) $3(2x^2+9x)$","D) $9x(x+6)$"], respuesta:"A", solucion:"Factor común $3x$." },
+    { nivel:"principiante", subtema:"Factorización básica", enunciado:"Factorice: $x^2-25$", alternativas:["A) $(x-5)^2$","B) $(x+5)(x-5)$","C) $(x+25)(x-1)$","D) No factoriza"], respuesta:"B", solucion:"Diferencia de cuadrados." },
+    { nivel:"principiante", subtema:"Factorización básica", enunciado:"Factorice: $x^2+5x+6$", alternativas:["A) $(x+2)(x+3)$","B) $(x+1)(x+6)$","C) $(x+5)(x+1)$","D) $(x-2)(x-3)$"], respuesta:"A", solucion:"Suman 5 y multiplican 6." },
+    { nivel:"principiante", subtema:"Factorización básica", enunciado:"Factorice: $4a^2-12a$", alternativas:["A) $4(a^2-3a)$","B) $4a(a-3)$","C) $2a(2a-6)$","D) $12a(a-1)$"], respuesta:"B", solucion:"Factor común $4a$." }
+  ],
+  sumaExpAlg: [
+    { nivel:"principiante", subtema:"Suma de expresiones", enunciado:"Simplifique: $5x+3y-2x+y$", alternativas:["A) $3x+4y$","B) $7x+4y$","C) $3x+2y$","D) $7x+2y$"], respuesta:"A", solucion:"$(5x-2x)+(3y+y)=3x+4y$." },
+    { nivel:"principiante", subtema:"Suma de expresiones", enunciado:"Calcule: $(3a-2b)+(a+5b)$", alternativas:["A) $4a+3b$","B) $4a-3b$","C) $2a+3b$","D) $2a-3b$"], respuesta:"A", solucion:"$4a+3b$." },
+    { nivel:"principiante", subtema:"Suma de expresiones", enunciado:"Reste: $(5x^2+3x)-(2x^2-x)$", alternativas:["A) $3x^2+2x$","B) $3x^2+4x$","C) $7x^2+2x$","D) $3x^2-4x$"], respuesta:"B", solucion:"$5x^2-2x^2+3x+x=3x^2+4x$." },
+    { nivel:"principiante", subtema:"Suma de expresiones", enunciado:"Simplifique: $2a^2-3a+a^2+5a-1$", alternativas:["A) $3a^2+2a-1$","B) $3a^2-8a-1$","C) $a^2+2a-1$","D) $3a^2+2a+1$"], respuesta:"A", solucion:"$3a^2+2a-1$." }
+  ],
+  enunciadosAlg: [
+    { nivel:"principiante", subtema:"Enunciados a expresiones", enunciado:"«El triple de $n$ disminuido en $7$»:", alternativas:["A) $3n-7$","B) $7-3n$","C) $3(n-7)$","D) $3n+7$"], respuesta:"A", solucion:"$3n-7$." },
+    { nivel:"principiante", subtema:"Enunciados a expresiones", enunciado:"«Suma de dos números consecutivos»:", alternativas:["A) $2x$","B) $x+(x+2)$","C) $x+(x+1)$","D) $2x+2$"], respuesta:"C", solucion:"$x+(x+1)$." },
+    { nivel:"principiante", subtema:"Enunciados a expresiones", enunciado:"«Doble del cuadrado de $a$ más $5$»:", alternativas:["A) $2a+5$","B) $2a^2+5$","C) $(2a)^2+5$","D) $2(a+5)^2$"], respuesta:"B", solucion:"$2a^2+5$." },
+    { nivel:"principiante", subtema:"Enunciados a expresiones", enunciado:"«Cociente de $m$ entre $4$, aumentado en $3$»:", alternativas:["A) $\\dfrac{m+3}{4}$","B) $\\dfrac{m}{4}+3$","C) $\\dfrac{m}{4+3}$","D) $4m+3$"], respuesta:"B", solucion:"$m/4+3$." }
+  ],
+  mcdMcm: [
+    { nivel:"principiante", subtema:"MCD y MCM", enunciado:"MCD de $12$ y $18$.", alternativas:["A) $3$","B) $6$","C) $9$","D) $36$"], respuesta:"B", solucion:"MCD es 6." },
+    { nivel:"principiante", subtema:"MCD y MCM", enunciado:"MCM de $4$ y $6$.", alternativas:["A) $2$","B) $12$","C) $24$","D) $10$"], respuesta:"B", solucion:"MCM es 12." },
+    { nivel:"principiante", subtema:"MCD y MCM", enunciado:"MCD de $24, 36, 48$:", alternativas:["A) $6$","B) $8$","C) $12$","D) $24$"], respuesta:"C", solucion:"MCD es 12." },
+    { nivel:"principiante", subtema:"MCD y MCM", enunciado:"MCM de $3, 4, 5$:", alternativas:["A) $12$","B) $20$","C) $60$","D) $30$"], respuesta:"C", solucion:"Coprimos: $3\\times4\\times5=60$." }
+  ],
+  decimales: [
+    { nivel:"principiante", subtema:"Decimales", enunciado:"Calcule: $3{,}5+1{,}25$", alternativas:["A) $4{,}75$","B) $4{,}65$","C) $5{,}75$","D) $4{,}50$"], respuesta:"A", solucion:"$4{,}75$." },
+    { nivel:"principiante", subtema:"Decimales", enunciado:"Calcule: $7{,}2\\times0{,}5$", alternativas:["A) $3{,}6$","B) $36$","C) $0{,}36$","D) $3{,}06$"], respuesta:"A", solucion:"La mitad de 7.2 es 3.6." },
+    { nivel:"principiante", subtema:"Decimales", enunciado:"Calcule: $8{,}4\\div0{,}4$", alternativas:["A) $2{,}1$","B) $21$","C) $0{,}21$","D) $3{,}36$"], respuesta:"B", solucion:"$84/4=21$." },
+    { nivel:"principiante", subtema:"Decimales", enunciado:"Convierta $\\dfrac{3}{8}$ a decimal.", alternativas:["A) $0{,}38$","B) $0{,}375$","C) $0{,}25$","D) $0{,}333\\ldots$"], respuesta:"B", solucion:"$3\\div8=0{,}375$." }
+  ],
+  divisibilidad: [
+    { nivel:"principiante", subtema:"Divisibilidad", enunciado:"Divisible por $3$:", alternativas:["A) $124$","B) $135$","C) $142$","D) $151$"], respuesta:"B", solucion:"$1+3+5=9$." },
+    { nivel:"principiante", subtema:"Divisibilidad", enunciado:"Divisible por $6$ si es divisible por:", alternativas:["A) $2$ y $4$","B) $3$ y $4$","C) $2$ y $3$","D) Solo por $6$"], respuesta:"C", solucion:"2 y 3." },
+    { nivel:"principiante", subtema:"Divisibilidad", enunciado:"¿Es $2\\,340$ divisible por $9$?", alternativas:["A) Sí","B) No","C) Solo por $3$","D) Depende"], respuesta:"A", solucion:"Suman 9." },
+    { nivel:"principiante", subtema:"Divisibilidad", enunciado:"Divisores de $12$:", alternativas:["A) $4$","B) $5$","C) $6$","D) $3$"], respuesta:"C", solucion:"1,2,3,4,6,12." }
+  ],
+  multExpAlg: [
+    { nivel:"principiante", subtema:"Mult. algebraica", enunciado:"Expanda: $2x(3x-5)$", alternativas:["A) $6x^2-10x$","B) $6x-10x$","C) $5x^2-10x$","D) $6x^2+10x$"], respuesta:"A", solucion:"$6x^2-10x$." },
+    { nivel:"principiante", subtema:"Mult. algebraica", enunciado:"Expanda: $(x+4)(x-2)$", alternativas:["A) $x^2+2x-8$","B) $x^2-2x-8$","C) $x^2+2x+8$","D) $x^2-8$"], respuesta:"A", solucion:"$x^2+2x-8$." },
+    { nivel:"principiante", subtema:"Mult. algebraica", enunciado:"Calcule: $(2a)^2\\cdot3a$", alternativas:["A) $6a^3$","B) $12a^3$","C) $6a^2$","D) $12a^2$"], respuesta:"B", solucion:"$4a^2\\cdot3a=12a^3$." }
+  ],
+  despejarX: [
+    { nivel:"principiante", subtema:"Despejar x", enunciado:"$3x+7=16$", alternativas:["A) $x=2$","B) $x=3$","C) $x=4$","D) $x=5$"], respuesta:"B", solucion:"$3x=9\\Rightarrow x=3$." },
+    { nivel:"principiante", subtema:"Despejar x", enunciado:"$2x-5=x+3$", alternativas:["A) $x=6$","B) $x=7$","C) $x=8$","D) $x=9$"], respuesta:"C", solucion:"$x=8$." },
+    { nivel:"principiante", subtema:"Despejar x", enunciado:"$x/4=5$", alternativas:["A) $x=9$","B) $x=20$","C) $x=1{,}25$","D) $x=40$"], respuesta:"B", solucion:"$x=20$." },
+    { nivel:"principiante", subtema:"Despejar x", enunciado:"$5(x-2)=15$", alternativas:["A) $x=1$","B) $x=3$","C) $x=5$","D) $x=7$"], respuesta:"C", solucion:"$x-2=3\\Rightarrow x=5$." }
+  ],
+  angulosNotables: [
+    { nivel:"principiante", subtema:"Ángulos notables", enunciado:"$\\sin(90°)$", alternativas:["A) $0$","B) $1/2$","C) $1$","D) $\\sqrt{2}/2$"], respuesta:"C", solucion:"1" },
+    { nivel:"principiante", subtema:"Ángulos notables", enunciado:"$\\cos(0°)$", alternativas:["A) $0$","B) $1$","C) $-1$","D) $\\sqrt{3}/2$"], respuesta:"B", solucion:"1" },
+    { nivel:"principiante", subtema:"Ángulos notables", enunciado:"$\\tan(45°)$", alternativas:["A) $0$","B) $\\sqrt{3}$","C) $1$","D) $1/\\sqrt{2}$"], respuesta:"C", solucion:"1" }
+  ],
+
+  // --- RAZONAMIENTO MATEMÁTICO ---
+  sucesiones: [
+    { nivel:"facil", subtema:"Sucesiones", enunciado:"Halle el faltante: $2,4,6,8,\\_,12$", alternativas:["A) $9$","B) $10$","C) $11$","D) $7$"], respuesta:"B", solucion:"Diferencia $+2$." },
+    { nivel:"facil", subtema:"Sucesiones", enunciado:"Continúe: $1,3,9,27,\\_$", alternativas:["A) $54$","B) $81$","C) $63$","D) $72$"], respuesta:"B", solucion:"Por $3$." },
+    { nivel:"facil", subtema:"Sucesiones", enunciado:"¿Cuál sigue? $5,10,15,20,\\_$", alternativas:["A) $24$","B) $30$","C) $25$","D) $28$"], respuesta:"C", solucion:"Múltiplos de $5$." },
+    { nivel:"facil", subtema:"Sucesiones", enunciado:"Sigue: $10, 8, 6, 4, \\_$", alternativas:["A) $3$","B) $2$","C) $1$","D) $0$"], respuesta:"B", solucion:"Menos $2$." },
+
+    { nivel:"medio", subtema:"Sucesiones", enunciado:"Halle el faltante: $2,6,12,20,30,\\_$", alternativas:["A) $40$","B) $42$","C) $44$","D) $38$"], respuesta:"B", solucion:"Diferencias $4,6,8,10,12$." },
+    { nivel:"medio", subtema:"Sucesiones", enunciado:"Fibonacci: $1,1,2,3,5,8,13,\\_$", alternativas:["A) $18$","B) $19$","C) $21$","D) $20$"], respuesta:"C", solucion:"Suma anteriores." },
+    { nivel:"medio", subtema:"Sucesiones", enunciado:"Determine $x$: $3,7,13,21,x,43$", alternativas:["A) $29$","B) $31$","C) $33$","D) $35$"], respuesta:"B", solucion:"Diferencias pares." },
+    { nivel:"medio", subtema:"Sucesiones", enunciado:"Sigue: $1, 4, 9, 16, 25, \\_$", alternativas:["A) $30$","B) $36$","C) $40$","D) $32$"], respuesta:"B", solucion:"Cuadrados perfectos." },
+
+    { nivel:"dificil", subtema:"Sucesiones", enunciado:"Halle: $\\dfrac{1}{2},\\dfrac{2}{3},\\dfrac{3}{5},\\dfrac{5}{8},\\_$", alternativas:["A) $\\dfrac{8}{13}$","B) $\\dfrac{7}{11}$","C) $\\dfrac{6}{10}$","D) $\\dfrac{9}{14}$"], respuesta:"A", solucion:"Fibonacci arriba y abajo." },
+    { nivel:"dificil", subtema:"Sucesiones", enunciado:"$a_n=a_{n-1}+3n-1$, $a_1=2$. ¿$a_4$?", alternativas:["A) $30$","B) $28$","C) $32$","D) $26$"], respuesta:"D", solucion:"$a_2=7, a_3=15, a_4=26$." },
+    { nivel:"dificil", subtema:"Sucesiones", enunciado:"Sigue: $2, 3, 10, 39, \\_$", alternativas:["A) $170$","B) $172$","C) $168$","D) $156$"], respuesta:"B", solucion:"$x \\times n + n^2$ lógica." },
+    { nivel:"dificil", subtema:"Sucesiones", enunciado:"$x, y$ en: $3, 4, 6, 8, 12, 16, x, y$", alternativas:["A) $24, 32$","B) $18, 24$","C) $24, 30$","D) $20, 28$"], respuesta:"A", solucion:"Intercaladas $\\times2$." }
+  ],
+  razonLogico: [
+    { nivel:"facil", subtema:"Raz. Lógico", enunciado:"$p\\Rightarrow q$ y $p$ son V. ¿$q$?", alternativas:["A) F","B) V","C) Indeterminado","D) N.A."], respuesta:"B", solucion:"Modus Ponens." },
+    { nivel:"facil", subtema:"Raz. Lógico", enunciado:"Todos los gatos son animales. Firulais es gato.", alternativas:["A) No es animal","B) Es animal","C) Indeterminado","D) N.A."], respuesta:"B", solucion:"Silogismo." },
+    { nivel:"facil", subtema:"Raz. Lógico", enunciado:"Negación de «Todos son buenos»:", alternativas:["A) Ninguno es bueno","B) Alguno no es bueno","C) Todos son malos","D) Algunos son buenos"], respuesta:"B", solucion:"Negación universal." },
+    { nivel:"facil", subtema:"Raz. Lógico", enunciado:"Si llueve me mojo. Llueve. Entonces:", alternativas:["A) Me seco","B) Me mojo","C) No pasa nada","D) N.A."], respuesta:"B", solucion:"Lógica directa." },
+
+    { nivel:"medio", subtema:"Raz. Lógico", enunciado:"$\\neg p\\vee q$ es falso, entonces:", alternativas:["A) $p=F, q=V$","B) $p=V, q=F$","C) Ambos V","D) Ambos F"], respuesta:"B", solucion:"Ambos lados deben ser F." },
+    { nivel:"medio", subtema:"Raz. Lógico", enunciado:"Contrarrecíproco de $p\\Rightarrow q$:", alternativas:["A) $q\\Rightarrow p$","B) $\\neg p\\Rightarrow\\neg q$","C) $\\neg q\\Rightarrow\\neg p$","D) $\\neg p\\Rightarrow q$"], respuesta:"C", solucion:"Propiedad lógica." },
+    { nivel:"medio", subtema:"Raz. Lógico", enunciado:"A y B dicen verdad; C miente. C dice «A miente».", alternativas:["A) A miente","B) A dice verdad","C) Indeterminado","D) B miente"], respuesta:"B", solucion:"Lo que dice C es falso." },
+    { nivel:"medio", subtema:"Raz. Lógico", enunciado:"Si $A\\Rightarrow B$ y $\\neg B$, entonces:", alternativas:["A) $A$","B) $\\neg A$","C) $B$","D) N.A."], respuesta:"B", solucion:"Modus Tollens." },
+
+    { nivel:"dificil", subtema:"Raz. Lógico", enunciado:"$[(p\\wedge q)\\Rightarrow r]\\wedge\\neg r$. Concluye:", alternativas:["A) $p\\wedge q$","B) $\\neg p\\vee\\neg q$","C) $p\\vee q$","D) $r$"], respuesta:"B", solucion:"Modus Tollens." },
+    { nivel:"dificil", subtema:"Raz. Lógico", enunciado:"¿Filas V en $(p\\oplus q)\\wedge(q\\Rightarrow r)$?", alternativas:["A) 2","B) 3","C) 4","D) 5"], respuesta:"B", solucion:"Tabla de verdad." },
+    { nivel:"dificil", subtema:"Raz. Lógico", enunciado:"Si $\\neg(p\\Rightarrow q)$ es V. Halle valores:", alternativas:["A) $V,V$","B) $F,V$","C) $V,F$","D) $F,F$"], respuesta:"C", solucion:"Implica que $p\\Rightarrow q$ es F. Solo pasa si $p=V, q=F$." },
+    { nivel:"dificil", subtema:"Raz. Lógico", enunciado:"Equivalente a $p\\Rightarrow(q\\vee r)$:", alternativas:["A) $\\neg p\\vee q\\vee r$","B) $p\\wedge q\\wedge r$","C) $\\neg p\\wedge(q\\vee r)$","D) $p\\vee\\neg q\\vee\\neg r$"], respuesta:"A", solucion:"Ley de implicación." }
+  ],
+  planteoEcuaciones: [
+    { nivel:"facil", subtema:"Planteo Ecuaciones", enunciado:"Doble de un número más $5$ es $17$. ¿Número?", alternativas:["A) $5$","B) $6$","C) $7$","D) $8$"], respuesta:"B", solucion:"$2x+5=17\\Rightarrow x=6$." },
+    { nivel:"facil", subtema:"Planteo Ecuaciones", enunciado:"Suma de dos consecutivos es $37$. ¿Mayor?", alternativas:["A) $17$","B) $18$","C) $19$","D) $20$"], respuesta:"C", solucion:"$x+(x+1)=37$." },
+    { nivel:"facil", subtema:"Planteo Ecuaciones", enunciado:"Mitad de un número es $14$. ¿Número?", alternativas:["A) $7$","B) $28$","C) $21$","D) $30$"], respuesta:"B", solucion:"$x/2=14$." },
+    { nivel:"facil", subtema:"Planteo Ecuaciones", enunciado:"Número disminuido en $8$ es $12$.", alternativas:["A) $20$","B) $4$","C) $16$","D) $10$"], respuesta:"A", solucion:"$x-8=12$." },
+
+    { nivel:"medio", subtema:"Planteo Ecuaciones", enunciado:"Tercera parte se suma al número, menos 4 da 20.", alternativas:["A) $15$","B) $18$","C) $21$","D) $24$"], respuesta:"B", solucion:"$x+x/3-4=20$." },
+    { nivel:"medio", subtema:"Planteo Ecuaciones", enunciado:"Cuadrado de $n$ menos $10n$ es $24$. ($n>0$)", alternativas:["A) $10$","B) $12$","C) $14$","D) $16$"], respuesta:"B", solucion:"$n^2-10n-24=0$." },
+    { nivel:"medio", subtema:"Planteo Ecuaciones", enunciado:"Suma de tres pares consecutivos es $48$. ¿Mayor?", alternativas:["A) $14$","B) $16$","C) $18$","D) $20$"], respuesta:"C", solucion:"$x+(x+2)+(x+4)=48$." },
+    { nivel:"medio", subtema:"Planteo Ecuaciones", enunciado:"Ana tiene 20 más que Beto. Juntos 100. ¿Ana?", alternativas:["A) 40","B) 50","C) 60","D) 70"], respuesta:"C", solucion:"Ana=60, Beto=40." },
+
+    { nivel:"dificil", subtema:"Planteo Ecuaciones", enunciado:"Canillas 4h y 6h. ¿Juntas?", alternativas:["A) $12/5\\,h$","B) $2\\,h$","C) $3\\,h$","D) $8/3\\,h$"], respuesta:"A", solucion:"Tasa $1/4+1/6=5/12$." },
+    { nivel:"dificil", subtema:"Planteo Ecuaciones", enunciado:"Tren A $80\\,km/h$, B $60\\,km/h$, dist $420\\,km$. ¿Horas?", alternativas:["A) 2","B) 3","C) 3.5","D) 4"], respuesta:"B", solucion:"$420/140=3$." },
+    { nivel:"dificil", subtema:"Planteo Ecuaciones", enunciado:"Libros por S/ 120. Si costaran S/ 2 menos, compro 3 más. ¿Cuántos?", alternativas:["A) $10$","B) $12$","C) $15$","D) $18$"], respuesta:"B", solucion:"$xy=120, (x+3)(y-2)=120$." },
+    { nivel:"dificil", subtema:"Planteo Ecuaciones", enunciado:"Café de S/ 8 y S/ 5 para 60kg a S/ 7. ¿Kilos del caro?", alternativas:["A) 30","B) 40","C) 20","D) 50"], respuesta:"B", solucion:"$8x+5(60-x)=420$." }
+  ],
+  fracciones: [
+    { nivel:"facil", subtema:"Fracciones", enunciado:"Calcule: $1/2+1/4$", alternativas:["A) $1/3$","B) $3/4$","C) $2/6$","D) $1/6$"], respuesta:"B", solucion:"$3/4$." },
+    { nivel:"facil", subtema:"Fracciones", enunciado:"¿$3/5$ de $25$?", alternativas:["A) $10$","B) $12$","C) $15$","D) $20$"], respuesta:"C", solucion:"$15$." },
+    { nivel:"facil", subtema:"Fracciones", enunciado:"Simplifique: $12/18$", alternativas:["A) $2/3$","B) $3/4$","C) $1/2$","D) $4/6$"], respuesta:"A", solucion:"$2/3$." },
+    { nivel:"facil", subtema:"Fracciones", enunciado:"Calcule: $1 - 3/7$", alternativas:["A) $2/7$","B) $3/7$","C) $4/7$","D) $5/7$"], respuesta:"C", solucion:"$4/7$." },
+
+    { nivel:"medio", subtema:"Fracciones", enunciado:"Calcule: $3/4 \\div 9/16$", alternativas:["A) $4/3$","B) $3/4$","C) $27/64$","D) $1$"], respuesta:"A", solucion:"$3/4 \\times 16/9 = 4/3$." },
+    { nivel:"medio", subtema:"Fracciones", enunciado:"Si $2/3$ de $X$ es $18$, ¿$3/4$ de $X$?", alternativas:["A) $20.25$","B) $20$","C) $24$","D) $27$"], respuesta:"A", solucion:"$X=27$. $3/4(27)=20.25$." },
+    { nivel:"medio", subtema:"Fracciones", enunciado:"Ordene mayor a menor: $5/6, 3/4, 7/9$", alternativas:["A) $7/9 > 5/6 > 3/4$","B) $5/6 > 7/9 > 3/4$","C) $3/4 > 5/6 > 7/9$","D) N.A."], respuesta:"B", solucion:"Común 36." },
+    { nivel:"medio", subtema:"Fracciones", enunciado:"Gasto $1/3$ y luego $1/4$ del resto. Me quedan S/30. ¿Tenía?", alternativas:["A) 50","B) 60","C) 80","D) 100"], respuesta:"B", solucion:"Queda $3/4$ de $2/3$ = $1/2$. Mitad es 30, total 60." },
+
+    { nivel:"dificil", subtema:"Fracciones", enunciado:"Simplifique: $\\dfrac{1/2+1/3}{1/4-1/6}$", alternativas:["A) $5$","B) $8$","C) $10$","D) $12$"], respuesta:"C", solucion:"$(5/6) / (1/12) = 10$." },
+    { nivel:"dificil", subtema:"Fracciones", enunciado:"Halle $x$: $\\dfrac{x+1}{3}-\\dfrac{x-1}{4}=\\dfrac{5}{6}$", alternativas:["A) $3$","B) $5$","C) $7$","D) $9$"], respuesta:"A", solucion:"MCM 12." },
+    { nivel:"dificil", subtema:"Fracciones", enunciado:"Caño A llena en 3h, B en 4h, desagüe C vacía en 6h. ¿Juntos?", alternativas:["A) 2.4h","B) 2h","C) 1.5h","D) 3h"], respuesta:"A", solucion:"$1/3 + 1/4 - 1/6 = 5/12$. T=12/5=2.4h." },
+    { nivel:"dificil", subtema:"Fracciones", enunciado:"Pelota cae de 54m, rebota $2/3$ altura. ¿Altura al 3er rebote?", alternativas:["A) 12m","B) 16m","C) 18m","D) 24m"], respuesta:"B", solucion:"$54 \\times (2/3)^3 = 16$." }
+  ],
+  tantoPorCiento: [
+    { nivel:"facil", subtema:"Porcentajes", enunciado:"¿$20\\%$ de $150$?", alternativas:["A) $25$","B) $30$","C) $35$","D) $40$"], respuesta:"B", solucion:"$30$." },
+    { nivel:"facil", subtema:"Porcentajes", enunciado:"Artículo S/ 80 con $25\\%$ dscto. ¿Pago?", alternativas:["A) 55","B) 60","C) 65","D) 70"], respuesta:"B", solucion:"$60$." },
+    { nivel:"facil", subtema:"Porcentajes", enunciado:"15 es el $\\_\\%$ de 60.", alternativas:["A) $20\\%$","B) $25\\%$","C) $30\\%$","D) $15\\%$"], respuesta:"B", solucion:"$25\\%$." },
+    { nivel:"facil", subtema:"Porcentajes", enunciado:"¿$50\\%$ de $200$?", alternativas:["A) 50","B) 100","C) 150","D) 80"], respuesta:"B", solucion:"La mitad, 100." },
+
+    { nivel:"medio", subtema:"Porcentajes", enunciado:"Sube $10\\%$ luego baja $10\\%$. Resultado:", alternativas:["A) Igual","B) $1\\%$ menor","C) $1\\%$ mayor","D) $2\\%$ menor"], respuesta:"B", solucion:"$1.1 \\times 0.9 = 0.99$." },
+    { nivel:"medio", subtema:"Porcentajes", enunciado:"40 preguntas, acierta $85\\%$. ¿Aciertos?", alternativas:["A) 32","B) 34","C) 36","D) 38"], respuesta:"B", solucion:"34." },
+    { nivel:"medio", subtema:"Porcentajes", enunciado:"Tras aumento del $20\\%$, sueldo es 2400. ¿Original?", alternativas:["A) 1800","B) 2000","C) 2100","D) 2200"], respuesta:"B", solucion:"$x(1.2) = 2400$." },
+    { nivel:"medio", subtema:"Porcentajes", enunciado:"Compro a S/40 y vendo a S/50. ¿% ganancia s/costo?", alternativas:["A) $20\\%$","B) $25\\%$","C) $10\\%$","D) $30\\%$"], respuesta:"B", solucion:"Gana 10. $10/40 = 25\\%$." },
+
+    { nivel:"dificil", subtema:"Porcentajes", enunciado:"Descuento $30\\%$ y $20\\%$ adicional. ¿Dscto total?", alternativas:["A) $44\\%$","B) $50\\%$","C) $46\\%$","D) $48\\%$"], respuesta:"A", solucion:"$0.7 \\times 0.8 = 0.56$. Descuento 44%." },
+    { nivel:"dificil", subtema:"Porcentajes", enunciado:"S/ 5000 al $8\\%$ compuesto, 2 años.", alternativas:["A) 5700","B) 5832","C) 5850","D) 6000"], respuesta:"B", solucion:"$5000(1.08)^2 = 5832$." },
+    { nivel:"dificil", subtema:"Porcentajes", enunciado:"Área de cuadrado si lado aumenta $20\\%$. ¿% aumenta?", alternativas:["A) $20\\%$","B) $40\\%$","C) $44\\%$","D) $400\\%$"], respuesta:"C", solucion:"$1.2^2 = 1.44$. Aumenta 44%." },
+    { nivel:"dificil", subtema:"Porcentajes", enunciado:"60% hombres. 20% de mujeres tienen gafas. 16 mujeres sin gafas. ¿Total?", alternativas:["A) 40","B) 50","C) 80","D) 100"], respuesta:"B", solucion:"Mujeres son 40%. 80% de ellas (32% del total) son 16. Total = 50." }
+  ],
+
+  // --- MATEMÁTICAS ---
+  operAlgebraicas: [
+    { nivel:"facil", subtema:"Álgebra", enunciado:"Simplifique: $3x+5x-2x$", alternativas:["A) $6x$","B) $7x$","C) $5x$","D) $4x$"], respuesta:"A", solucion:"$6x$." },
+    { nivel:"facil", subtema:"Álgebra", enunciado:"Expanda: $(x+3)^2$", alternativas:["A) $x^2+9$","B) $x^2+6x+9$","C) $x^2+3x+9$","D) $x^2+6x$"], respuesta:"B", solucion:"Binomio cuadrado." },
+    { nivel:"facil", subtema:"Álgebra", enunciado:"Factorice: $x^2-9$", alternativas:["A) $(x-3)^2$","B) $(x+3)(x-3)$","C) $(x+9)$","D) N.A."], respuesta:"B", solucion:"Diferencia cuadrados." },
+    { nivel:"facil", subtema:"Álgebra", enunciado:"Resuelva: $5x = 20$", alternativas:["A) $2$","B) $4$","C) $5$","D) $15$"], respuesta:"B", solucion:"$x=4$." },
+
+    { nivel:"medio", subtema:"Álgebra", enunciado:"$P(x)=2x^3-3x^2+x-5$. $P(2)$=", alternativas:["A) $1$","B) $3$","C) $5$","D) $7$"], respuesta:"A", solucion:"$16-12+2-5=1$." },
+    { nivel:"medio", subtema:"Álgebra", enunciado:"Simplifique: $(x^2-4)/(x+2)$", alternativas:["A) $x-2$","B) $x+2$","C) $x^2-2$","D) $x-4$"], respuesta:"A", solucion:"Factorizando diferencia." },
+    { nivel:"medio", subtema:"Álgebra", enunciado:"Raíces de $2x^2-5x+3=0$:", alternativas:["A) $1, 3/2$","B) $2, 3$","C) $-1, -3$","D) $0, 3$"], respuesta:"A", solucion:"Aspa simple." },
+    { nivel:"medio", subtema:"Álgebra", enunciado:"$(a+b)^2 - (a-b)^2 =$", alternativas:["A) $2a^2+2b^2$","B) $4ab$","C) $0$","D) $2ab$"], respuesta:"B", solucion:"Identidad de Legendre." },
+
+    { nivel:"dificil", subtema:"Álgebra", enunciado:"Si $x+1/x=3$, halle $x^2+1/x^2$.", alternativas:["A) $7$","B) $9$","C) $11$","D) $6$"], respuesta:"A", solucion:"Elevar al cuadrado y restar 2." },
+    { nivel:"dificil", subtema:"Álgebra", enunciado:"Residuo de $(x^4-2x^3+x-1) / (x-1)$:", alternativas:["A) $-1$","B) $0$","C) $1$","D) $-2$"], respuesta:"A", solucion:"Teorema del Resto P(1)." },
+    { nivel:"dificil", subtema:"Álgebra", enunciado:"Si $x^y = 2$, calcule $x^{3y} + x^{2y}$", alternativas:["A) $10$","B) $12$","C) $14$","D) $8$"], respuesta:"B", solucion:"$2^3 + 2^2 = 8+4=12$." },
+    { nivel:"dificil", subtema:"Álgebra", enunciado:"Sistema: $2x+y=7$, $x-y=2$", alternativas:["A) $x=3,y=1$","B) $x=1,y=3$","C) $x=2,y=3$","D) $x=4,y=-1$"], respuesta:"A", solucion:"Sumando: $3x=9$, $x=3$." }
+  ],
+  angulosTriangulo: [
+    { nivel:"facil", subtema:"Ángulos", enunciado:"Dos miden 60° y 80°. ¿El 3ro?", alternativas:["A) 30°","B) 40°","C) 50°","D) 60°"], respuesta:"B", solucion:"$180-140=40$." },
+    { nivel:"facil", subtema:"Ángulos", enunciado:"Triángulo equilátero, cada ángulo:", alternativas:["A) 45°","B) 60°","C) 90°","D) 120°"], respuesta:"B", solucion:"$180/3=60$." },
+    { nivel:"facil", subtema:"Ángulos", enunciado:"Suma de interiores:", alternativas:["A) 90°","B) 270°","C) 360°","D) 180°"], respuesta:"D", solucion:"Propiedad." },
+    { nivel:"facil", subtema:"Ángulos", enunciado:"Triángulo rectángulo isósceles, agudos:", alternativas:["A) 30 y 60","B) 45 y 45","C) 50 y 40","D) N.A."], respuesta:"B", solucion:"$90/2=45$." },
+
+    { nivel:"medio", subtema:"Ángulos", enunciado:"Razón 1:2:3. ¿El mayor?", alternativas:["A) 60°","B) 90°","C) 80°","D) 120°"], respuesta:"B", solucion:"$x+2x+3x=180$, $x=30$. Mayor 90." },
+    { nivel:"medio", subtema:"Ángulos", enunciado:"Exterior=110°. Uno no adyacente=50°. ¿El otro?", alternativas:["A) 50°","B) 60°","C) 70°","D) 40°"], respuesta:"B", solucion:"$110-50=60$." },
+    { nivel:"medio", subtema:"Ángulos", enunciado:"$A=2B$, $C=B+20°$. Halle $B$.", alternativas:["A) 30°","B) 40°","C) 50°","D) 60°"], respuesta:"B", solucion:"$4B+20=180$, $B=40$." },
+    { nivel:"medio", subtema:"Ángulos", enunciado:"En isósceles un ángulo es 100°. ¿Otro?", alternativas:["A) 50°","B) 40°","C) 80°","D) 100°"], respuesta:"B", solucion:"$180-100=80$, entre dos: 40." },
+
+    { nivel:"dificil", subtema:"Ángulos", enunciado:"Bisectriz de A: $BD=6, DC=9, AB=8$. Halle $AC$.", alternativas:["A) 10","B) 12","C) 14","D) 16"], respuesta:"B", solucion:"$8/AC = 6/9$, $AC=12$." },
+    { nivel:"dificil", subtema:"Ángulos", enunciado:"Isósceles: vértice 36°. ¿Base?", alternativas:["A) 72°","B) 54°","C) 60°","D) 36°"], respuesta:"A", solucion:"$(180-36)/2 = 72$." },
+    { nivel:"dificil", subtema:"Ángulos", enunciado:"T. rectángulo, hipotenusa 10, ángulo 30°. Opuesto:", alternativas:["A) 5","B) $5\\sqrt{3}$","C) 10","D) $2.5$"], respuesta:"A", solucion:"Seno 30 es 1/2. Cateto es 5." },
+    { nivel:"dificil", subtema:"Ángulos", enunciado:"Incentro de ABC. $A=60$. Ángulo en incentro BIC:", alternativas:["A) 120°","B) 150°","C) 110°","D) 90°"], respuesta:"A", solucion:"$90 + A/2 = 90 + 30 = 120$." }
+  ],
+  pitagoras: [
+    { nivel:"facil", subtema:"Pitágoras", enunciado:"Catetos 3 y 4. Hipotenusa:", alternativas:["A) 6","B) 7","C) 5","D) 8"], respuesta:"C", solucion:"5" },
+    { nivel:"facil", subtema:"Pitágoras", enunciado:"Hipotenusa 13, cateto 5. Cateto:", alternativas:["A) 10","B) 11","C) 12","D) 8"], respuesta:"C", solucion:"12" },
+    { nivel:"facil", subtema:"Pitágoras", enunciado:"En $c^2=a^2+b^2$, c es:", alternativas:["A) Cateto","B) Hipotenusa","C) Perímetro","D) Área"], respuesta:"B", solucion:"Hipotenusa" },
+    { nivel:"facil", subtema:"Pitágoras", enunciado:"Catetos 6 y 8. Hipotenusa:", alternativas:["A) 9","B) 10","C) 12","D) 14"], respuesta:"B", solucion:"10" },
+
+    { nivel:"medio", subtema:"Pitágoras", enunciado:"Escalera 10m, base 6m. ¿Altura?", alternativas:["A) 6","B) 7","C) 8","D) 9"], respuesta:"C", solucion:"8" },
+    { nivel:"medio", subtema:"Pitágoras", enunciado:"¿Forman rectángulo 7, 24, 25?", alternativas:["A) No","B) Sí","C) N.S.","D) N.A."], respuesta:"B", solucion:"Sí" },
+    { nivel:"medio", subtema:"Pitágoras", enunciado:"Diagonal de cuadrado lado 5:", alternativas:["A) $5\\sqrt{2}$","B) 10","C) $5\\sqrt{3}$","D) 25"], respuesta:"A", solucion:"$5\\sqrt{2}$" },
+    { nivel:"medio", subtema:"Pitágoras", enunciado:"Rectángulo 12 y 5. Diagonal:", alternativas:["A) 15","B) 14","C) 13","D) 17"], respuesta:"C", solucion:"13" },
+
+    { nivel:"dificil", subtema:"Pitágoras", enunciado:"$h^2=m\\cdot n$, $m=4, n=9$. $h=$", alternativas:["A) 5","B) 6","C) 7","D) 8"], respuesta:"B", solucion:"$\\sqrt{36}=6$." },
+    { nivel:"dificil", subtema:"Pitágoras", enunciado:"Rombo diagonales 24 y 10. Lado:", alternativas:["A) 11","B) 12","C) 13","D) 14"], respuesta:"C", solucion:"Semidiagonales 12 y 5. Lado 13." },
+    { nivel:"dificil", subtema:"Pitágoras", enunciado:"Triángulo isósceles, lados 13, base 10. Área:", alternativas:["A) 65","B) 60","C) 130","D) 50"], respuesta:"B", solucion:"Altura=12. $(10\\times12)/2=60$." },
+    { nivel:"dificil", subtema:"Pitágoras", enunciado:"Diagonal de cubo arista 4:", alternativas:["A) $4\\sqrt{3}$","B) $4\\sqrt{2}$","C) 8","D) 12"], respuesta:"A", solucion:"$a\\sqrt{3} = 4\\sqrt{3}$." }
+  ],
+  trigonometria: [
+    { nivel:"facil", subtema:"Trigonometría", enunciado:"$\\sin(30°)=$", alternativas:["A) $\\sqrt{3}/2$","B) $1/2$","C) $\\sqrt{2}/2$","D) $1$"], respuesta:"B", solucion:"$1/2$" },
+    { nivel:"facil", subtema:"Trigonometría", enunciado:"$\\cos(60°)=$", alternativas:["A) $\\sqrt{3}/2$","B) $0$","C) $1/2$","D) $1$"], respuesta:"C", solucion:"$1/2$" },
+    { nivel:"facil", subtema:"Trigonometría", enunciado:"Opuesto=3, Adyacente=4. $\\tan\\theta=$", alternativas:["A) $4/3$","B) $3/5$","C) $3/4$","D) $5/3$"], respuesta:"C", solucion:"$3/4$" },
+    { nivel:"facil", subtema:"Trigonometría", enunciado:"$\\sin^2 x + \\cos^2 x=$", alternativas:["A) 0","B) 2","C) 1","D) N.A."], respuesta:"C", solucion:"Identidad pitagórica." },
+
+    { nivel:"medio", subtema:"Trigonometría", enunciado:"$\\sin\\theta=4/5$ (I cuad). $\\cos\\theta=$", alternativas:["A) $3/5$","B) $4/5$","C) $3/4$","D) $5/3$"], respuesta:"A", solucion:"Pitagórica." },
+    { nivel:"medio", subtema:"Trigonometría", enunciado:"¿En qué cuadrante $\\sin<0, \\cos>0$?", alternativas:["A) I","B) II","C) III","D) IV"], respuesta:"D", solucion:"IV Cuadrante." },
+    { nivel:"medio", subtema:"Trigonometría", enunciado:"Si $\\tan\\theta=1$ (I cuad), $\\theta=$", alternativas:["A) 30°","B) 45°","C) 60°","D) 90°"], respuesta:"B", solucion:"45°." },
+    { nivel:"medio", subtema:"Trigonometría", enunciado:"Calcula $\\sec(60°)$", alternativas:["A) 2","B) 1/2","C) $2\\sqrt{3}/3$","D) 1"], respuesta:"A", solucion:"Inversa de cos(60)." },
+
+    { nivel:"dificil", subtema:"Trigonometría", enunciado:"Simplifique: $(\\sin^2\\theta-\\cos^2\\theta)/(\\sin\\theta+\\cos\\theta)$", alternativas:["A) $\\sin+\\cos$","B) $\\sin-\\cos$","C) 1","D) $\\tan$"], respuesta:"B", solucion:"Diferencia de cuadrados." },
+    { nivel:"dificil", subtema:"Trigonometría", enunciado:"$2\\cos^2\\theta-\\cos\\theta-1=0$. Sol. en [0,360]:", alternativas:["A) 60,180","B) 60,180,300","C) 90,270","D) 0,180"], respuesta:"B", solucion:"Factorizando." },
+    { nivel:"dificil", subtema:"Trigonometría", enunciado:"En ABC, $a=3, b=4, C=90$. Halle $\\sin A + \\cos A$", alternativas:["A) $7/5$","B) $1$","C) $5/7$","D) $12/5$"], respuesta:"A", solucion:"$3/5 + 4/5 = 7/5$." },
+    { nivel:"dificil", subtema:"Trigonometría", enunciado:"Si $\\tan x + \\cot x = 3$, halle $\\tan^2 x + \\cot^2 x$", alternativas:["A) 9","B) 7","C) 6","D) 8"], respuesta:"B", solucion:"Elevando al cuadrado." }
+  ]
+};
+
+const CONFIG = {
+  principiante: {
+    label: "Principiante",
+    subtemas: [
+      { key:"operBasicasNeg" }, { key:"fraccionesNeg" }, { key:"factorizacionBasica" },
+      { key:"sumaExpAlg" }, { key:"enunciadosAlg" }, { key:"mcdMcm" },
+      { key:"decimales" }, { key:"divisibilidad" }, { key:"multExpAlg" },
+      { key:"despejarX" }, { key:"angulosNotables" }
+    ]
+  },
+  razonamientoMatematico: {
+    label: "Razonamiento Matemático",
+    total: 15,
+    subtemas: [
+      { key:"sucesiones" }, { key:"razonLogico" }, { key:"planteoEcuaciones" },
+      { key:"fracciones" }, { key:"tantoPorCiento" }
+    ]
+  },
+  matematicas: {
+    label: "Matemáticas",
+    total: 15,
+    subtemas: [
+      { key:"operAlgebraicas" }, { key:"angulosTriangulo" }, { key:"pitagoras" }, { key:"trigonometria" }
+    ]
+  }
+};
+
+/* =========================================================================
+   2. EL ALGORITMO Y EL MOTOR A4 (Intactos y funcionales)
+   ========================================================================= */
 function shuffle(arr) {
   const a=[...arr];
   for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}
@@ -281,10 +487,6 @@ function crearHojaA4(pageNum, isSol, nivelStr) {
 }
 
 async function iniciarGeneracion() {
-  if (typeof QUESTIONS_DB === 'undefined' || typeof CONFIG === 'undefined') {
-    alert("Error: Base de datos questions.js no encontrada."); return;
-  }
-
   const nivel = document.querySelector('input[name="nivel"]:checked')?.value || 'medio';
   document.getElementById('spinner').classList.add('active');
 
@@ -320,9 +522,6 @@ async function iniciarGeneracion() {
 
       if (window.MathJax) await MathJax.typesetPromise([buffer]);
 
-      // ¡AQUÍ ESTÁ LA MAGIA QUE ARREGLA EL PROBLEMA!
-      // Forzamos al navegador a mostrar el contenedor pero de forma invisible 
-      // para que pueda medir milimetricamente los anchos y altos
       const overlay = document.getElementById('preview-overlay');
       overlay.style.visibility = 'hidden';
       overlay.classList.add('active');
@@ -339,7 +538,6 @@ async function iniciarGeneracion() {
           let item = arrayDOM[i];
           actual.content.appendChild(item);
           
-          // Medición matemática: Si el contenido interno empuja hacia una "tercera columna imaginaria"
           if (Math.ceil(actual.content.scrollWidth) > Math.ceil(actual.content.clientWidth) + 2) {
             actual.content.removeChild(item); 
             
@@ -352,13 +550,9 @@ async function iniciarGeneracion() {
         }
       }
 
-      // Paginamos primero el examen
       paginarElementos(itemsExamen, 'paginas-examen', false);
-      
-      // Paginamos las soluciones (esto las pone en su propio conjunto de hojas nuevas)
       paginarElementos(itemsSolucion, 'paginas-soluciones', true);
 
-      // Limpiamos y revelamos la pantalla
       buffer.innerHTML = '';
       document.getElementById('spinner').classList.remove('active');
       overlay.style.visibility = 'visible';
