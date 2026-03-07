@@ -191,7 +191,7 @@
 <div class="screen-wrap">
 
   <header>
-    <div class="badge">Academia PNP · Sistema de Evaluación4</div>
+    <div class="badge">Academia PNP · Sistema de Evaluación5</div>
     <h1 class="site-title">Charly<span>Táctico</span></h1>
     <p class="site-subtitle">Generador de Prácticas Semanales — Suboficiales &amp; Oficiales</p>
   </header>
@@ -341,7 +341,7 @@ function htmlSolucion(q, num) {
 
 /* ══ GENERADOR PRINCIPAL ══ */
 function generarPractica() {
-  if (!window.QUESTIONS_DB || !window.CONFIG) {
+  if (typeof QUESTIONS_DB === 'undefined' || typeof CONFIG === 'undefined') {
     alert("Error: No se encontró la base de datos en questions.js");
     return;
   }
