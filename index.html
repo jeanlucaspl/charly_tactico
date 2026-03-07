@@ -2,9 +2,16 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Charly Táctico — Generador de Prácticas</title>
 
+  <script>
+    window.MathJax = {
+      tex: { inlineMath:[['$','$'],['\\(','\\)']], displayMath:[['$$','$$']] },
+      options: { skipHtmlTags:['script','noscript','style','textarea','pre'] },
+      startup: { typeset:false }
+    };
+  </script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.0/es5/tex-mml-chtml.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
@@ -22,66 +29,64 @@
     ════════════════════════════════════════════ */
     :root { --navy:#0a1628; --gold:#c9a84c; --gold2:#e8c97a; --cream:#f5f0e8; --silver:#8a9ab5; --white:#fff; }
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-    body{background:var(--navy);color:var(--cream);font-family:'Crimson Pro',Georgia,serif;min-height:100vh;}
     
-    .bg-effects {position:fixed;inset:0;z-index:0;pointer-events:none; background:radial-gradient(ellipse 80% 60% at 50% -10%,rgba(201,168,76,.12) 0%,transparent 70%), radial-gradient(ellipse 50% 40% at 90% 100%,rgba(155,35,53,.08) 0%,transparent 60%);}
+    body { background:var(--navy); color:var(--cream); font-family:'Crimson Pro',Georgia,serif; min-height:100vh; }
     
-    .screen-wrap{position:relative;z-index:1;display:flex;flex-direction:column; min-height: 100vh;}
-    header{text-align:center;padding:2.5rem 1.5rem 2rem;border-bottom:1px solid rgba(201,168,76,.3); background:linear-gradient(180deg,rgba(0,0,0,.4) 0%,transparent 100%);}
-    .badge{display:inline-block;border:1px solid var(--gold);color:var(--gold); font-family:'JetBrains Mono',monospace;font-size:.68rem;letter-spacing:.18em; padding:.22rem .9rem;text-transform:uppercase;margin-bottom:1rem;opacity:.85;}
-    .site-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.8rem,8vw,6rem); line-height:.92;color:var(--white);}
-    .site-title span{color:var(--gold);display:block;}
-    .site-subtitle{margin-top:.7rem;font-size:.95rem;color:var(--silver);letter-spacing:.07em;}
+    .bg-effects { position:fixed; inset:0; z-index:0; pointer-events:none; background:radial-gradient(ellipse 80% 60% at 50% -10%,rgba(201,168,76,.12) 0%,transparent 70%), radial-gradient(ellipse 50% 40% at 90% 100%,rgba(155,35,53,.08) 0%,transparent 60%); }
+    .screen-wrap { position:relative; z-index:1; display:flex; flex-direction:column; min-height:100vh; }
+    header { text-align:center; padding:2.5rem 1.5rem 2rem; border-bottom:1px solid rgba(201,168,76,.3); background:linear-gradient(180deg,rgba(0,0,0,.4) 0%,transparent 100%); }
+    .badge { display:inline-block; border:1px solid var(--gold); color:var(--gold); font-family:'JetBrains Mono',monospace; font-size:.68rem; letter-spacing:.18em; padding:.22rem .9rem; text-transform:uppercase; margin-bottom:1rem; }
+    .site-title { font-family:'Bebas Neue',sans-serif; font-size:clamp(2.8rem,8vw,6rem); line-height:.92; color:var(--white); }
+    .site-title span { color:var(--gold); display:block; }
+    .site-subtitle { margin-top:.7rem; font-size:.95rem; color:var(--silver); letter-spacing:.07em; }
 
-    main{flex:1;max-width:860px;margin:2.5rem auto;padding:0 1rem;width:100%;}
-    .panel{background:rgba(15,32,64,.85);border:1px solid rgba(201,168,76,.2); border-radius:4px;padding:2rem;}
-    .panel-title{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;letter-spacing:.1em;color:var(--gold);margin-bottom:1.5rem;}
+    main { flex:1; max-width:860px; margin:2.5rem auto; padding:0 1rem; width:100%; }
+    .panel { background:rgba(15,32,64,.85); border:1px solid rgba(201,168,76,.2); border-radius:4px; padding:2rem; }
+    .panel-title { font-family:'Bebas Neue',sans-serif; font-size:1.5rem; letter-spacing:.1em; color:var(--gold); margin-bottom:1.5rem; }
 
-    .nivel-group{display:grid;grid-template-columns:repeat(4,1fr);gap:.7rem;}
-    .nivel-btn input{display:none;}
-    .nivel-btn label{display:block;text-align:center;padding:.9rem .3rem; border:1.5px solid rgba(201,168,76,.25);border-radius:3px;cursor:pointer; background:rgba(0,0,0,.2);}
-    .nivel-icon{font-size:1.5rem;display:block;margin-bottom:.25rem;}
-    .nivel-name{font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:.12em;display:block;color:var(--cream);}
-    .nivel-btn input:checked+label{border-color:var(--gold);background:rgba(201,168,76,.12);box-shadow:0 0 18px rgba(201,168,76,.2);}
+    .nivel-group { display:grid; grid-template-columns:repeat(4,1fr); gap:.7rem; }
+    .nivel-btn input { display:none; }
+    .nivel-btn label { display:block; text-align:center; padding:.9rem .3rem; border:1.5px solid rgba(201,168,76,.25); border-radius:3px; cursor:pointer; background:rgba(0,0,0,.2); }
+    .nivel-icon { font-size:1.5rem; display:block; margin-bottom:.25rem; }
+    .nivel-name { font-family:'Bebas Neue',sans-serif; font-size:1rem; letter-spacing:.12em; display:block; color:var(--cream); }
+    .nivel-btn input:checked+label { border-color:var(--gold); background:rgba(201,168,76,.12); box-shadow:0 0 18px rgba(201,168,76,.2); }
 
-    .btn-generar{width:100%;padding:1rem; background:linear-gradient(135deg,var(--gold) 0%,var(--gold2) 50%,var(--gold) 100%); color:var(--navy);border:none;border-radius:3px; font-family:'Bebas Neue',sans-serif;font-size:1.35rem;cursor:pointer; margin-top: 2rem; box-shadow:0 4px 20px rgba(201,168,76,.35);}
-    .spinner{display:none;text-align:center;padding:1.2rem;color:var(--gold); font-family:'Bebas Neue',sans-serif;letter-spacing:.15em;}
-    .spinner.active{display:block;}
+    .btn-generar { width:100%; padding:1rem; background:linear-gradient(135deg,var(--gold) 0%,var(--gold2) 50%,var(--gold) 100%); color:var(--navy); border:none; border-radius:3px; font-family:'Bebas Neue',sans-serif; font-size:1.35rem; cursor:pointer; margin-top:2rem; }
+    .spinner { display:none; text-align:center; padding:1.2rem; color:var(--gold); font-family:'Bebas Neue',sans-serif; letter-spacing:.15em; }
+    .spinner.active { display:block; }
 
     /* ════════════════════════════════════════════
-       SISTEMA DE VISTA PREVIA (MODO DOCUMENTO NATIVO)
+       SISTEMA DE VISTA PREVIA (ZOOM NATIVO)
     ════════════════════════════════════════════ */
-    body.preview-active { background: #525659; }
+    body.preview-active { background: #525659; overflow: auto; }
     body.preview-active .bg-effects, body.preview-active .screen-wrap { display: none; }
     
-    #preview-overlay { display: none; padding: 20px 0; min-height: 100vh; overflow-x: auto; }
+    #preview-overlay { display: none; padding: 20px 0; }
     body.preview-active #preview-overlay { display: block; }
 
-    .preview-actions { display:flex; gap:.8rem; margin-bottom:1.5rem; justify-content:center; flex-wrap:wrap; position: sticky; top: 0; z-index: 100; padding: 10px; background: rgba(82, 86, 89, 0.9); backdrop-filter: blur(5px);}
-    .btn-back, .btn-download {padding:.8rem 1.5rem; border-radius:4px; font-family:'Bebas Neue',sans-serif; font-size:1.1rem; cursor:pointer;}
-    .btn-back {background: #fff; color: var(--navy); border: 2px solid var(--navy);}
-    .btn-download {background: var(--gold); color: var(--navy); border: none;}
-    .btn-download.loading { opacity: 0.7; pointer-events: none; }
+    .preview-actions { display:flex; gap:1rem; margin-bottom:2rem; justify-content:center; flex-wrap:wrap; position: sticky; top: 0; z-index: 100; padding: 15px; background: rgba(82, 86, 89, 0.95); backdrop-filter: blur(5px); box-shadow: 0 4px 10px rgba(0,0,0,0.3);}
+    .btn-back, .btn-download { padding:.8rem 1.5rem; border-radius:4px; font-family:'Bebas Neue',sans-serif; font-size:1.1rem; cursor:pointer; letter-spacing: 1px; transition: 0.2s;}
+    .btn-back { background: #fff; color: var(--navy); border: 2px solid var(--navy); }
+    .btn-download { background: var(--gold); color: var(--navy); border: none; font-weight: bold;}
+    .btn-download.loading { opacity: 0.6; pointer-events: none; }
 
-    /* EL CONTENEDOR A FOTOGRAFIAR POR HTML2PDF */
-    #pdf-wrapper {
-      width: 210mm; /* Forzamos tamaño exacto A4 */
-      margin: 0 auto;
-      background: transparent;
-    }
+    #pdf-wrapper { width: 210mm; margin: 0 auto; background: transparent; }
 
     /* ════════════════════════════════════════════
-       MOTOR DE PAGINACIÓN A4 Y DISEÑO IMPRIMIBLE
+       LAS HOJAS A4 (FÍSICAS)
     ════════════════════════════════════════════ */
     .a4-page {
       width: 210mm; height: 297mm; background: #fff; color: #000;
-      font-family: 'Crimson Pro', Georgia, serif; margin: 0 auto 20px auto;
-      padding: 15mm; box-shadow: 0 8px 30px rgba(0,0,0,.4); box-sizing: border-box;
-      display: flex; flex-direction: column; position: relative; overflow: hidden;
-      page-break-after: always;
+      font-family: 'Crimson Pro', Georgia, serif; 
+      margin: 0 auto 20px auto; /* Separación en pantalla */
+      padding: 15mm; 
+      box-shadow: 0 8px 30px rgba(0,0,0,.4); 
+      box-sizing: border-box;
+      display: flex; flex-direction: column; position: relative; 
+      overflow: hidden; 
     }
 
-    .exam-header { text-align:center; border-bottom:2.5px solid #0a1628; padding-bottom:7px; margin-bottom:8px; }
+    .exam-header { text-align:center; border-bottom:2.5px solid #0a1628; padding-bottom:5px; margin-bottom:8px; }
     .exam-header-small { text-align:right; font-size:8pt; border-bottom:1px solid #ccc; padding-bottom:3px; margin-bottom:10px; color:#555;}
     .exam-institution { font-size:7pt; letter-spacing:.2em; text-transform:uppercase; color:#333; font-family:'JetBrains Mono',monospace; }
     .exam-title { font-family:'Bebas Neue',sans-serif; font-size:20pt; letter-spacing:.08em; color:#0a1628; line-height:1; margin:2px 0; }
@@ -110,13 +115,15 @@
     .sol-rta { display:inline-block; background:#0a1628; color:#fff; font-family:'JetBrains Mono',monospace; font-size:7.5pt; padding:1px 5px; border-radius:2px; margin:0 4px 2px 0; vertical-align:middle; }
     .sol-text { font-size:9pt; color:#111; margin-top:2px; }
 
-    /* BUFFER INVISIBLE: Su ancho simula exactamente el ancho de 1 columna (86mm) 
-       Esto asegura que MathJax calcule las alturas matemáticas perfectas antes de paginar */
+    /* BUFFER INVISIBLE MAGICO:
+       Mide exactamente 86mm (el ancho de una columna).
+       Garantiza que MathJax dibuje el LaTeX perfecto antes de armar las hojas */
     #render-buffer { 
       width: 86mm; 
       position: absolute; 
+      left: -9999px;
+      top: -9999px;
       visibility: hidden; 
-      z-index: -9999;
     }
 
   </style>
@@ -127,7 +134,7 @@
 
 <div class="screen-wrap">
   <header>
-    <div class="badge">Academia PNP · Sistema de Evaluación11</div>
+    <div class="badge">Academia PNP · Sistema de Evaluación12</div>
     <h1 class="site-title">Charly<span>Táctico</span></h1>
     <p class="site-subtitle">Generador de Prácticas Semanales — Suboficiales &amp; Oficiales</p>
   </header>
@@ -142,7 +149,7 @@
         <div class="nivel-btn"><input type="radio" name="nivel" id="n-dificil" value="dificil"><label for="n-dificil"><span class="nivel-icon">🔴</span><span class="nivel-name">Difícil</span></label></div>
       </div>
       <button class="btn-generar" onclick="iniciarGeneracion()">▶ GENERAR Y PREVISUALIZAR</button>
-      <div class="spinner" id="spinner">Renderizando LaTeX y construyendo hojas...</div>
+      <div class="spinner" id="spinner">Renderizando Matemáticas y Paginando...</div>
     </div>
   </main>
 </div>
@@ -153,24 +160,25 @@
   <div class="preview-container">
     <div class="preview-actions">
       <button class="btn-back" onclick="cerrarPreview()">← VOLVER AL MENÚ</button>
-      <button class="btn-download" id="btnDescargar" onclick="descargarComoPDF()">⬇ DESCARGAR PDF AHORA</button>
+      <button class="btn-download" id="btnDescargar" onclick="descargarComoPDF()">⬇ DESCARGAR PDF</button>
     </div>
     
     <div id="pdf-wrapper">
       <div id="paginas-examen"></div>
       <div id="paginas-soluciones"></div>
     </div>
-    
   </div>
 </div>
 
 <script>
+// Mezclador
 function shuffle(arr) {
   const a=[...arr];
   for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}
   return a;
 }
 
+// Extractor inteligente
 function extraerPreguntas(db, subtemasConfig, nivel, totalRequerido) {
   let seleccionadas = [];
   let poolSobrantes = [];
@@ -278,17 +286,18 @@ async function iniciarGeneracion() {
         pMat.forEach((q, i) => { itemsExamen.push(crearBloquePregunta(q, pRM.length+i+1)); itemsSolucion.push(crearBloqueSolucion(q, pRM.length+i+1)); });
       }
 
-      // 1. Metemos TODO el texto crudo en el buffer invisible
+      // 1. Mandamos todo al buffer para renderizar LaTeX
       itemsExamen.forEach(el => buffer.appendChild(el));
       itemsSolucion.forEach(el => buffer.appendChild(el));
 
-      // 2. MAGIA: Obligamos a MathJax a leer y dibujar el LaTeX
-      if (window.MathJax) await MathJax.typesetPromise([buffer]);
+      // 2. OBLIGAMOS A MATHJAX A PROCESAR (Esto soluciona el código en bruto)
+      if (window.MathJax && window.MathJax.typesetPromise) {
+        await MathJax.typesetPromise([buffer]);
+      }
 
-      // 3. Activamos la vista previa para que el navegador dimensione las cajas
       document.body.classList.add('preview-active');
       
-      // 4. Paginación física de los elementos YA convertidos por MathJax
+      // 3. Paginamos calculando las alturas reales (post-MathJax)
       function paginarElementos(arrayDOM, contenedorDestinoID, isSol) {
         const destino = document.getElementById(contenedorDestinoID);
         destino.innerHTML = '';
@@ -301,7 +310,7 @@ async function iniciarGeneracion() {
           let item = arrayDOM[i];
           actual.content.appendChild(item);
           
-          if (Math.ceil(actual.content.scrollWidth) > Math.ceil(actual.content.clientWidth) + 2) {
+          if (Math.ceil(actual.content.scrollWidth) > Math.ceil(actual.content.clientWidth) + 5) {
             actual.content.removeChild(item); 
             pageNum++;
             actual = crearHojaA4(pageNum, isSol, nivel);
@@ -321,7 +330,7 @@ async function iniciarGeneracion() {
       alert("Error: " + err.message);
       document.getElementById('spinner').classList.remove('active');
     }
-  }, 300);
+  }, 100);
 }
 
 function cerrarPreview() {
@@ -329,36 +338,38 @@ function cerrarPreview() {
 }
 
 /* ════════════════════════════════════════════
-   FUNCIÓN DE DESCARGA DIRECTA (html2pdf)
-   Cero PDFs en blanco, cero problemas de escala
+   SOLUCIÓN DEFINITIVA A LAS HOJAS EN BLANCO
 ════════════════════════════════════════════ */
 function descargarComoPDF() {
   const btn = document.getElementById('btnDescargar');
-  btn.textContent = '⏳ CREANDO PDF... (10 Segundos)';
+  btn.textContent = '⏳ PROCESANDO PDF...';
   btn.classList.add('loading');
+
+  // Antes de tomar la foto, quitamos los márgenes y sombras que rompen el salto de página
+  const paginas = document.querySelectorAll('.a4-page');
+  paginas.forEach(p => {
+    p.style.margin = '0';
+    p.style.boxShadow = 'none';
+  });
 
   const elemento = document.getElementById('pdf-wrapper');
   
-  // Apagamos la sombra temporalmente para que el PDF salga blanco perfecto
-  document.querySelectorAll('.a4-page').forEach(p => p.style.boxShadow = 'none');
-
   const opciones = {
     margin:       0,
     filename:     `Examen_CharlyTactico_${new Date().getTime()}.pdf`,
     image:        { type: 'jpeg', quality: 1 },
-    html2canvas:  { 
-      scale: 2,           // Alta resolución
-      scrollY: 0,         // Evita recortes si el usuario bajó la pantalla
-      useCORS: true 
-    },
+    html2canvas:  { scale: 2, useCORS: true, scrollY: 0 },
     jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
   };
 
   html2pdf().set(opciones).from(elemento).save().then(() => {
-    // Restaurar el botón y las sombras
-    btn.textContent = '⬇ DESCARGAR PDF AHORA';
+    // Restaurar los botones y los estilos visuales en la web
+    btn.textContent = '⬇ DESCARGAR PDF';
     btn.classList.remove('loading');
-    document.querySelectorAll('.a4-page').forEach(p => p.style.boxShadow = '0 8px 30px rgba(0,0,0,.4)');
+    paginas.forEach(p => {
+      p.style.margin = '0 auto 20px auto';
+      p.style.boxShadow = '0 8px 30px rgba(0,0,0,.4)';
+    });
   });
 }
 </script>
