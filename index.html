@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes"/>
-  <title>Charly Táctico — Generador de Prácticas</title>
+  <title>Charly Táctico — Generador Pro</title>
 
   <script>
     window.MathJax = {
@@ -13,6 +13,17 @@
     };
   </script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.0/es5/tex-mml-chtml.js" async></script>
+
+  <script>
+    const version = new Date().getTime();
+    const files = ['principiante.js', 'rv.js', 'rm.js', 'aritmetica.js', 'algebra.js', 'geometria.js', 'trigonometria.js'];
+    files.forEach(file => {
+      let script = document.createElement('script');
+      script.src = file + '?v=' + version;
+      script.onerror = () => console.warn(`Aviso: No se encontró el archivo ${file} aún.`);
+      document.head.appendChild(script);
+    });
+  </script>
 
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;700&display=swap');
@@ -32,28 +43,27 @@
     .site-title { font-family:'Bebas Neue',sans-serif; font-size:clamp(2.8rem,8vw,6rem); line-height:.92; color:var(--white); }
     .site-title span { color:var(--gold); display:block; }
 
-    main { flex:1; max-width:1000px; margin:2rem auto; padding:0 1rem; width:100%; }
+    main { flex:1; max-width:1100px; margin:2rem auto; padding:0 1rem; width:100%; }
     .panel { background:rgba(15,32,64,.85); border:1px solid rgba(201,168,76,.2); border-radius:4px; padding:2rem; margin-bottom: 2rem;}
-    .panel-title { font-family:'Bebas Neue',sans-serif; font-size:1.5rem; letter-spacing:.1em; color:var(--gold); margin-bottom:1.5rem; display: flex; justify-content: space-between; align-items: center;}
+    .panel-title { font-family:'Bebas Neue',sans-serif; font-size:1.5rem; letter-spacing:.1em; color:var(--gold); margin-bottom:1.2rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(201,168,76,.2); padding-bottom: 0.5rem;}
 
-    /* NIVELES */
     .nivel-group { display:grid; grid-template-columns:repeat(4,1fr); gap:.7rem; margin-bottom: 1.5rem;}
     .nivel-btn input { display:none; }
     .nivel-btn label { display:block; text-align:center; padding:.8rem .3rem; border:1.5px solid rgba(201,168,76,.25); border-radius:3px; cursor:pointer; background:rgba(0,0,0,.2); transition: 0.2s;}
     .nivel-name { font-family:'Bebas Neue',sans-serif; font-size:1.1rem; letter-spacing:.12em; color:var(--cream); }
     .nivel-btn input:checked+label { border-color:var(--gold); background:rgba(201,168,76,.12); box-shadow:0 0 15px rgba(201,168,76,.2); }
 
-    /* MATRIZ DE TEMAS (NUEVO) */
-    .matriz-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; transition: opacity 0.3s; }
-    .curso-card { background: rgba(0,0,0,.3); border: 1px solid rgba(201,168,76,.15); border-radius: 4px; padding: 1.2rem; }
+    .matriz-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; transition: opacity 0.3s; }
+    .curso-card { background: rgba(0,0,0,.3); border: 1px solid rgba(201,168,76,.15); border-radius: 4px; padding: 1.2rem; display: flex; flex-direction: column;}
     .curso-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(201,168,76,.2); padding-bottom: 0.8rem; margin-bottom: 0.8rem; }
-    .curso-title { font-family: 'Bebas Neue', sans-serif; font-size: 1.2rem; letter-spacing: .08em; color: var(--gold); }
-    .check-todos { display: flex; align-items: center; gap: 6px; font-size: 0.8rem; color: var(--silver); cursor: pointer;}
-    .check-todos input { cursor: pointer; }
+    .curso-title { font-family: 'Bebas Neue', sans-serif; font-size: 1.3rem; letter-spacing: .08em; color: var(--gold); display: flex; align-items: center; gap: 8px;}
     
-    .tema-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
-    .tema-item { display: flex; align-items: center; gap: 8px; font-size: 0.9rem; color: var(--cream); cursor: pointer;}
-    .tema-item input { accent-color: var(--gold); width: 16px; height: 16px; cursor: pointer;}
+    .input-cant { width: 50px; background: rgba(201,168,76,.1); border: 1px solid var(--gold); color: var(--gold); text-align: center; border-radius: 3px; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; padding: 2px;}
+    .check-todos { font-size: 0.8rem; color: var(--silver); cursor: pointer; display: flex; align-items: center; gap: 4px;}
+    
+    .tema-list { list-style: none; display: flex; flex-direction: column; gap: 8px; flex-grow: 1;}
+    .tema-item { display: flex; align-items: flex-start; gap: 8px; font-size: 0.85rem; color: var(--cream); cursor: pointer; line-height: 1.2;}
+    .tema-item input { accent-color: var(--gold); width: 16px; height: 16px; margin-top: 1px; cursor: pointer;}
 
     .btn-generar { width:100%; padding:1.2rem; background:linear-gradient(135deg,var(--gold) 0%,var(--gold2) 50%,var(--gold) 100%); color:var(--navy); border:none; border-radius:3px; font-family:'Bebas Neue',sans-serif; font-size:1.35rem; cursor:pointer; margin-top:2rem; box-shadow:0 4px 20px rgba(201,168,76,.35); text-transform: uppercase; letter-spacing: .1em;}
     .spinner { display:none; text-align:center; padding:1.2rem; color:var(--gold); font-family:'Bebas Neue',sans-serif; letter-spacing:.15em; }
@@ -73,7 +83,7 @@
     .btn-download { background: var(--gold); color: var(--navy); border: none; font-weight: bold;}
 
     /* ════════════════════════════════════════════
-       LAS HOJAS A4 FÍSICAS
+       LAS HOJAS A4 Y EL DISEÑO DEL TEXTO LECTURA
     ════════════════════════════════════════════ */
     .a4-page { width: 210mm; height: 297mm; background: #fff; color: #000; font-family: 'Crimson Pro', Georgia, serif; margin: 0 auto 20px auto; padding: 15mm; box-shadow: 0 8px 30px rgba(0,0,0,.4); box-sizing: border-box; display: flex; flex-direction: column; position: relative; overflow: hidden; }
     .exam-header { text-align:center; border-bottom:2.5px solid #0a1628; padding-bottom:5px; margin-bottom:8px; }
@@ -89,8 +99,11 @@
     .seccion-header { column-span: all; -webkit-column-span: all; background: #0a1628; color: #fff; font-family: 'Bebas Neue', sans-serif; font-size: 10pt; letter-spacing: .12em; padding: 5px 10px; margin: 5px 0 12px 0; display: flex; justify-content: space-between; align-items: center; break-after: avoid; }
     .seccion-pts { font-family:'JetBrains Mono',monospace;font-size:7.5pt;opacity:.85; }
 
+    /* EL CUADRO DE LECTURA (COMPRENSIÓN) */
+    .lectura-box { background: #f4f6f8; border: 1px solid #cdd4db; padding: 8px 10px; margin-bottom: 12px; font-size: 8.5pt; line-height: 1.4; text-align: justify; break-inside: avoid; border-left: 4px solid #0a1628;}
+    
     .q-item, .sol-item { break-inside: avoid; page-break-inside: avoid; margin-bottom: 14px; line-height: 1.6; }
-    .q-subtema { font-size:6.5pt; color:#333; font-family:'JetBrains Mono',monospace; text-transform:uppercase; font-weight:bold; margin-bottom:2px; line-height: 1; }
+    .q-subtema { font-size:6.5pt; color:#555; font-family:'JetBrains Mono',monospace; text-transform:uppercase; font-weight:bold; margin-bottom:2px; line-height: 1; }
     .q-num { font-weight:700; color:#0a1628; font-size:9.5pt; }
     .q-enunciado { margin-bottom:4px; font-size:9.5pt; color:#000;}
     .q-alts { list-style:none; display:grid; grid-template-columns:1fr 1fr; gap:2px 6px; }
@@ -101,7 +114,7 @@
     #render-buffer { width: 86mm; position: absolute; left: -9999px; top: -9999px; visibility: hidden; }
 
     /* ════════════════════════════════════════════
-       MOTOR DE IMPRESIÓN NATIVO (LA PERFECCIÓN)
+       MOTOR NATIVO DE IMPRESIÓN (PDF PERFECTO)
     ════════════════════════════════════════════ */
     @media print {
       @page { size: A4 portrait; margin: 0; }
@@ -111,6 +124,7 @@
       .a4-page { margin: 0 !important; box-shadow: none !important; border: none !important; page-break-after: always !important; page-break-inside: avoid !important; }
       * { color: #000 !important; }
       .seccion-header, .sol-rta { background: #0a1628 !important; color: #fff !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .lectura-box { background: #f0f0f0 !important; border: 1px solid #000 !important; border-left: 4px solid #000 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
     }
   </style>
 </head>
@@ -120,7 +134,7 @@
 
 <div class="screen-wrap">
   <header>
-    <div class="badge">Academia PNP · Sistema de Evaluación18</div>
+    <div class="badge">Academia PNP · Sistema de Evaluación</div>
     <h1 class="site-title">Charly<span>Táctico</span></h1>
   </header>
 
@@ -134,7 +148,7 @@
         <div class="nivel-btn"><input type="radio" name="nivel" id="n-dificil" value="dificil"><label for="n-dificil"><span class="nivel-name">Difícil</span></label></div>
       </div>
 
-      <div class="panel-title" style="margin-top: 2rem;">2. Selección de Cursos y Temas</div>
+      <div class="panel-title" style="margin-top: 2rem;">2. Matriz de Cursos y Temas</div>
       <div id="matriz-temas" class="matriz-container">
         </div>
 
@@ -161,88 +175,98 @@
 
 <script>
 /* ════════════════════════════════════════════
-   MASTER CONFIGURACIÓN (LA MATRIZ DINÁMICA)
-   ¡Si agregas un curso aquí, todo se dibuja solo!
+   MASTER CONFIGURACIÓN (EL TEMARIO COMPLETO)
 ════════════════════════════════════════════ */
 const MASTER_CONFIG = {
-  mate: {
-    label: "Matemáticas",
-    file: "mate.js",          // Archivo que debe existir
-    globalVar: "DB_MATE",     // Nombre de la variable dentro del archivo
-    totalPreguntas: 15,
+  rv: {
+    label: "Razonamiento Verbal", file: "rv.js", globalVar: "DB_RV", defaultPreguntas: 15,
     temas: [
-      { key: "operAlgebraicas", label: "Operaciones Algebraicas" },
-      { key: "angulosTriangulo", label: "Suma de ángulos en el triángulo" },
-      { key: "pitagoras", label: "Teorema de Pitágoras" },
-      { key: "trigonometria", label: "Funciones Trigonométricas" }
+      { key: "analogias", label: "1) Analogías" },
+      { key: "comprension", label: "2) Comprensión Lectora e Inferencia" },
+      { key: "oracionesIncompletas", label: "3) Oraciones Incompletas" },
+      { key: "conectores", label: "4) Conectores Lógicos" },
+      { key: "sinonimos", label: "5) Sinónimos" },
+      { key: "antonimos", label: "6) Antónimos" },
+      { key: "terminosExcluidos", label: "7) Términos Excluidos" },
+      { key: "planRedaccion", label: "8) Plan de redacción" }
     ]
   },
   rm: {
-    label: "Razonamiento Matemático",
-    file: "rm.js",
-    globalVar: "DB_RM",
-    totalPreguntas: 15,
+    label: "Razonamiento Matemático", file: "rm.js", globalVar: "DB_RM", defaultPreguntas: 15,
     temas: [
-      { key: "sucesiones", label: "Sucesiones" },
-      { key: "razonLogico", label: "Razonamiento Lógico" },
-      { key: "planteoEcuaciones", label: "Planteo de Ecuaciones" },
-      { key: "fracciones", label: "Fracciones" },
-      { key: "tantoPorCiento", label: "Tanto por ciento" }
+      { key: "operadores", label: "1) Operadores Matemáticos" },
+      { key: "planteoEcuaciones", label: "2) Planteo de ecuaciones" },
+      { key: "edades", label: "3) Problemas sobre edades" },
+      { key: "moviles", label: "4) Móviles, tiempo de encuentro, alcance" },
+      { key: "cronometria", label: "5) Cronometría" },
+      { key: "razonesProporciones", label: "6) Razones y Proporciones" },
+      { key: "fracciones", label: "7) Fracciones" },
+      { key: "tantoPorCiento", label: "8) Porcentajes" },
+      { key: "cuatroOperaciones", label: "9) M. rectángulo, Rombo, Cangrejo, etc." },
+      { key: "razonLogico", label: "10) Razonamiento Lógico" },
+      { key: "series", label: "11) Series y sumatorias" }
     ]
   },
-  rv: {
-    label: "Razonamiento Verbal",
-    file: "rv.js",
-    globalVar: "DB_RV",
-    totalPreguntas: 15,
+  aritmetica: {
+    label: "Aritmética", file: "aritmetica.js", globalVar: "DB_ARITMETICA", defaultPreguntas: 15,
     temas: [
-      { key: "sinonimos", label: "Sinónimos" },
-      { key: "antonimos", label: "Antónimos" },
-      { key: "comprension", label: "Comprensión de lectura" },
-      { key: "conectores", label: "Conectores Lógicos" },
-      { key: "planRedaccion", label: "Plan de Redacción" }
+      { key: "numNaturales", label: "1) Sist. de los Números Naturales (ℕ)" },
+      { key: "numEnteros", label: "2) Sist. de los Números Enteros (ℤ)" },
+      { key: "numRacionales", label: "3) Sist. de los Números Racionales (ℚ)" },
+      { key: "numReales", label: "4) Sist. de los Números Reales (ℝ)" }
+    ]
+  },
+  algebra: {
+    label: "Álgebra", file: "algebra.js", globalVar: "DB_ALGEBRA", defaultPreguntas: 15,
+    temas: [
+      { key: "polinomios", label: "1) Polinomios" },
+      { key: "ecuacionesLineales", label: "2) Sistema de Ecuaciones Lineales" },
+      { key: "funcionesProgresiones", label: "3) Funciones y Progresiones" },
+      { key: "radicacionExponentes", label: "4) Radicación, Teoría de Exp." }
+    ]
+  },
+  geometria: {
+    label: "Geometría", file: "geometria.js", globalVar: "DB_GEOMETRIA", defaultPreguntas: 15,
+    temas: [
+      { key: "figurasAngulos", label: "1) Figuras y Ángulos" },
+      { key: "semejanzaAreas", label: "2) Semejanza de Triángulos, Áreas" }
+    ]
+  },
+  trigonometria: {
+    label: "Trigonometría", file: "trigonometria.js", globalVar: "DB_TRIGONOMETRIA", defaultPreguntas: 15,
+    temas: [
+      { key: "razonesTrigonometricas", label: "1) Razones Trigonométricas" }
     ]
   }
 };
 
-// Carga la base de principiante (fija)
-const PRINCIPIANTE_FILE = "principiante.js";
 const PRINCIPIANTE_VAR = "DB_PRINCIPIANTE";
 const PRINCIPIANTE_TEMAS = ["operBasicasNeg","fraccionesNeg","factorizacionBasica","sumaExpAlg","enunciadosAlg","mcdMcm","decimales","divisibilidad","multExpAlg","despejarX","angulosNotables"];
 
 /* ════════════════════════════════════════════
-   INICIALIZACIÓN Y CONSTRUCCIÓN DE LA UI
+   CONSTRUCCIÓN DINÁMICA DE LA UI
 ════════════════════════════════════════════ */
 document.addEventListener("DOMContentLoaded", () => {
-  const version = new Date().getTime();
-  
-  // 1. Cargar Archivos JS Dinámicamente (Cache-Busting activo)
-  const scriptsToLoad = [PRINCIPIANTE_FILE, ...Object.values(MASTER_CONFIG).map(c => c.file)];
-  scriptsToLoad.forEach(file => {
-    let s = document.createElement('script');
-    s.src = `${file}?v=${version}`;
-    document.head.appendChild(s);
-  });
-
-  // 2. Construir la Matriz de la Interfaz
   const matrizContainer = document.getElementById('matriz-temas');
   
   for (const [courseKey, courseData] of Object.entries(MASTER_CONFIG)) {
     let card = document.createElement('div');
     card.className = 'curso-card';
     
-    // Header con Checkbox de "Todos"
     let headerHTML = `
       <div class="curso-header">
-        <div class="curso-title">${courseData.label}</div>
-        <label class="check-todos">
-          <input type="checkbox" id="todos_${courseKey}" checked onchange="toggleAll('${courseKey}')"> Todos
-        </label>
+        <div class="curso-title">
+          <input type="checkbox" id="todos_${courseKey}" class="chk-master" checked onchange="toggleAll('${courseKey}')" style="width:16px;height:16px;">
+          ${courseData.label}
+        </div>
+        <div style="display:flex; align-items:center; gap:5px;">
+          <span style="font-size:0.7rem; color:var(--silver); text-transform:uppercase;">Cant:</span>
+          <input type="number" id="cant_${courseKey}" class="input-cant" value="${courseData.defaultPreguntas}" min="1" max="50">
+        </div>
       </div>
       <ul class="tema-list" id="lista_${courseKey}">
     `;
     
-    // Lista de Temas
     let temasHTML = courseData.temas.map(tema => `
       <label class="tema-item">
         <input type="checkbox" class="chk_${courseKey}" value="${tema.key}" checked onchange="checkSync('${courseKey}')">
@@ -254,7 +278,6 @@ document.addEventListener("DOMContentLoaded", () => {
     matrizContainer.appendChild(card);
   }
 
-  // 3. Lógica para opacar matriz si elige Principiante
   document.querySelectorAll('input[name="nivel"]').forEach(radio => {
     radio.addEventListener('change', (e) => {
       if (e.target.value === 'principiante') {
@@ -268,7 +291,6 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
-// Funciones UI de los Checkboxes
 function toggleAll(courseKey) {
   let master = document.getElementById(`todos_${courseKey}`).checked;
   document.querySelectorAll(`.chk_${courseKey}`).forEach(chk => chk.checked = master);
@@ -279,7 +301,7 @@ function checkSync(courseKey) {
 }
 
 /* ════════════════════════════════════════════
-   ALGORITMOS DE SELECCIÓN INTELIGENTE
+   ALGORITMOS DE SELECCIÓN Y AGRUPACIÓN
 ════════════════════════════════════════════ */
 function shuffle(arr) {
   const a=[...arr];
@@ -287,74 +309,82 @@ function shuffle(arr) {
   return a;
 }
 
-// Extrae de forma proporcional compensando déficit
 function extraerProporcional(dbInfo, selectedKeys, nivel, totalReq) {
-  if (!window[dbInfo.globalVar]) return []; // Si el archivo JS falta, lo omite
+  if (!window[dbInfo.globalVar]) return { encontradas: 0, items: [] }; 
   const db = window[dbInfo.globalVar];
   
   let disponiblesPorTema = {};
   let totalDisponible = 0;
 
-  // Filtrar los que coinciden con el nivel
   selectedKeys.forEach(key => {
     let preguntas = shuffle((db[key] || []).filter(q => q.nivel === nivel));
     disponiblesPorTema[key] = preguntas;
     totalDisponible += preguntas.length;
   });
 
-  if (totalDisponible === 0) return [];
-  if (totalDisponible <= totalReq) {
-    // Si la base tiene menos del total pedido, devuelve todo lo que hay mezclado
-    let todo = [];
-    selectedKeys.forEach(key => todo.push(...disponiblesPorTema[key]));
-    return shuffle(todo);
-  }
+  if (totalDisponible === 0) return { encontradas: 0, items: [] };
 
-  // Lógica de Reparto Proporcional Equitativo
   let seleccionadas = [];
-  let cuotas = {};
-  selectedKeys.forEach(k => cuotas[k] = 0);
-  
-  let temasActivos = [...selectedKeys];
-  let faltan = totalReq;
+  if (totalDisponible <= totalReq) {
+    selectedKeys.forEach(key => seleccionadas.push(...disponiblesPorTema[key]));
+    seleccionadas = shuffle(seleccionadas);
+  } else {
+    let cuotas = {};
+    selectedKeys.forEach(k => cuotas[k] = 0);
+    let temasActivos = [...selectedKeys];
+    let faltan = totalReq;
 
-  while (faltan > 0 && temasActivos.length > 0) {
-    let cuotaBase = Math.floor(faltan / temasActivos.length);
-    let extra = faltan % temasActivos.length;
-    let nuevosTemasActivos = [];
-    let alguienSeSaturó = false;
+    while (faltan > 0 && temasActivos.length > 0) {
+      let cuotaBase = Math.floor(faltan / temasActivos.length);
+      let extra = faltan % temasActivos.length;
+      let nuevosActivos = [];
+      let huboSaturacion = false;
 
-    for (let i = 0; i < temasActivos.length; i++) {
-      let tema = temasActivos[i];
-      let pedir = cuotaBase + (i < extra ? 1 : 0);
-      let asignado = cuotas[tema];
-      let disponibleTotal = disponiblesPorTema[tema].length;
+      for (let i = 0; i < temasActivos.length; i++) {
+        let tema = temasActivos[i];
+        let pedir = cuotaBase + (i < extra ? 1 : 0);
+        let asignado = cuotas[tema];
+        let disponible = disponiblesPorTema[tema].length;
 
-      if (asignado + pedir >= disponibleTotal) {
-        cuotas[tema] = disponibleTotal;
-        faltan -= (disponibleTotal - asignado);
-        alguienSeSaturó = true;
-      } else {
-        cuotas[tema] += pedir;
-        faltan -= pedir;
-        nuevosTemasActivos.push(tema);
+        if (asignado + pedir >= disponible) {
+          cuotas[tema] = disponible;
+          faltan -= (disponible - asignado);
+          huboSaturacion = true;
+        } else {
+          cuotas[tema] += pedir;
+          faltan -= pedir;
+          nuevosActivos.push(tema);
+        }
       }
+      if (!huboSaturacion) break; 
+      temasActivos = nuevosActivos;
     }
-    if (!alguienSeSaturó) break; 
-    temasActivos = nuevosTemasActivos;
+
+    selectedKeys.forEach(tema => {
+      if(cuotas[tema] > 0) seleccionadas.push(...disponiblesPorTema[tema].splice(0, cuotas[tema]));
+    });
+    seleccionadas = shuffle(seleccionadas);
   }
 
-  // Recolectar según cuota
-  selectedKeys.forEach(tema => {
-    if(cuotas[tema] > 0) seleccionadas.push(...disponiblesPorTema[tema].splice(0, cuotas[tema]));
+  // AGRUPAR POR CÓDIGO DE LECTURA (id_texto)
+  seleccionadas.sort((a, b) => {
+    let tA = a.id_texto || "";
+    let tB = b.id_texto || "";
+    if (tA < tB) return -1;
+    if (tA > tB) return 1;
+    return 0;
   });
 
-  return shuffle(seleccionadas);
+  return { encontradas: seleccionadas.length, items: seleccionadas };
 }
 
-/* ════════════════════════════════════════════
-   GENERACIÓN DE HTML
-════════════════════════════════════════════ */
+function crearBloqueLectura(texto) {
+  let div = document.createElement('div');
+  div.className = 'lectura-box';
+  div.innerHTML = `<strong>TEXTO DE COMPRENSIÓN:</strong><br>${texto}`;
+  return div;
+}
+
 function crearBloquePregunta(q, num) {
   let div = document.createElement('div');
   div.className = 'q-item';
@@ -400,7 +430,7 @@ function crearHojaA4(pageNum, isSol, nivelStr) {
 }
 
 /* ════════════════════════════════════════════
-   EL MOTOR PRINCIPAL
+   EL MOTOR PRINCIPAL Y PAGINADOR
 ════════════════════════════════════════════ */
 async function iniciarGeneracion() {
   const nivel = document.querySelector('input[name="nivel"]:checked')?.value || 'medio';
@@ -414,37 +444,59 @@ async function iniciarGeneracion() {
       let itemsExamen = [];
       let itemsSolucion = [];
       let pregCounter = 1;
+      let logAvisos = [];
 
       if (nivel === 'principiante') {
-        if (!window[PRINCIPIANTE_VAR]) throw new Error("Falta el archivo principiante.js");
+        if (!window[PRINCIPIANTE_VAR]) {
+          alert("Aviso: Falta el archivo principiante.js");
+          document.getElementById('spinner').classList.remove('active');
+          return;
+        }
         let pPrinc = extraerProporcional({globalVar: PRINCIPIANTE_VAR}, PRINCIPIANTE_TEMAS, 'principiante', 30);
         
-        itemsExamen.push(crearEncabezadoSeccion('Matemática Básica — Nivel Principiante', pPrinc.length));
+        itemsExamen.push(crearEncabezadoSeccion('Matemática Básica — Nivel Principiante', pPrinc.encontradas));
         itemsSolucion.push(crearEncabezadoSeccion('Soluciones — Nivel Principiante', null));
         
-        pPrinc.forEach(q => {
+        pPrinc.items.forEach(q => {
           itemsExamen.push(crearBloquePregunta(q, pregCounter)); 
           itemsSolucion.push(crearBloqueSolucion(q, pregCounter));
           pregCounter++;
         });
 
       } else {
-        // Recorrer los cursos activos en la Matriz
-        let seccionRoma = ['I', 'II', 'III', 'IV', 'V'];
+        let seccionRoma = ['I', 'II', 'III', 'IV', 'V', 'VI'];
         let secIndex = 0;
 
         for (const [courseKey, courseData] of Object.entries(MASTER_CONFIG)) {
-          // Obtener qué checkboxes seleccionó el usuario para este curso
+          let checkboxMaster = document.getElementById(`todos_${courseKey}`);
+          if (!checkboxMaster.checked && !Array.from(document.querySelectorAll(`.chk_${courseKey}:checked`)).length) continue;
+
           let selectedChecks = Array.from(document.querySelectorAll(`.chk_${courseKey}:checked`)).map(chk => chk.value);
+          let targetQty = parseInt(document.getElementById(`cant_${courseKey}`).value) || courseData.defaultPreguntas;
           
           if (selectedChecks.length > 0) {
-            let pCurso = extraerProporcional(courseData, selectedChecks, nivel, courseData.totalPreguntas);
+            let res = extraerProporcional(courseData, selectedChecks, nivel, targetQty);
             
-            if (pCurso.length > 0) {
-              itemsExamen.push(crearEncabezadoSeccion(`SECCIÓN ${seccionRoma[secIndex]} — ${courseData.label}`, pCurso.length));
+            if (res.encontradas > 0) {
+              if (res.encontradas < targetQty) {
+                logAvisos.push(`Solo se encontraron ${res.encontradas} de ${targetQty} preguntas en ${courseData.label}.`);
+              }
+
+              itemsExamen.push(crearEncabezadoSeccion(`SECCIÓN ${seccionRoma[secIndex]} — ${courseData.label}`, res.encontradas));
               itemsSolucion.push(crearEncabezadoSeccion(`SECCIÓN ${seccionRoma[secIndex]} — Soluciones`, null));
               
-              pCurso.forEach(q => { 
+              let lastTextoId = "";
+              res.items.forEach(q => {
+                // LÓGICA DEL CÓDIGO DE TEXTO
+                if (q.id_texto && q.id_texto !== lastTextoId) {
+                  // Busca el texto en el banco global de variables
+                  let textoReal = (window.TEXTOS_LECTURA && window.TEXTOS_LECTURA[q.id_texto]) 
+                                  ? window.TEXTOS_LECTURA[q.id_texto] 
+                                  : "Error: No se encontró el texto referenciado.";
+                  itemsExamen.push(crearBloqueLectura(textoReal));
+                  lastTextoId = q.id_texto;
+                }
+                
                 itemsExamen.push(crearBloquePregunta(q, pregCounter)); 
                 itemsSolucion.push(crearBloqueSolucion(q, pregCounter)); 
                 pregCounter++;
@@ -456,12 +508,11 @@ async function iniciarGeneracion() {
       }
 
       if(itemsExamen.length === 0) {
-        alert("No hay preguntas disponibles para los temas seleccionados en este nivel.");
+        alert("No se generó ninguna pregunta. Revisa que los archivos .js existan y tengan contenido para el nivel seleccionado.");
         document.getElementById('spinner').classList.remove('active');
         return;
       }
 
-      // Renderizar MathJax
       itemsExamen.forEach(el => buffer.appendChild(el));
       itemsSolucion.forEach(el => buffer.appendChild(el));
 
@@ -471,7 +522,6 @@ async function iniciarGeneracion() {
 
       document.body.classList.add('preview-active');
       
-      // Paginador
       function paginarElementos(arrayDOM, contenedorDestinoID, isSol) {
         const destino = document.getElementById(contenedorDestinoID);
         destino.innerHTML = '';
@@ -498,6 +548,8 @@ async function iniciarGeneracion() {
 
       buffer.innerHTML = '';
       document.getElementById('spinner').classList.remove('active');
+
+      if(logAvisos.length > 0) console.warn("Avisos:\n" + logAvisos.join("\n"));
 
     } catch(err) {
       alert("Aviso: " + err.message);
