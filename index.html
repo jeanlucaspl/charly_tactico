@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Charly Táctico — Generador de Prácticas</title>
 
   <script>
     window.MathJax = {
       tex: { inlineMath:[['$','$'],['\\(','\\)']], displayMath:[['$$','$$']] },
       options: { skipHtmlTags:['script','noscript','style','textarea','pre'] },
-      startup: { typeset: false }
+      startup: { typeset:false }
     };
   </script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" async></script>
@@ -18,206 +18,211 @@
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;700&display=swap');
 
+    /* ══ VARIABLES ══ */
     :root {
-      --navy:  #0a1628;
-      --gold:  #c9a84c;
-      --gold2: #e8c97a;
-      --cream: #f5f0e8;
-      --silver:#8a9ab5;
-      --white: #ffffff;
+      --navy:#0a1628; --gold:#c9a84c; --gold2:#e8c97a;
+      --cream:#f5f0e8; --silver:#8a9ab5; --white:#fff;
     }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 
-    *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+    /* ══════════════════════════════════════
+       PANTALLA
+    ══════════════════════════════════════ */
+    body{background:var(--navy);color:var(--cream);font-family:'Crimson Pro',Georgia,serif;min-height:100vh;}
+    body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+      background:radial-gradient(ellipse 80% 60% at 50% -10%,rgba(201,168,76,.12) 0%,transparent 70%),
+                 radial-gradient(ellipse 50% 40% at 90% 100%,rgba(155,35,53,.08) 0%,transparent 60%),
+                 repeating-linear-gradient(0deg,transparent,transparent 60px,rgba(201,168,76,.025) 60px,rgba(201,168,76,.025) 61px),
+                 repeating-linear-gradient(90deg,transparent,transparent 60px,rgba(201,168,76,.025) 60px,rgba(201,168,76,.025) 61px);}
+    .screen-wrap{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column;}
 
-    /* ══════════ PANTALLA ══════════ */
-    body {
-      background: var(--navy);
-      color: var(--cream);
-      font-family: 'Crimson Pro', Georgia, serif;
-      min-height: 100vh;
-    }
-    body::before {
-      content:''; position:fixed; inset:0; z-index:0; pointer-events:none;
-      background:
-        radial-gradient(ellipse 80% 60% at 50% -10%, rgba(201,168,76,.12) 0%, transparent 70%),
-        radial-gradient(ellipse 50% 40% at 90% 100%, rgba(155,35,53,.08) 0%, transparent 60%),
-        repeating-linear-gradient(0deg,  transparent,transparent 60px, rgba(201,168,76,.025) 60px, rgba(201,168,76,.025) 61px),
-        repeating-linear-gradient(90deg, transparent,transparent 60px, rgba(201,168,76,.025) 60px, rgba(201,168,76,.025) 61px);
-    }
-    .screen-wrap { position:relative; z-index:1; min-height:100vh; display:flex; flex-direction:column; }
+    /* Header */
+    header{text-align:center;padding:2.5rem 1.5rem 2rem;border-bottom:1px solid rgba(201,168,76,.3);
+      background:linear-gradient(180deg,rgba(0,0,0,.4) 0%,transparent 100%);}
+    .badge{display:inline-block;border:1px solid var(--gold);color:var(--gold);
+      font-family:'JetBrains Mono',monospace;font-size:.68rem;letter-spacing:.18em;
+      padding:.22rem .9rem;text-transform:uppercase;margin-bottom:1rem;opacity:.85;}
+    .site-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.8rem,8vw,6rem);
+      letter-spacing:.06em;line-height:.92;color:var(--white);text-shadow:0 2px 24px rgba(201,168,76,.25);}
+    .site-title span{color:var(--gold);display:block;}
+    .site-subtitle{margin-top:.7rem;font-size:.95rem;color:var(--silver);letter-spacing:.07em;font-style:italic;}
 
-    header {
-      text-align:center; padding:3rem 2rem 2rem;
-      border-bottom:1px solid rgba(201,168,76,.3);
-      background:linear-gradient(180deg,rgba(0,0,0,.4) 0%,transparent 100%);
-    }
-    .badge {
-      display:inline-block; border:1px solid var(--gold); color:var(--gold);
-      font-family:'JetBrains Mono',monospace; font-size:.7rem; letter-spacing:.18em;
-      padding:.25rem 1rem; text-transform:uppercase; margin-bottom:1.2rem; opacity:.85;
-    }
-    .site-title {
-      font-family:'Bebas Neue',sans-serif;
-      font-size:clamp(3rem,8vw,6.5rem);
-      letter-spacing:.06em; line-height:.92; color:var(--white);
-      text-shadow:0 2px 24px rgba(201,168,76,.25);
-    }
-    .site-title span { color:var(--gold); display:block; }
-    .site-subtitle { margin-top:.8rem; font-size:1rem; color:var(--silver); letter-spacing:.08em; font-style:italic; }
+    /* Panel */
+    main{flex:1;max-width:860px;margin:2.5rem auto;padding:0 1rem;width:100%;}
+    .panel{background:rgba(15,32,64,.85);border:1px solid rgba(201,168,76,.2);
+      border-radius:4px;padding:2rem;box-shadow:0 4px 32px rgba(0,0,0,.45);backdrop-filter:blur(6px);}
+    .panel-title{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;letter-spacing:.1em;color:var(--gold);margin-bottom:.35rem;}
+    .panel-desc{color:var(--silver);font-size:.9rem;margin-bottom:1.6rem;border-bottom:1px solid rgba(201,168,76,.15);padding-bottom:1rem;}
 
-    main { flex:1; max-width:860px; margin:3rem auto; padding:0 1.5rem; width:100%; }
-    .panel {
-      background:rgba(15,32,64,.85); border:1px solid rgba(201,168,76,.2);
-      border-radius:4px; padding:2.5rem;
-      box-shadow:0 4px 32px rgba(0,0,0,.45); backdrop-filter:blur(6px);
-    }
-    .panel-title { font-family:'Bebas Neue',sans-serif; font-size:1.6rem; letter-spacing:.1em; color:var(--gold); margin-bottom:.4rem; }
-    .panel-desc  { color:var(--silver); font-size:.95rem; margin-bottom:2rem; border-bottom:1px solid rgba(201,168,76,.15); padding-bottom:1.2rem; }
+    /* Nivel selector */
+    .nivel-group{display:grid;grid-template-columns:repeat(4,1fr);gap:.7rem;margin-bottom:1.6rem;}
+    .nivel-btn input{display:none;}
+    .nivel-btn label{display:block;text-align:center;padding:.9rem .3rem;
+      border:1.5px solid rgba(201,168,76,.25);border-radius:3px;cursor:pointer;
+      transition:all .25s;background:rgba(0,0,0,.2);}
+    .nivel-icon{font-size:1.5rem;display:block;margin-bottom:.25rem;}
+    .nivel-name{font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:.12em;display:block;color:var(--cream);}
+    .nivel-desc{font-size:.65rem;color:var(--silver);display:block;margin-top:.1rem;}
+    .nivel-btn input:checked+label{border-color:var(--gold);background:rgba(201,168,76,.12);box-shadow:0 0 18px rgba(201,168,76,.2);}
+    .nivel-btn label:hover{border-color:rgba(201,168,76,.6);background:rgba(201,168,76,.07);}
 
-    .nivel-group { display:grid; grid-template-columns:repeat(4,1fr); gap:.9rem; margin-bottom:2rem; }
-    .nivel-btn input { display:none; }
-    .nivel-btn label {
-      display:block; text-align:center; padding:1.1rem .4rem;
-      border:1.5px solid rgba(201,168,76,.25); border-radius:3px; cursor:pointer;
-      transition:all .25s; background:rgba(0,0,0,.2);
-    }
-    .nivel-icon { font-size:1.6rem; display:block; margin-bottom:.3rem; }
-    .nivel-name { font-family:'Bebas Neue',sans-serif; font-size:1.1rem; letter-spacing:.12em; display:block; color:var(--cream); }
-    .nivel-desc { font-size:.7rem; color:var(--silver); display:block; margin-top:.15rem; }
-    .nivel-btn input:checked + label { border-color:var(--gold); background:rgba(201,168,76,.12); box-shadow:0 0 18px rgba(201,168,76,.2); }
-    .nivel-btn label:hover { border-color:rgba(201,168,76,.6); background:rgba(201,168,76,.07); }
-
-    .btn-generar {
-      width:100%; padding:1.1rem;
+    .btn-generar{width:100%;padding:1rem;
       background:linear-gradient(135deg,var(--gold) 0%,var(--gold2) 50%,var(--gold) 100%);
-      background-size:200% auto; color:var(--navy); border:none; border-radius:3px;
-      font-family:'Bebas Neue',sans-serif; font-size:1.4rem; letter-spacing:.15em; cursor:pointer;
+      background-size:200% auto;color:var(--navy);border:none;border-radius:3px;
+      font-family:'Bebas Neue',sans-serif;font-size:1.35rem;letter-spacing:.15em;cursor:pointer;
       transition:background-position .4s,transform .15s,box-shadow .3s;
-      box-shadow:0 4px 20px rgba(201,168,76,.35);
-    }
-    .btn-generar:hover { background-position:right center; transform:translateY(-2px); box-shadow:0 8px 28px rgba(201,168,76,.5); }
-    .btn-generar:active { transform:translateY(0); }
+      box-shadow:0 4px 20px rgba(201,168,76,.35);}
+    .btn-generar:hover{background-position:right center;transform:translateY(-2px);box-shadow:0 8px 28px rgba(201,168,76,.5);}
+    .btn-generar:active{transform:translateY(0);}
 
-    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
-    .spinner { display:none; text-align:center; padding:1.5rem; color:var(--gold); font-family:'Bebas Neue',sans-serif; letter-spacing:.15em; animation:pulse 1.2s infinite; }
-    .spinner.active { display:block; }
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+    .spinner{display:none;text-align:center;padding:1.2rem;color:var(--gold);
+      font-family:'Bebas Neue',sans-serif;letter-spacing:.15em;animation:pulse 1.2s infinite;}
+    .spinner.active{display:block;}
 
-    .temas-info { margin-top:2rem; display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
-    .tema-card  { border:1px solid rgba(201,168,76,.15); border-radius:3px; padding:1rem 1.2rem; background:rgba(0,0,0,.15); }
-    .tema-card h4 { font-family:'Bebas Neue',sans-serif; font-size:1rem; letter-spacing:.1em; color:var(--gold); margin-bottom:.5rem; }
-    .tema-card ul { list-style:none; }
-    .tema-card li { font-size:.82rem; color:var(--silver); padding:.18rem 0 .18rem 1rem; position:relative; }
-    .tema-card li::before { content:'›'; position:absolute; left:0; color:var(--gold); }
+    .temas-info{margin-top:1.5rem;display:grid;grid-template-columns:1fr 1fr;gap:.8rem;}
+    .tema-card{border:1px solid rgba(201,168,76,.15);border-radius:3px;padding:.9rem 1rem;background:rgba(0,0,0,.15);}
+    .tema-card h4{font-family:'Bebas Neue',sans-serif;font-size:.95rem;letter-spacing:.1em;color:var(--gold);margin-bottom:.4rem;}
+    .tema-card ul{list-style:none;}
+    .tema-card li{font-size:.78rem;color:var(--silver);padding:.14rem 0 .14rem 1rem;position:relative;}
+    .tema-card li::before{content:'›';position:absolute;left:0;color:var(--gold);}
 
-    /* ══════════ OVERLAY ══════════ */
-    #preview-overlay {
-      display:none; position:fixed; inset:0; z-index:100;
-      background:rgba(5,12,28,.92); backdrop-filter:blur(4px);
-      overflow-y:auto; padding:2rem 1rem;
-    }
-    #preview-overlay.active { display:block; }
-    .preview-container { max-width:860px; margin:0 auto; }
-    .preview-actions { display:flex; gap:1rem; margin-bottom:1.5rem; align-items:center; flex-wrap:wrap; }
-    .btn-back {
-      padding:.6rem 1.4rem; border:1.5px solid rgba(201,168,76,.4); background:transparent;
-      color:var(--gold); border-radius:3px; font-family:'Bebas Neue',sans-serif;
-      font-size:1rem; letter-spacing:.1em; cursor:pointer; transition:all .2s;
-    }
-    .btn-back:hover { background:rgba(201,168,76,.1); border-color:var(--gold); }
-    .btn-download {
-      padding:.6rem 1.8rem; background:var(--gold); color:var(--navy);
-      border:none; border-radius:3px; font-family:'Bebas Neue',sans-serif;
-      font-size:1rem; letter-spacing:.12em; cursor:pointer;
-      box-shadow:0 3px 14px rgba(201,168,76,.4); transition:all .2s;
-    }
-    .btn-download:hover { background:var(--gold2); transform:translateY(-1px); }
-    .preview-label { margin-left:auto; font-size:.8rem; color:var(--silver); font-family:'JetBrains Mono',monospace; }
+    /* ══ OVERLAY ══ */
+    #preview-overlay{display:none;position:fixed;inset:0;z-index:100;
+      background:rgba(5,12,28,.92);backdrop-filter:blur(4px);overflow-y:auto;padding:1.5rem .8rem;}
+    #preview-overlay.active{display:block;}
+    .preview-container{max-width:860px;margin:0 auto;}
+    .preview-actions{display:flex;gap:.8rem;margin-bottom:1.2rem;align-items:center;flex-wrap:wrap;}
+    .btn-back{padding:.55rem 1.2rem;border:1.5px solid rgba(201,168,76,.4);background:transparent;
+      color:var(--gold);border-radius:3px;font-family:'Bebas Neue',sans-serif;
+      font-size:.95rem;letter-spacing:.1em;cursor:pointer;transition:all .2s;white-space:nowrap;}
+    .btn-back:hover{background:rgba(201,168,76,.1);border-color:var(--gold);}
+    .btn-download{padding:.55rem 1.4rem;background:var(--gold);color:var(--navy);
+      border:none;border-radius:3px;font-family:'Bebas Neue',sans-serif;
+      font-size:.95rem;letter-spacing:.12em;cursor:pointer;
+      box-shadow:0 3px 14px rgba(201,168,76,.4);transition:all .2s;white-space:nowrap;}
+    .btn-download:hover{background:var(--gold2);transform:translateY(-1px);}
+    .preview-label{font-size:.75rem;color:var(--silver);font-family:'JetBrains Mono',monospace;margin-left:auto;}
 
-    /* ══════════ HOJA IMPRIMIBLE ══════════ */
-    #practica-sheet {
-      background:#fff; color:#111;
+    /* ══════════════════════════════════════
+       HOJA IMPRIMIBLE
+       Usamos tabla HTML de 2 columnas.
+       Esto es el método más confiable cross-browser
+       para layout de 2 cols en impresión.
+    ══════════════════════════════════════ */
+    .practica-sheet{
+      background:#fff;color:#1a1a1a;
       font-family:'Crimson Pro',Georgia,serif;
-      width:794px; padding:24px 32px 28px; margin:0 auto;
+      font-size:9.5pt;line-height:1.38;
+      width:794px;margin:0 auto;padding:20px 28px 24px;
       box-shadow:0 8px 48px rgba(0,0,0,.6);
     }
+    .practica-sheet + .practica-sheet{margin-top:20px;}
 
-    .exam-header { text-align:center; border-bottom:2.5px solid #0a1628; padding-bottom:8px; margin-bottom:8px; }
-    .exam-institution { font-size:7.5pt; letter-spacing:.2em; text-transform:uppercase; color:#555; font-family:'JetBrains Mono',monospace; }
-    .exam-title { font-family:'Bebas Neue',sans-serif; font-size:22pt; letter-spacing:.08em; color:#0a1628; line-height:1; margin:3px 0 2px; }
-    .exam-meta-row { display:flex; justify-content:center; gap:1.8rem; margin-top:5px; font-size:8pt; color:#444; flex-wrap:wrap; }
-    .exam-meta-item { display:flex; align-items:center; gap:.3rem; }
-    .exam-meta-label { font-weight:700; text-transform:uppercase; font-size:6.5pt; letter-spacing:.1em; color:#888; }
+    /* Encabezado */
+    .exam-header{text-align:center;border-bottom:2.5px solid #0a1628;padding-bottom:7px;margin-bottom:8px;}
+    .exam-institution{font-size:7pt;letter-spacing:.2em;text-transform:uppercase;color:#555;font-family:'JetBrains Mono',monospace;}
+    .exam-title{font-family:'Bebas Neue',sans-serif;font-size:20pt;letter-spacing:.08em;color:#0a1628;line-height:1;margin:2px 0;}
+    .exam-meta-row{display:flex;justify-content:center;gap:1.8rem;margin-top:4px;font-size:7.5pt;color:#444;flex-wrap:wrap;}
+    .exam-meta-item{display:flex;align-items:center;gap:.3rem;}
+    .exam-meta-label{font-weight:700;text-transform:uppercase;font-size:6pt;letter-spacing:.1em;color:#888;}
+    .nivel-badge{display:inline-block;padding:1px 6px;border-radius:2px;font-size:6.5pt;
+      font-family:'JetBrains Mono',monospace;font-weight:700;letter-spacing:.1em;text-transform:uppercase;}
+    .nivel-badge.principiante{background:#d1ecf1;color:#0c5460;}
+    .nivel-badge.facil{background:#d4edda;color:#155724;}
+    .nivel-badge.medio{background:#fff3cd;color:#856404;}
+    .nivel-badge.dificil{background:#f8d7da;color:#721c24;}
 
-    .nivel-badge { display:inline-block; padding:1px 7px; border-radius:2px; font-size:7pt; font-family:'JetBrains Mono',monospace; font-weight:700; letter-spacing:.1em; text-transform:uppercase; }
-    .nivel-badge.principiante { background:#d1ecf1; color:#0c5460; }
-    .nivel-badge.facil        { background:#d4edda; color:#155724; }
-    .nivel-badge.medio        { background:#fff3cd; color:#856404; }
-    .nivel-badge.dificil      { background:#f8d7da; color:#721c24; }
+    /* Datos alumno */
+    .alumno-fields{display:grid;grid-template-columns:3fr 1fr;gap:8px;margin:8px 0 9px;font-size:8pt;}
+    .field-label{font-size:6pt;text-transform:uppercase;letter-spacing:.1em;color:#888;margin-bottom:1px;}
+    .field-line{border-bottom:1px solid #bbb;min-height:13px;}
 
-    .alumno-fields { display:grid; grid-template-columns:3fr 1fr; gap:8px; margin:8px 0 10px; font-size:8.5pt; }
-    .field-label { font-size:6.5pt; text-transform:uppercase; letter-spacing:.1em; color:#888; margin-bottom:2px; }
-    .field-line  { border-bottom:1px solid #bbb; min-height:14px; }
-
-    .seccion-header {
-      background:#0a1628; color:#fff;
-      font-family:'Bebas Neue',sans-serif; font-size:9pt; letter-spacing:.12em;
-      padding:3px 8px; margin:10px 0 6px;
-      display:flex; justify-content:space-between; align-items:center;
-    }
-    .seccion-pts { font-family:'JetBrains Mono',monospace; font-size:7pt; opacity:.75; }
+    /* Cabecera sección */
+    .seccion-header{background:#0a1628;color:#fff;font-family:'Bebas Neue',sans-serif;
+      font-size:8.5pt;letter-spacing:.12em;padding:3px 8px;margin:9px 0 5px;
+      display:flex;justify-content:space-between;align-items:center;}
+    .seccion-pts{font-family:'JetBrains Mono',monospace;font-size:6.5pt;opacity:.75;}
 
     /*
-      COLUMNAS: CSS columns para flujo natural izq→der→página siguiente.
-      column-fill:auto = llena col izquierda antes de pasar a la derecha.
-      Necesita altura definida para activar el flujo correcto en pantalla.
-      En impresión @page controla el alto real.
+     TABLA DE DOS COLUMNAS — la solución definitiva para PDF.
+     <table> es el único layout que todos los navegadores
+     respetan igual en pantalla y en impresión @page.
+     Cada celda es una columna independiente.
     */
-    .questions-cols {
-      column-count: 2;
-      column-gap: 16px;
-      column-fill: balance;
-    }
-    .question-item {
-      break-inside: avoid;
-      page-break-inside: avoid;
-      display: inline-block;
-      width: 100%;
-      padding: 5px 0 4px;
-      border-bottom: 0.5px solid #e8e8e8;
-      font-size: 9pt;
-      line-height: 1.4;
-    }
-    .q-subtema { font-size:6pt; color:#aaa; font-family:'JetBrains Mono',monospace; text-transform:uppercase; letter-spacing:.05em; margin-bottom:1px; }
-    .q-number  { font-weight:700; color:#0a1628; }
-    .q-enunciado { margin-bottom:3px; }
-    .q-alternativas { list-style:none; display:grid; grid-template-columns:1fr 1fr; gap:0 4px; }
-    .q-alternativas li { font-size:8pt; color:#222; padding:1px 0; }
+    .q-table{width:100%;border-collapse:collapse;table-layout:fixed;}
+    .q-table td{vertical-align:top;padding:0;width:50%;}
+    .q-table td:first-child{padding-right:9px;border-right:0.5px solid #e0e0e0;}
+    .q-table td:last-child{padding-left:9px;}
 
-    /* ══════════ IMPRESIÓN ══════════ */
-    @media print {
-      @page { size:A4 portrait; margin:12mm 15mm 10mm 15mm; }
+    /* cada pregunta dentro de la celda */
+    .q-item{padding:4px 0 4px;border-bottom:0.5px solid #ebebeb;break-inside:avoid;page-break-inside:avoid;}
+    .q-item:last-child{border-bottom:none;}
+    .q-subtema{font-size:6pt;color:#bbb;font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:.04em;margin-bottom:1px;}
+    .q-num{font-weight:700;color:#0a1628;font-size:9pt;}
+    .q-enunciado{margin-bottom:3px;font-size:9pt;}
+    .q-alts{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:0 4px;}
+    .q-alts li{font-size:8pt;color:#222;padding:1px 0;}
 
-      /* Ocultar todo salvo el sheet */
-      body > .screen-wrap { display:none !important; }
-      #preview-overlay {
-        display:block !important;
-        position:static !important;
-        background:white !important;
-        backdrop-filter:none !important;
-        padding:0 !important;
-        overflow:visible !important;
+    /* ══ HOJA DE SOLUCIONES ══ */
+    .sol-table{width:100%;border-collapse:collapse;table-layout:fixed;}
+    .sol-table td{vertical-align:top;padding:0;width:50%;}
+    .sol-table td:first-child{padding-right:9px;border-right:0.5px solid #e0e0e0;}
+    .sol-table td:last-child{padding-left:9px;}
+    .sol-item{padding:4px 0;border-bottom:0.5px solid #ebebeb;break-inside:avoid;page-break-inside:avoid;}
+    .sol-item:last-child{border-bottom:none;}
+    .sol-num{font-weight:700;color:#0a1628;font-size:9pt;}
+    .sol-rta{display:inline-block;background:#0a1628;color:#fff;font-family:'JetBrains Mono',monospace;
+      font-size:7pt;padding:0 4px;border-radius:2px;margin:0 3px 2px 0;vertical-align:middle;}
+    .sol-text{font-size:8.5pt;color:#333;margin-top:1px;}
+    .sol-header-note{font-size:8pt;color:#555;font-style:italic;margin-bottom:6px;text-align:center;}
+
+    /* ══════════════════════════════════════
+       IMPRESIÓN
+    ══════════════════════════════════════ */
+    @media print{
+      @page{size:A4 portrait;margin:11mm 14mm 11mm 14mm;}
+      body>*{display:none!important;}
+      #preview-overlay{
+        display:block!important;position:static!important;
+        background:white!important;backdrop-filter:none!important;
+        padding:0!important;overflow:visible!important;
       }
-      .preview-actions, .preview-label { display:none !important; }
-      .preview-container { max-width:100% !important; margin:0 !important; }
-      #practica-sheet { width:100% !important; padding:0 !important; margin:0 !important; box-shadow:none !important; }
-      .questions-cols { column-count:2 !important; column-gap:14px !important; }
-      .question-item { break-inside:avoid !important; }
+      .preview-actions,.preview-label{display:none!important;}
+      .preview-container{max-width:100%!important;margin:0!important;}
+      .practica-sheet{
+        width:100%!important;padding:0!important;margin:0!important;
+        box-shadow:none!important;page-break-after:always;
+      }
+      .practica-sheet:last-child{page-break-after:auto;}
+      .q-item,.sol-item{break-inside:avoid!important;page-break-inside:avoid!important;}
     }
 
-    @media (max-width:860px) {
-      #practica-sheet { width:100%; }
-      .nivel-group { grid-template-columns:1fr 1fr; }
-      .temas-info  { grid-template-columns:1fr; }
+    /* ══════════════════════════════════════
+       RESPONSIVE MÓVIL
+    ══════════════════════════════════════ */
+    @media(max-width:860px){
+      .practica-sheet{width:100%;font-size:8.5pt;}
+    }
+    @media(max-width:600px){
+      .nivel-group{grid-template-columns:1fr 1fr;}
+      .temas-info{grid-template-columns:1fr;}
+      .preview-actions{gap:.5rem;}
+      .btn-back,.btn-download{font-size:.8rem;padding:.5rem .9rem;}
+      .preview-label{display:none;}
+      .practica-sheet{padding:14px 14px 18px;}
+      /* En móvil, el PDF se ve en 1 sola columna */
+      .q-table,.sol-table{display:block;}
+      .q-table tbody,.sol-table tbody{display:block;}
+      .q-table tr,.sol-table tr{display:block;}
+      .q-table td,.sol-table td{display:block;width:100%;padding:0!important;border-right:none!important;border-left:none!important;}
+    }
+    @media(max-width:420px){
+      .nivel-group{grid-template-columns:1fr 1fr;}
+      .nivel-name{font-size:.85rem;}
+      .nivel-desc{font-size:.6rem;}
+      main{padding:0 .6rem;}
+      .panel{padding:1.4rem;}
     }
   </style>
 </head>
@@ -233,64 +238,44 @@
   <main>
     <div class="panel">
       <div class="panel-title">⚙ Generar Práctica</div>
-      <p class="panel-desc">Seleccione el nivel de exigencia y presione el botón. Las preguntas se elegirán al azar cubriendo todos los subtemas.</p>
+      <p class="panel-desc">Seleccione el nivel y presione el botón. Se genera la práctica <strong>y</strong> la hoja de soluciones para el evaluador.</p>
 
       <div class="nivel-group">
         <div class="nivel-btn">
-          <input type="radio" name="nivel" id="n-principiante" value="principiante">
-          <label for="n-principiante">
-            <span class="nivel-icon">🔵</span>
-            <span class="nivel-name">Principiante</span>
-            <span class="nivel-desc">Fundamentos básicos</span>
-          </label>
+          <input type="radio" name="nivel" id="n-princ" value="principiante">
+          <label for="n-princ"><span class="nivel-icon">🔵</span><span class="nivel-name">Principiante</span><span class="nivel-desc">Fundamentos básicos</span></label>
         </div>
         <div class="nivel-btn">
           <input type="radio" name="nivel" id="n-facil" value="facil">
-          <label for="n-facil">
-            <span class="nivel-icon">🟢</span>
-            <span class="nivel-name">Fácil</span>
-            <span class="nivel-desc">Conceptos directos</span>
-          </label>
+          <label for="n-facil"><span class="nivel-icon">🟢</span><span class="nivel-name">Fácil</span><span class="nivel-desc">Conceptos directos</span></label>
         </div>
         <div class="nivel-btn">
           <input type="radio" name="nivel" id="n-medio" value="medio" checked>
-          <label for="n-medio">
-            <span class="nivel-icon">🟡</span>
-            <span class="nivel-name">Medio</span>
-            <span class="nivel-desc">Aplicación y razonamiento</span>
-          </label>
+          <label for="n-medio"><span class="nivel-icon">🟡</span><span class="nivel-name">Medio</span><span class="nivel-desc">Razonamiento</span></label>
         </div>
         <div class="nivel-btn">
           <input type="radio" name="nivel" id="n-dificil" value="dificil">
-          <label for="n-dificil">
-            <span class="nivel-icon">🔴</span>
-            <span class="nivel-name">Difícil</span>
-            <span class="nivel-desc">Alta exigencia</span>
-          </label>
+          <label for="n-dificil"><span class="nivel-icon">🔴</span><span class="nivel-name">Difícil</span><span class="nivel-desc">Alta exigencia</span></label>
         </div>
       </div>
 
-      <button class="btn-generar" onclick="generarPractica()">▶ GENERAR PRÁCTICA</button>
-      <div class="spinner" id="spinner">Generando práctica...</div>
+      <button class="btn-generar" onclick="generarPractica()">▶ GENERAR PRÁCTICA + SOLUCIONES</button>
+      <div class="spinner" id="spinner">Generando...</div>
 
       <div class="temas-info">
         <div class="tema-card" style="grid-column:1/3">
-          <h4>🔵 Principiante · 30 preguntas mixtas</h4>
+          <h4>🔵 Principiante · 30 preguntas al azar</h4>
           <ul>
-            <li>Operaciones con negativos · Fracciones negativas</li>
-            <li>Factorización básica · Multiplicación algebraica</li>
-            <li>Suma de expresiones algebraicas · Despejar x</li>
-            <li>Enunciados → expresiones algebraicas</li>
-            <li>MCD y MCM · Decimales · Divisibilidad · Ángulos notables</li>
+            <li>Operaciones con negativos · Fracciones negativas · Factorización</li>
+            <li>Suma de expresiones · Enunciados a álgebra · MCD/MCM</li>
+            <li>Decimales · Divisibilidad · Multiplicación algebraica · Despejar x · Ángulos notables</li>
           </ul>
         </div>
         <div class="tema-card">
           <h4>🟢🟡🔴 Razonamiento Matemático · 15 preg.</h4>
           <ul>
-            <li>Sucesiones</li>
-            <li>Razonamiento Lógico</li>
-            <li>Planteo de Ecuaciones</li>
-            <li>Fracciones</li>
+            <li>Sucesiones · Razonamiento Lógico</li>
+            <li>Planteo de Ecuaciones · Fracciones</li>
             <li>Tanto por ciento</li>
           </ul>
         </div>
@@ -299,15 +284,13 @@
           <ul>
             <li>Operaciones Algebraicas</li>
             <li>Suma de ángulos en el triángulo</li>
-            <li>Teorema de Pitágoras</li>
-            <li>Funciones Trigonométricas</li>
+            <li>Teorema de Pitágoras · Trigonometría</li>
           </ul>
         </div>
       </div>
     </div>
   </main>
-
-</div><!-- end screen-wrap -->
+</div><!-- screen-wrap -->
 
 
 <!-- ══ OVERLAY ══ -->
@@ -315,21 +298,20 @@
   <div class="preview-container">
 
     <div class="preview-actions">
-      <button class="btn-back"     onclick="cerrarPreview()">← VOLVER</button>
-      <button class="btn-download" onclick="descargarPractica()">⬇ DESCARGAR / IMPRIMIR</button>
-      <span class="preview-label" id="preview-meta-label"></span>
+      <button class="btn-back" onclick="cerrarPreview()">← VOLVER</button>
+      <button class="btn-download" onclick="window.print()">⬇ IMPRIMIR / GUARDAR PDF</button>
+      <span class="preview-label" id="preview-label"></span>
     </div>
 
-    <!-- HOJA IMPRIMIBLE -->
-    <div id="practica-sheet">
-
+    <!-- HOJA 1: PRÁCTICA -->
+    <div class="practica-sheet" id="sheet-practica">
       <div class="exam-header">
         <div class="exam-institution">Academia Charly Táctico</div>
         <div class="exam-title">Examen General de Práctica</div>
         <div class="exam-meta-row">
           <div class="exam-meta-item">
             <span class="exam-meta-label">Nivel</span>
-            <span id="sheet-nivel-badge" class="nivel-badge medio">MEDIO</span>
+            <span id="badge-nivel" class="nivel-badge medio">MEDIO</span>
           </div>
           <div class="exam-meta-item">
             <span class="exam-meta-label">Fecha</span>
@@ -337,167 +319,248 @@
           </div>
         </div>
       </div>
-
       <div class="alumno-fields">
-        <div>
-          <div class="field-label">Apellidos y Nombres</div>
-          <div class="field-line"></div>
-        </div>
-        <div>
-          <div class="field-label">Fecha</div>
-          <div class="field-line"></div>
-        </div>
+        <div><div class="field-label">Apellidos y Nombres</div><div class="field-line"></div></div>
+        <div><div class="field-label">Fecha</div><div class="field-line"></div></div>
       </div>
 
-      <!-- Sección Principiante (solo visible en ese nivel) -->
+      <!-- Sección principiante -->
       <div id="wrap-princ" style="display:none">
         <div class="seccion-header">
           <span>Matemática — Nivel Principiante</span>
-          <span class="seccion-pts" id="pts-princ">30 preguntas</span>
+          <span class="seccion-pts">30 preguntas</span>
         </div>
-        <div class="questions-cols" id="cols-princ"></div>
+        <table class="q-table"><tbody><tr>
+          <td id="col-princ-L"></td>
+          <td id="col-princ-R"></td>
+        </tr></tbody></table>
       </div>
 
-      <!-- Secciones Fácil/Medio/Difícil -->
+      <!-- Secciones normales -->
       <div id="wrap-normal">
         <div class="seccion-header">
           <span>SECCIÓN I — Razonamiento Matemático</span>
           <span class="seccion-pts">15 preguntas</span>
         </div>
-        <div class="questions-cols" id="cols-rm"></div>
+        <table class="q-table"><tbody><tr>
+          <td id="col-rm-L"></td>
+          <td id="col-rm-R"></td>
+        </tr></tbody></table>
 
         <div class="seccion-header">
           <span>SECCIÓN II — Matemáticas</span>
           <span class="seccion-pts">15 preguntas</span>
         </div>
-        <div class="questions-cols" id="cols-mat"></div>
+        <table class="q-table"><tbody><tr>
+          <td id="col-mat-L"></td>
+          <td id="col-mat-R"></td>
+        </tr></tbody></table>
+      </div>
+    </div><!-- sheet-practica -->
+
+    <!-- HOJA 2: SOLUCIONES (solo para el evaluador) -->
+    <div class="practica-sheet" id="sheet-soluciones">
+      <div class="exam-header">
+        <div class="exam-institution">Academia Charly Táctico — USO EXCLUSIVO DEL EVALUADOR</div>
+        <div class="exam-title">Hoja de Soluciones</div>
+        <div class="exam-meta-row">
+          <div class="exam-meta-item">
+            <span class="exam-meta-label">Nivel</span>
+            <span id="badge-nivel-sol" class="nivel-badge medio">MEDIO</span>
+          </div>
+          <div class="exam-meta-item">
+            <span class="exam-meta-label">Fecha</span>
+            <span id="sheet-fecha-sol">—</span>
+          </div>
+        </div>
       </div>
 
-    </div><!-- #practica-sheet -->
-  </div>
-</div>
+      <p class="sol-header-note" style="margin-top:6px;">
+        Esta hoja contiene las respuestas correctas y la explicación de cada pregunta.
+      </p>
+
+      <!-- Sección principiante sol -->
+      <div id="wrap-princ-sol" style="display:none">
+        <div class="seccion-header">
+          <span>Soluciones — Nivel Principiante</span>
+          <span class="seccion-pts">30 preguntas</span>
+        </div>
+        <table class="sol-table"><tbody><tr>
+          <td id="sol-princ-L"></td>
+          <td id="sol-princ-R"></td>
+        </tr></tbody></table>
+      </div>
+
+      <!-- Sección normal sol -->
+      <div id="wrap-normal-sol">
+        <div class="seccion-header">
+          <span>SECCIÓN I — Razonamiento Matemático</span>
+          <span class="seccion-pts">15 preguntas</span>
+        </div>
+        <table class="sol-table"><tbody><tr>
+          <td id="sol-rm-L"></td>
+          <td id="sol-rm-R"></td>
+        </tr></tbody></table>
+
+        <div class="seccion-header">
+          <span>SECCIÓN II — Matemáticas</span>
+          <span class="seccion-pts">15 preguntas</span>
+        </div>
+        <table class="sol-table"><tbody><tr>
+          <td id="sol-mat-L"></td>
+          <td id="sol-mat-R"></td>
+        </tr></tbody></table>
+      </div>
+    </div><!-- sheet-soluciones -->
+
+  </div><!-- preview-container -->
+</div><!-- preview-overlay -->
 
 
 <script>
 /* ══ UTILIDADES ══ */
-function shuffle(arr) {
-  const a = [...arr];
-  for (let i = a.length-1; i > 0; i--) {
-    const j = Math.floor(Math.random()*(i+1));
-    [a[i],a[j]] = [a[j],a[i]];
-  }
+function shuffle(arr){
+  const a=[...arr];
+  for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}
   return a;
 }
-
-function distribuir(total, n) {
-  const base = Math.floor(total/n), extra = total%n;
-  return Array.from({length:n}, (_,i) => base + (i<extra?1:0));
+function distribuir(total,n){
+  const base=Math.floor(total/n),extra=total%n;
+  return Array.from({length:n},(_,i)=>base+(i<extra?1:0));
+}
+function elegir(key,nivel,cant){
+  const pool=(QUESTIONS_DB[key]||[]).filter(q=>q.nivel===nivel);
+  return shuffle(pool).slice(0,cant);
+}
+function elegirPrinc(key,cant){
+  return shuffle(QUESTIONS_DB[key]||[]).slice(0,cant);
 }
 
-// Saca `cantidad` preguntas del subtema `key` con el nivel indicado
-function elegir(key, nivel, cantidad) {
-  const pool = (QUESTIONS_DB[key] || []).filter(q => q.nivel === nivel);
-  return shuffle(pool).slice(0, cantidad);
-}
-
-// Para principiante no filtra por nivel (ya todas son principiante)
-function elegirPrincipiante(key, cantidad) {
-  return shuffle(QUESTIONS_DB[key] || []).slice(0, cantidad);
-}
-
-function renderPregunta(q, numero) {
-  const alts = q.alternativas.map(a => `<li>${a}</li>`).join('');
-  return `<div class="question-item">
+/* ══ RENDER DE PREGUNTA ══ */
+function htmlPregunta(q,num){
+  const alts=q.alternativas.map(a=>`<li>${a}</li>`).join('');
+  return `<div class="q-item">
     <div class="q-subtema">${q.subtema}</div>
-    <div class="q-enunciado"><span class="q-number">${numero}.</span> ${q.enunciado}</div>
-    <ul class="q-alternativas">${alts}</ul>
+    <div class="q-enunciado"><span class="q-num">${num}.</span> ${q.enunciado}</div>
+    <ul class="q-alts">${alts}</ul>
   </div>`;
 }
 
-/* ══ GENERAR ══ */
-function generarPractica() {
-  const nivel = document.querySelector('input[name="nivel"]:checked')?.value || 'medio';
-  document.getElementById('spinner').classList.add('active');
-
-  setTimeout(() => {
-    try {
-
-      const esPrincipiante = nivel === 'principiante';
-      document.getElementById('wrap-princ').style.display  = esPrincipiante ? '' : 'none';
-      document.getElementById('wrap-normal').style.display = esPrincipiante ? 'none' : '';
-
-      if (esPrincipiante) {
-        /* ── Principiante: 30 preguntas de 10 subtemas ── */
-        const subs  = CONFIG.principiante.subtemas;          // array de {key, label}
-        const dist  = distribuir(30, subs.length);           // ej. [3,3,3,3,3,3,3,3,3,3]
-        let pregs = [];
-        subs.forEach((s, i) => {
-          pregs.push(...elegirPrincipiante(s.key, dist[i]));
-        });
-        pregs = shuffle(pregs);
-        document.getElementById('cols-princ').innerHTML = pregs.map((q,i) => renderPregunta(q,i+1)).join('');
-
-      } else {
-        /* ── Fácil / Medio / Difícil ── */
-
-        // Razonamiento Matemático
-        const subsRM = CONFIG.razonamientoMatematico.subtemas;
-        const distRM = distribuir(15, subsRM.length);
-        let pregsRM = [];
-        subsRM.forEach((s, i) => pregsRM.push(...elegir(s.key, nivel, distRM[i])));
-        pregsRM = shuffle(pregsRM);
-
-        // Matemáticas
-        const subsMat = CONFIG.matematicas.subtemas;
-        const distMat = distribuir(15, subsMat.length);
-        let pregsMat = [];
-        subsMat.forEach((s, i) => pregsMat.push(...elegir(s.key, nivel, distMat[i])));
-        pregsMat = shuffle(pregsMat);
-
-        document.getElementById('cols-rm').innerHTML  = pregsRM.map((q,i) => renderPregunta(q,i+1)).join('');
-        document.getElementById('cols-mat').innerHTML = pregsMat.map((q,i) => renderPregunta(q,i+16)).join('');
-      }
-
-      /* Badge y fecha */
-      const badge = document.getElementById('sheet-nivel-badge');
-      badge.textContent = nivel.toUpperCase();
-      badge.className   = `nivel-badge ${nivel}`;
-
-      const fecha = new Date().toLocaleDateString('es-PE',{year:'numeric',month:'long',day:'numeric'});
-      document.getElementById('sheet-fecha').textContent = fecha;
-      document.getElementById('preview-meta-label').textContent =
-        `Nivel: ${nivel.toUpperCase()} · ${esPrincipiante?30:30} preguntas · ${fecha}`;
-
-      /* Mostrar overlay */
-      const overlay = document.getElementById('preview-overlay');
-      overlay.classList.add('active');
-      overlay.scrollTop = 0;
-      document.getElementById('spinner').classList.remove('active');
-
-      /* Renderizar LaTeX */
-      if (window.MathJax) {
-        MathJax.typesetPromise([document.getElementById('practica-sheet')])
-               .catch(e => console.warn('MathJax:', e));
-      }
-
-    } catch(err) {
-      console.error(err);
-      document.getElementById('spinner').classList.remove('active');
-      alert('Error al generar la práctica. Revise la consola.');
-    }
-  }, 300);
+/* ══ RENDER DE SOLUCIÓN ══ */
+function htmlSolucion(q,num){
+  return `<div class="sol-item">
+    <div><span class="sol-num">${num}.</span> <span class="sol-rta">${q.respuesta}</span> <span style="font-size:8pt;color:#555">${q.subtema}</span></div>
+    <div class="sol-text">${q.solucion||''}</div>
+  </div>`;
 }
 
-function cerrarPreview() {
+/*
+  Divide array en dos mitades y las pone en col izq y col der.
+  De esta forma la col izquierda siempre tiene las primeras N/2 preguntas
+  y la derecha las siguientes. Si hay número impar, izquierda tiene 1 más.
+*/
+function llenarColumnas(pregs, idL, idR, renderFn){
+  const mitad = Math.ceil(pregs.length/2);
+  const izq = pregs.slice(0, mitad);
+  const der = pregs.slice(mitad);
+  document.getElementById(idL).innerHTML = izq.map((q,i)=>renderFn(q, i+1)).join('');
+  // Los números de la columna derecha continúan desde donde terminó la izquierda
+  document.getElementById(idR).innerHTML = der.map((q,i)=>renderFn(q, mitad+i+1)).join('');
+}
+
+function llenarColumnasConOffset(pregs, idL, idR, offset, renderFn){
+  const mitad = Math.ceil(pregs.length/2);
+  const izq = pregs.slice(0, mitad);
+  const der = pregs.slice(mitad);
+  document.getElementById(idL).innerHTML = izq.map((q,i)=>renderFn(q, offset+i+1)).join('');
+  document.getElementById(idR).innerHTML = der.map((q,i)=>renderFn(q, offset+mitad+i+1)).join('');
+}
+
+/* ══ GENERAR ══ */
+function generarPractica(){
+  const nivel=document.querySelector('input[name="nivel"]:checked')?.value||'medio';
+  document.getElementById('spinner').classList.add('active');
+
+  setTimeout(()=>{
+    try{
+      const esP=(nivel==='principiante');
+
+      // Mostrar/ocultar secciones
+      document.getElementById('wrap-princ').style.display     = esP?'':'none';
+      document.getElementById('wrap-normal').style.display    = esP?'none':'';
+      document.getElementById('wrap-princ-sol').style.display = esP?'':'none';
+      document.getElementById('wrap-normal-sol').style.display= esP?'none':'';
+
+      if(esP){
+        /* PRINCIPIANTE: 30 preguntas totalmente al azar de todos los subtemas */
+        const subs=CONFIG.principiante.subtemas;
+        const dist=distribuir(30,subs.length);
+        let pregs=[];
+        subs.forEach((s,i)=>pregs.push(...elegirPrinc(s.key,dist[i])));
+        pregs=shuffle(pregs); // barajar mezcla todos los temas
+
+        llenarColumnas(pregs,'col-princ-L','col-princ-R',(q,n)=>htmlPregunta(q,n));
+        llenarColumnas(pregs,'sol-princ-L','sol-princ-R',(q,n)=>htmlSolucion(q,n));
+
+      }else{
+        /* FÁCIL / MEDIO / DIFÍCIL */
+        const subsRM=CONFIG.razonamientoMatematico.subtemas;
+        const distRM=distribuir(15,subsRM.length);
+        let pRM=[];
+        subsRM.forEach((s,i)=>pRM.push(...elegir(s.key,nivel,distRM[i])));
+        pRM=shuffle(pRM);
+
+        const subsMat=CONFIG.matematicas.subtemas;
+        const distMat=distribuir(15,subsMat.length);
+        let pMat=[];
+        subsMat.forEach((s,i)=>pMat.push(...elegir(s.key,nivel,distMat[i])));
+        pMat=shuffle(pMat);
+
+        // Práctica
+        llenarColumnas(pRM, 'col-rm-L','col-rm-R', (q,n)=>htmlPregunta(q,n));
+        llenarColumnasConOffset(pMat,'col-mat-L','col-mat-R',15,(q,n)=>htmlPregunta(q,n));
+
+        // Soluciones
+        llenarColumnas(pRM, 'sol-rm-L','sol-rm-R', (q,n)=>htmlSolucion(q,n));
+        llenarColumnasConOffset(pMat,'sol-mat-L','sol-mat-R',15,(q,n)=>htmlSolucion(q,n));
+      }
+
+      // Badges y fecha
+      const fecha=new Date().toLocaleDateString('es-PE',{year:'numeric',month:'long',day:'numeric'});
+      ['badge-nivel','badge-nivel-sol'].forEach(id=>{
+        const el=document.getElementById(id);
+        el.textContent=nivel.toUpperCase(); el.className=`nivel-badge ${nivel}`;
+      });
+      document.getElementById('sheet-fecha').textContent=fecha;
+      document.getElementById('sheet-fecha-sol').textContent=fecha;
+      document.getElementById('preview-label').textContent=`Nivel: ${nivel.toUpperCase()} · ${fecha}`;
+
+      // Mostrar overlay
+      const ov=document.getElementById('preview-overlay');
+      ov.classList.add('active'); ov.scrollTop=0;
+      document.getElementById('spinner').classList.remove('active');
+
+      // MathJax
+      if(window.MathJax){
+        MathJax.typesetPromise([
+          document.getElementById('sheet-practica'),
+          document.getElementById('sheet-soluciones')
+        ]).catch(e=>console.warn('MathJax:',e));
+      }
+
+    }catch(err){
+      console.error(err);
+      document.getElementById('spinner').classList.remove('active');
+      alert('Error al generar la práctica: '+err.message);
+    }
+  },300);
+}
+
+function cerrarPreview(){
   document.getElementById('preview-overlay').classList.remove('active');
 }
 
-function descargarPractica() {
-  window.print();
-}
-
-document.addEventListener('keydown', e => { if(e.key==='Escape') cerrarPreview(); });
+document.addEventListener('keydown',e=>{if(e.key==='Escape')cerrarPreview();});
 </script>
-
 </body>
 </html>
