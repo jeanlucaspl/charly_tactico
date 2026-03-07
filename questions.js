@@ -1,743 +1,527 @@
 // ============================================================
-// BASE DE DATOS DE PREGUNTAS - CHARLY TÁCTICO
-// Formato: cada pregunta tiene texto LaTeX, tema, subtema y nivel
-// Niveles: "facil" | "medio" | "dificil"
+// BASE DE DATOS DE PREGUNTAS — CHARLY TÁCTICO
+// Niveles: "principiante" | "facil" | "medio" | "dificil"
 // ============================================================
 
 const QUESTIONS_DB = {
 
   // ══════════════════════════════════════════════════════════
-  // RAZONAMIENTO MATEMÁTICO
+  // SUBTEMAS NIVEL PRINCIPIANTE (banco propio)
+  // ══════════════════════════════════════════════════════════
+
+  operBasicasNeg: [
+    { id:"obn_p1", nivel:"principiante", tema:"Matemáticas", subtema:"Operaciones con negativos",
+      enunciado:"Calcule: $(-3) + (-5)$",
+      alternativas:["A) $-8$","B) $8$","C) $-2$","D) $2$"], respuesta:"A" },
+    { id:"obn_p2", nivel:"principiante", tema:"Matemáticas", subtema:"Operaciones con negativos",
+      enunciado:"Calcule: $(-4) \\times (-6)$",
+      alternativas:["A) $-24$","B) $24$","C) $-10$","D) $10$"], respuesta:"B" },
+    { id:"obn_p3", nivel:"principiante", tema:"Matemáticas", subtema:"Operaciones con negativos",
+      enunciado:"Calcule: $8 - (-3)$",
+      alternativas:["A) $5$","B) $11$","C) $-5$","D) $-11$"], respuesta:"B" },
+    { id:"obn_p4", nivel:"principiante", tema:"Matemáticas", subtema:"Operaciones con negativos",
+      enunciado:"Calcule: $\\dfrac{-12}{4}$",
+      alternativas:["A) $3$","B) $-3$","C) $-8$","D) $8$"], respuesta:"B" },
+    { id:"obn_p5", nivel:"principiante", tema:"Matemáticas", subtema:"Operaciones con negativos",
+      enunciado:"¿Cuánto es $(-2)^3$?",
+      alternativas:["A) $6$","B) $-6$","C) $-8$","D) $8$"], respuesta:"C" },
+  ],
+
+  fraccionesNeg: [
+    { id:"fn_p1", nivel:"principiante", tema:"Matemáticas", subtema:"Fracciones negativas",
+      enunciado:"Calcule: $\\dfrac{-1}{2} + \\dfrac{-1}{4}$",
+      alternativas:["A) $\\dfrac{-3}{4}$","B) $\\dfrac{3}{4}$","C) $\\dfrac{-1}{6}$","D) $\\dfrac{1}{6}$"], respuesta:"A" },
+    { id:"fn_p2", nivel:"principiante", tema:"Matemáticas", subtema:"Fracciones negativas",
+      enunciado:"Calcule: $\\dfrac{-2}{3} \\times \\dfrac{3}{4}$",
+      alternativas:["A) $\\dfrac{1}{2}$","B) $\\dfrac{-1}{2}$","C) $\\dfrac{-6}{12}$","D) $\\dfrac{2}{1}$"], respuesta:"B" },
+    { id:"fn_p3", nivel:"principiante", tema:"Matemáticas", subtema:"Fracciones negativas",
+      enunciado:"Simplifique: $\\dfrac{-6}{-9}$",
+      alternativas:["A) $\\dfrac{-2}{3}$","B) $\\dfrac{2}{3}$","C) $\\dfrac{3}{2}$","D) $\\dfrac{-3}{2}$"], respuesta:"B" },
+    { id:"fn_p4", nivel:"principiante", tema:"Matemáticas", subtema:"Fracciones negativas",
+      enunciado:"Calcule: $\\dfrac{5}{6} - \\dfrac{3}{4}$",
+      alternativas:["A) $\\dfrac{2}{2}$","B) $\\dfrac{1}{12}$","C) $\\dfrac{-1}{12}$","D) $\\dfrac{2}{10}$"], respuesta:"B" },
+  ],
+
+  factorizacionBasica: [
+    { id:"fb_p1", nivel:"principiante", tema:"Matemáticas", subtema:"Factorización básica",
+      enunciado:"Factorice: $6x^2 + 9x$",
+      alternativas:["A) $3x(2x+3)$","B) $6x(x+9)$","C) $3(2x^2+9x)$","D) $9x(x+6)$"], respuesta:"A" },
+    { id:"fb_p2", nivel:"principiante", tema:"Matemáticas", subtema:"Factorización básica",
+      enunciado:"Factorice: $x^2 - 25$",
+      alternativas:["A) $(x-5)^2$","B) $(x+5)(x-5)$","C) $(x+25)(x-1)$","D) No factoriza"], respuesta:"B" },
+    { id:"fb_p3", nivel:"principiante", tema:"Matemáticas", subtema:"Factorización básica",
+      enunciado:"Factorice: $x^2 + 5x + 6$",
+      alternativas:["A) $(x+2)(x+3)$","B) $(x+1)(x+6)$","C) $(x+5)(x+1)$","D) $(x-2)(x-3)$"], respuesta:"A" },
+    { id:"fb_p4", nivel:"principiante", tema:"Matemáticas", subtema:"Factorización básica",
+      enunciado:"Factorice: $4a^2 - 12a$",
+      alternativas:["A) $4(a^2-3a)$","B) $4a(a-3)$","C) $2a(2a-6)$","D) $12a(a-1)$"], respuesta:"B" },
+    { id:"fb_p5", nivel:"principiante", tema:"Matemáticas", subtema:"Factorización básica",
+      enunciado:"Factorice: $x^2 - 6x + 9$",
+      alternativas:["A) $(x-3)^2$","B) $(x+3)^2$","C) $(x-9)(x+1)$","D) $(x-3)(x+3)$"], respuesta:"A" },
+  ],
+
+  sumaExpAlg: [
+    { id:"sea_p1", nivel:"principiante", tema:"Matemáticas", subtema:"Suma de expresiones algebraicas",
+      enunciado:"Simplifique: $5x + 3y - 2x + y$",
+      alternativas:["A) $3x+4y$","B) $7x+4y$","C) $3x+2y$","D) $7x+2y$"], respuesta:"A" },
+    { id:"sea_p2", nivel:"principiante", tema:"Matemáticas", subtema:"Suma de expresiones algebraicas",
+      enunciado:"Calcule: $(3a - 2b) + (a + 5b)$",
+      alternativas:["A) $4a+3b$","B) $4a-3b$","C) $2a+3b$","D) $2a-3b$"], respuesta:"A" },
+    { id:"sea_p3", nivel:"principiante", tema:"Matemáticas", subtema:"Suma de expresiones algebraicas",
+      enunciado:"Reste: $(5x^2 + 3x) - (2x^2 - x)$",
+      alternativas:["A) $3x^2+2x$","B) $3x^2+4x$","C) $7x^2+2x$","D) $3x^2-4x$"], respuesta:"B" },
+    { id:"sea_p4", nivel:"principiante", tema:"Matemáticas", subtema:"Suma de expresiones algebraicas",
+      enunciado:"Simplifique: $2a^2 - 3a + a^2 + 5a - 1$",
+      alternativas:["A) $3a^2+2a-1$","B) $3a^2-8a-1$","C) $a^2+2a-1$","D) $3a^2+2a+1$"], respuesta:"A" },
+  ],
+
+  enunciadosAlg: [
+    { id:"ea_p1", nivel:"principiante", tema:"Razonamiento Matemático", subtema:"Enunciados a expresiones",
+      enunciado:"«El triple de un número $n$ disminuido en $7$» se expresa como:",
+      alternativas:["A) $3n-7$","B) $7-3n$","C) $3(n-7)$","D) $3n+7$"], respuesta:"A" },
+    { id:"ea_p2", nivel:"principiante", tema:"Razonamiento Matemático", subtema:"Enunciados a expresiones",
+      enunciado:"«La suma de dos números consecutivos» con primer número $x$ es:",
+      alternativas:["A) $2x$","B) $x+(x+2)$","C) $x+(x+1)$","D) $2x+2$"], respuesta:"C" },
+    { id:"ea_p3", nivel:"principiante", tema:"Razonamiento Matemático", subtema:"Enunciados a expresiones",
+      enunciado:"«El doble del cuadrado de $a$ más $5$» se escribe:",
+      alternativas:["A) $2a+5$","B) $2a^2+5$","C) $(2a)^2+5$","D) $2(a+5)^2$"], respuesta:"B" },
+    { id:"ea_p4", nivel:"principiante", tema:"Razonamiento Matemático", subtema:"Enunciados a expresiones",
+      enunciado:"«El cociente de $m$ entre $4$, aumentado en $3$» es:",
+      alternativas:["A) $\\dfrac{m+3}{4}$","B) $\\dfrac{m}{4}+3$","C) $\\dfrac{m}{4+3}$","D) $4m+3$"], respuesta:"B" },
+    { id:"ea_p5", nivel:"principiante", tema:"Razonamiento Matemático", subtema:"Enunciados a expresiones",
+      enunciado:"Si un rectángulo tiene largo $l$ y ancho $a$, su perímetro es:",
+      alternativas:["A) $l \\cdot a$","B) $2l + 2a$","C) $l + a$","D) $4(l+a)$"], respuesta:"B" },
+  ],
+
+  mcdMcm: [
+    { id:"mm_p1", nivel:"principiante", tema:"Matemáticas", subtema:"MCD y MCM",
+      enunciado:"Halle el MCD de $12$ y $18$.",
+      alternativas:["A) $3$","B) $6$","C) $9$","D) $36$"], respuesta:"B" },
+    { id:"mm_p2", nivel:"principiante", tema:"Matemáticas", subtema:"MCD y MCM",
+      enunciado:"Halle el MCM de $4$ y $6$.",
+      alternativas:["A) $2$","B) $12$","C) $24$","D) $10$"], respuesta:"B" },
+    { id:"mm_p3", nivel:"principiante", tema:"Matemáticas", subtema:"MCD y MCM",
+      enunciado:"El MCD de $24$, $36$ y $48$ es:",
+      alternativas:["A) $6$","B) $8$","C) $12$","D) $24$"], respuesta:"C" },
+    { id:"mm_p4", nivel:"principiante", tema:"Matemáticas", subtema:"MCD y MCM",
+      enunciado:"El MCM de $3$, $4$ y $5$ es:",
+      alternativas:["A) $12$","B) $20$","C) $60$","D) $30$"], respuesta:"C" },
+  ],
+
+  decimales: [
+    { id:"dec_p1", nivel:"principiante", tema:"Matemáticas", subtema:"Cálculo con decimales",
+      enunciado:"Calcule: $3{,}5 + 1{,}25$",
+      alternativas:["A) $4{,}75$","B) $4{,}65$","C) $5{,}75$","D) $4{,}50$"], respuesta:"A" },
+    { id:"dec_p2", nivel:"principiante", tema:"Matemáticas", subtema:"Cálculo con decimales",
+      enunciado:"Calcule: $7{,}2 \\times 0{,}5$",
+      alternativas:["A) $3{,}6$","B) $36$","C) $0{,}36$","D) $3{,}06$"], respuesta:"A" },
+    { id:"dec_p3", nivel:"principiante", tema:"Matemáticas", subtema:"Cálculo con decimales",
+      enunciado:"Calcule: $8{,}4 \\div 0{,}4$",
+      alternativas:["A) $2{,}1$","B) $21$","C) $0{,}21$","D) $3{,}36$"], respuesta:"B" },
+    { id:"dec_p4", nivel:"principiante", tema:"Matemáticas", subtema:"Cálculo con decimales",
+      enunciado:"Convierta $\\dfrac{3}{8}$ a decimal.",
+      alternativas:["A) $0{,}38$","B) $0{,}375$","C) $0{,}25$","D) $0{,}333\\ldots$"], respuesta:"B" },
+  ],
+
+  divisibilidad: [
+    { id:"div_p1", nivel:"principiante", tema:"Matemáticas", subtema:"Divisibilidad básica",
+      enunciado:"¿Cuál de estos números es divisible por $3$?",
+      alternativas:["A) $124$","B) $135$","C) $142$","D) $151$"], respuesta:"B" },
+    { id:"div_p2", nivel:"principiante", tema:"Matemáticas", subtema:"Divisibilidad básica",
+      enunciado:"Un número es divisible por $6$ si es divisible por:",
+      alternativas:["A) $2$ y $4$","B) $3$ y $4$","C) $2$ y $3$","D) Solo por $6$"], respuesta:"C" },
+    { id:"div_p3", nivel:"principiante", tema:"Matemáticas", subtema:"Divisibilidad básica",
+      enunciado:"¿Es $2\\,340$ divisible por $9$?",
+      alternativas:["A) Sí, porque la suma de dígitos es $9$","B) No","C) Solo por $3$","D) Depende"], respuesta:"A" },
+    { id:"div_p4", nivel:"principiante", tema:"Matemáticas", subtema:"Divisibilidad básica",
+      enunciado:"¿Cuántos divisores tiene el número $12$?",
+      alternativas:["A) $4$","B) $5$","C) $6$","D) $3$"], respuesta:"C" },
+  ],
+
+  multExpAlg: [
+    { id:"mea_p1", nivel:"principiante", tema:"Matemáticas", subtema:"Multiplicación algebraica",
+      enunciado:"Expanda: $2x(3x - 5)$",
+      alternativas:["A) $6x^2-10x$","B) $6x-10x$","C) $5x^2-10x$","D) $6x^2+10x$"], respuesta:"A" },
+    { id:"mea_p2", nivel:"principiante", tema:"Matemáticas", subtema:"Multiplicación algebraica",
+      enunciado:"Expanda: $(x+4)(x-2)$",
+      alternativas:["A) $x^2+2x-8$","B) $x^2-2x-8$","C) $x^2+2x+8$","D) $x^2-8$"], respuesta:"A" },
+    { id:"mea_p3", nivel:"principiante", tema:"Matemáticas", subtema:"Multiplicación algebraica",
+      enunciado:"Calcule: $(2a)^2 \\cdot 3a$",
+      alternativas:["A) $6a^3$","B) $12a^3$","C) $6a^2$","D) $12a^2$"], respuesta:"B" },
+    { id:"mea_p4", nivel:"principiante", tema:"Matemáticas", subtema:"Multiplicación algebraica",
+      enunciado:"Expanda: $(3x-1)^2$",
+      alternativas:["A) $9x^2-1$","B) $9x^2-3x+1$","C) $9x^2-6x+1$","D) $9x^2+6x+1$"], respuesta:"C" },
+  ],
+
+  despejarX: [
+    { id:"dx_p1", nivel:"principiante", tema:"Matemáticas", subtema:"Despejar x",
+      enunciado:"Despeje $x$: $\\;3x + 7 = 16$",
+      alternativas:["A) $x=2$","B) $x=3$","C) $x=4$","D) $x=5$"], respuesta:"B" },
+    { id:"dx_p2", nivel:"principiante", tema:"Matemáticas", subtema:"Despejar x",
+      enunciado:"Despeje $x$: $\\;2x - 5 = x + 3$",
+      alternativas:["A) $x=6$","B) $x=7$","C) $x=8$","D) $x=9$"], respuesta:"C" },
+    { id:"dx_p3", nivel:"principiante", tema:"Matemáticas", subtema:"Despejar x",
+      enunciado:"Despeje $x$: $\\;\\dfrac{x}{4} = 5$",
+      alternativas:["A) $x=9$","B) $x=20$","C) $x=1{,}25$","D) $x=40$"], respuesta:"B" },
+    { id:"dx_p4", nivel:"principiante", tema:"Matemáticas", subtema:"Despejar x",
+      enunciado:"Despeje $x$: $\\;5(x-2) = 15$",
+      alternativas:["A) $x=1$","B) $x=3$","C) $x=5$","D) $x=7$"], respuesta:"C" },
+    { id:"dx_p5", nivel:"principiante", tema:"Matemáticas", subtema:"Despejar x",
+      enunciado:"Despeje $x$: $\\;\\dfrac{2x+1}{3} = 3$",
+      alternativas:["A) $x=2$","B) $x=3$","C) $x=4$","D) $x=5$"], respuesta:"C" },
+  ],
+
+  angulosNotables: [
+    { id:"an_p1", nivel:"principiante", tema:"Matemáticas", subtema:"Ángulos notables",
+      enunciado:"¿Cuánto mide $\\sin(90°)$?",
+      alternativas:["A) $0$","B) $\\dfrac{1}{2}$","C) $1$","D) $\\dfrac{\\sqrt{2}}{2}$"], respuesta:"C" },
+    { id:"an_p2", nivel:"principiante", tema:"Matemáticas", subtema:"Ángulos notables",
+      enunciado:"¿Cuánto mide $\\cos(0°)$?",
+      alternativas:["A) $0$","B) $1$","C) $-1$","D) $\\dfrac{\\sqrt{3}}{2}$"], respuesta:"B" },
+    { id:"an_p3", nivel:"principiante", tema:"Matemáticas", subtema:"Ángulos notables",
+      enunciado:"¿Cuánto mide $\\tan(45°)$?",
+      alternativas:["A) $0$","B) $\\sqrt{3}$","C) $1$","D) $\\dfrac{1}{\\sqrt{2}}$"], respuesta:"C" },
+    { id:"an_p4", nivel:"principiante", tema:"Matemáticas", subtema:"Ángulos notables",
+      enunciado:"¿Cuánto mide $\\sin(30°)$?",
+      alternativas:["A) $\\dfrac{\\sqrt{3}}{2}$","B) $\\dfrac{1}{2}$","C) $\\dfrac{\\sqrt{2}}{2}$","D) $1$"], respuesta:"B" },
+    { id:"an_p5", nivel:"principiante", tema:"Matemáticas", subtema:"Ángulos notables",
+      enunciado:"¿Cuánto mide $\\cos(60°)$?",
+      alternativas:["A) $\\dfrac{\\sqrt{3}}{2}$","B) $0$","C) $\\dfrac{1}{2}$","D) $1$"], respuesta:"C" },
+  ],
+
+  // ══════════════════════════════════════════════════════════
+  // RAZONAMIENTO MATEMÁTICO — niveles facil/medio/dificil
   // ══════════════════════════════════════════════════════════
 
   sucesiones: [
-    // FÁCIL
-    {
-      id: "suc_f1",
-      nivel: "facil",
-      tema: "Razonamiento Matemático",
-      subtema: "Sucesiones",
-      enunciado: "Halle el término que falta en la sucesión: $2, 4, 6, 8, \\_, 12$",
-      alternativas: ["A) 9", "B) 10", "C) 11", "D) 7"],
-      respuesta: "B"
-    },
-    {
-      id: "suc_f2",
-      nivel: "facil",
-      tema: "Razonamiento Matemático",
-      subtema: "Sucesiones",
-      enunciado: "Continúe la serie: $1, 3, 9, 27, \\_$",
-      alternativas: ["A) 54", "B) 81", "C) 63", "D) 72"],
-      respuesta: "B"
-    },
-    {
-      id: "suc_f3",
-      nivel: "facil",
-      tema: "Razonamiento Matemático",
-      subtema: "Sucesiones",
-      enunciado: "¿Cuál es el siguiente número? $5, 10, 15, 20, \\_$",
-      alternativas: ["A) 24", "B) 30", "C) 25", "D) 28"],
-      respuesta: "C"
-    },
-    // MEDIO
-    {
-      id: "suc_m1",
-      nivel: "medio",
-      tema: "Razonamiento Matemático",
-      subtema: "Sucesiones",
-      enunciado: "Halle el término faltante: $2, 6, 12, 20, 30, \\_$",
-      alternativas: ["A) 40", "B) 42", "C) 44", "D) 38"],
-      respuesta: "B"
-    },
-    {
-      id: "suc_m2",
-      nivel: "medio",
-      tema: "Razonamiento Matemático",
-      subtema: "Sucesiones",
-      enunciado: "En la sucesión $1, 1, 2, 3, 5, 8, 13, \\_$, el término siguiente es:",
-      alternativas: ["A) 18", "B) 19", "C) 21", "D) 20"],
-      respuesta: "C"
-    },
-    {
-      id: "suc_m3",
-      nivel: "medio",
-      tema: "Razonamiento Matemático",
-      subtema: "Sucesiones",
-      enunciado: "Determine el valor de $x$: $\\quad 3, 7, 13, 21, x, 43$",
-      alternativas: ["A) 29", "B) 31", "C) 33", "D) 35"],
-      respuesta: "B"
-    },
-    // DIFÍCIL
-    {
-      id: "suc_d1",
-      nivel: "dificil",
-      tema: "Razonamiento Matemático",
-      subtema: "Sucesiones",
-      enunciado: "Halle el término que falta: $\\dfrac{1}{2},\\; \\dfrac{2}{3},\\; \\dfrac{3}{5},\\; \\dfrac{5}{8},\\; \\_$",
-      alternativas: ["A) $\\dfrac{8}{13}$", "B) $\\dfrac{7}{11}$", "C) $\\dfrac{6}{10}$", "D) $\\dfrac{9}{14}$"],
-      respuesta: "A"
-    },
-    {
-      id: "suc_d2",
-      nivel: "dificil",
-      tema: "Razonamiento Matemático",
-      subtema: "Sucesiones",
-      enunciado: "Si la sucesión cumple $a_n = a_{n-1} + 3n - 1$ y $a_1 = 2$, ¿cuánto vale $a_4$?",
-      alternativas: ["A) 30", "B) 28", "C) 32", "D) 26"],
-      respuesta: "A"
-    },
+    { id:"suc_f1", nivel:"facil", tema:"Razonamiento Matemático", subtema:"Sucesiones",
+      enunciado:"Halle el término faltante: $2, 4, 6, 8, \\_, 12$",
+      alternativas:["A) 9","B) 10","C) 11","D) 7"], respuesta:"B" },
+    { id:"suc_f2", nivel:"facil", tema:"Razonamiento Matemático", subtema:"Sucesiones",
+      enunciado:"Continúe la serie: $1, 3, 9, 27, \\_$",
+      alternativas:["A) 54","B) 81","C) 63","D) 72"], respuesta:"B" },
+    { id:"suc_f3", nivel:"facil", tema:"Razonamiento Matemático", subtema:"Sucesiones",
+      enunciado:"¿Cuál es el siguiente? $5, 10, 15, 20, \\_$",
+      alternativas:["A) 24","B) 30","C) 25","D) 28"], respuesta:"C" },
+    { id:"suc_m1", nivel:"medio", tema:"Razonamiento Matemático", subtema:"Sucesiones",
+      enunciado:"Halle el término faltante: $2, 6, 12, 20, 30, \\_$",
+      alternativas:["A) 40","B) 42","C) 44","D) 38"], respuesta:"B" },
+    { id:"suc_m2", nivel:"medio", tema:"Razonamiento Matemático", subtema:"Sucesiones",
+      enunciado:"En la sucesión $1, 1, 2, 3, 5, 8, 13, \\_$, el siguiente es:",
+      alternativas:["A) 18","B) 19","C) 21","D) 20"], respuesta:"C" },
+    { id:"suc_m3", nivel:"medio", tema:"Razonamiento Matemático", subtema:"Sucesiones",
+      enunciado:"Determine $x$: $\\;3, 7, 13, 21, x, 43$",
+      alternativas:["A) 29","B) 31","C) 33","D) 35"], respuesta:"B" },
+    { id:"suc_d1", nivel:"dificil", tema:"Razonamiento Matemático", subtema:"Sucesiones",
+      enunciado:"Halle el término: $\\dfrac{1}{2},\\;\\dfrac{2}{3},\\;\\dfrac{3}{5},\\;\\dfrac{5}{8},\\;\\_$",
+      alternativas:["A) $\\dfrac{8}{13}$","B) $\\dfrac{7}{11}$","C) $\\dfrac{6}{10}$","D) $\\dfrac{9}{14}$"], respuesta:"A" },
+    { id:"suc_d2", nivel:"dificil", tema:"Razonamiento Matemático", subtema:"Sucesiones",
+      enunciado:"Si $a_n = a_{n-1}+3n-1$ y $a_1=2$, ¿cuánto vale $a_4$?",
+      alternativas:["A) 30","B) 28","C) 32","D) 26"], respuesta:"A" },
   ],
 
   razonamientoLogico: [
-    // FÁCIL
-    {
-      id: "rl_f1",
-      nivel: "facil",
-      tema: "Razonamiento Matemático",
-      subtema: "Razonamiento Lógico",
-      enunciado: "Si $p \\Rightarrow q$ es verdadero y $p$ es verdadero, entonces $q$ es:",
-      alternativas: ["A) Falso", "B) Verdadero", "C) Indeterminado", "D) Ninguna"],
-      respuesta: "B"
-    },
-    {
-      id: "rl_f2",
-      nivel: "facil",
-      tema: "Razonamiento Matemático",
-      subtema: "Razonamiento Lógico",
-      enunciado: "Todos los gatos son animales. Firulais es un gato. Por lo tanto:",
-      alternativas: ["A) Firulais no es animal", "B) Firulais es animal", "C) Algunos gatos no son animales", "D) Ninguna"],
-      respuesta: "B"
-    },
-    {
-      id: "rl_f3",
-      nivel: "facil",
-      tema: "Razonamiento Matemático",
-      subtema: "Razonamiento Lógico",
-      enunciado: "La negación de «Todos los policías son honestos» es:",
-      alternativas: ["A) Ningún policía es honesto", "B) Algún policía no es honesto", "C) Todos son honestos", "D) Algunos son honestos"],
-      respuesta: "B"
-    },
-    // MEDIO
-    {
-      id: "rl_m1",
-      nivel: "medio",
-      tema: "Razonamiento Matemático",
-      subtema: "Razonamiento Lógico",
-      enunciado: "Si $\\neg p \\vee q$ es falso, entonces podemos afirmar que:",
-      alternativas: ["A) $p$ es falso y $q$ es verdadero", "B) $p$ es verdadero y $q$ es falso", "C) Ambos son verdaderos", "D) Ambos son falsos"],
-      respuesta: "B"
-    },
-    {
-      id: "rl_m2",
-      nivel: "medio",
-      tema: "Razonamiento Matemático",
-      subtema: "Razonamiento Lógico",
-      enunciado: "¿Cuál es el contrarrecíproco de $p \\Rightarrow q$?",
-      alternativas: ["A) $q \\Rightarrow p$", "B) $\\neg p \\Rightarrow \\neg q$", "C) $\\neg q \\Rightarrow \\neg p$", "D) $\\neg p \\Rightarrow q$"],
-      respuesta: "C"
-    },
-    {
-      id: "rl_m3",
-      nivel: "medio",
-      tema: "Razonamiento Matemático",
-      subtema: "Razonamiento Lógico",
-      enunciado: "En un grupo, $A$ y $B$ siempre dicen la verdad, $C$ siempre miente. Si $C$ dice «$A$ es mentiroso», entonces:",
-      alternativas: ["A) $A$ miente", "B) $A$ dice la verdad", "C) No se puede saber", "D) $B$ miente"],
-      respuesta: "B"
-    },
-    // DIFÍCIL
-    {
-      id: "rl_d1",
-      nivel: "dificil",
-      tema: "Razonamiento Matemático",
-      subtema: "Razonamiento Lógico",
-      enunciado: "Dado: $[(p \\wedge q) \\Rightarrow r] \\wedge [\\neg r]$, ¿qué se puede concluir?",
-      alternativas: ["A) $p \\wedge q$", "B) $\\neg p \\vee \\neg q$", "C) $p \\vee q$", "D) $r$"],
-      respuesta: "B"
-    },
-    {
-      id: "rl_d2",
-      nivel: "dificil",
-      tema: "Razonamiento Matemático",
-      subtema: "Razonamiento Lógico",
-      enunciado: "¿Cuántas filas de la tabla de verdad hacen verdadera a $(p \\oplus q) \\wedge (q \\Rightarrow r)$, con $p,q,r \\in \\{V,F\\}$?",
-      alternativas: ["A) 2", "B) 3", "C) 4", "D) 5"],
-      respuesta: "B"
-    },
+    { id:"rl_f1", nivel:"facil", tema:"Razonamiento Matemático", subtema:"Razonamiento Lógico",
+      enunciado:"Si $p \\Rightarrow q$ es verdadero y $p$ es verdadero, entonces $q$ es:",
+      alternativas:["A) Falso","B) Verdadero","C) Indeterminado","D) Ninguna"], respuesta:"B" },
+    { id:"rl_f2", nivel:"facil", tema:"Razonamiento Matemático", subtema:"Razonamiento Lógico",
+      enunciado:"Todos los gatos son animales. Firulais es un gato. Por lo tanto:",
+      alternativas:["A) Firulais no es animal","B) Firulais es animal","C) Algunos gatos no son animales","D) Ninguna"], respuesta:"B" },
+    { id:"rl_f3", nivel:"facil", tema:"Razonamiento Matemático", subtema:"Razonamiento Lógico",
+      enunciado:"La negación de «Todos los policías son honestos» es:",
+      alternativas:["A) Ningún policía es honesto","B) Algún policía no es honesto","C) Todos son honestos","D) Algunos son honestos"], respuesta:"B" },
+    { id:"rl_m1", nivel:"medio", tema:"Razonamiento Matemático", subtema:"Razonamiento Lógico",
+      enunciado:"Si $\\neg p \\vee q$ es falso, podemos afirmar que:",
+      alternativas:["A) $p$ falso, $q$ verdadero","B) $p$ verdadero, $q$ falso","C) Ambos verdaderos","D) Ambos falsos"], respuesta:"B" },
+    { id:"rl_m2", nivel:"medio", tema:"Razonamiento Matemático", subtema:"Razonamiento Lógico",
+      enunciado:"¿Cuál es el contrarrecíproco de $p \\Rightarrow q$?",
+      alternativas:["A) $q \\Rightarrow p$","B) $\\neg p \\Rightarrow \\neg q$","C) $\\neg q \\Rightarrow \\neg p$","D) $\\neg p \\Rightarrow q$"], respuesta:"C" },
+    { id:"rl_m3", nivel:"medio", tema:"Razonamiento Matemático", subtema:"Razonamiento Lógico",
+      enunciado:"$A$ y $B$ dicen la verdad; $C$ siempre miente. Si $C$ dice «$A$ es mentiroso», entonces:",
+      alternativas:["A) $A$ miente","B) $A$ dice la verdad","C) No se sabe","D) $B$ miente"], respuesta:"B" },
+    { id:"rl_d1", nivel:"dificil", tema:"Razonamiento Matemático", subtema:"Razonamiento Lógico",
+      enunciado:"Dado $[(p \\wedge q) \\Rightarrow r] \\wedge [\\neg r]$, ¿qué se concluye?",
+      alternativas:["A) $p \\wedge q$","B) $\\neg p \\vee \\neg q$","C) $p \\vee q$","D) $r$"], respuesta:"B" },
+    { id:"rl_d2", nivel:"dificil", tema:"Razonamiento Matemático", subtema:"Razonamiento Lógico",
+      enunciado:"¿Cuántas filas hacen verdadera a $(p \\oplus q) \\wedge (q \\Rightarrow r)$?",
+      alternativas:["A) 2","B) 3","C) 4","D) 5"], respuesta:"B" },
   ],
 
   planteoEcuaciones: [
-    // FÁCIL
-    {
-      id: "pe_f1",
-      nivel: "facil",
-      tema: "Razonamiento Matemático",
-      subtema: "Planteo de Ecuaciones",
-      enunciado: "El doble de un número más $5$ es $17$. ¿Cuál es el número?",
-      alternativas: ["A) 5", "B) 6", "C) 7", "D) 8"],
-      respuesta: "B"
-    },
-    {
-      id: "pe_f2",
-      nivel: "facil",
-      tema: "Razonamiento Matemático",
-      subtema: "Planteo de Ecuaciones",
-      enunciado: "La suma de dos números consecutivos es $37$. ¿Cuál es el mayor?",
-      alternativas: ["A) 17", "B) 18", "C) 19", "D) 20"],
-      respuesta: "C"
-    },
-    {
-      id: "pe_f3",
-      nivel: "facil",
-      tema: "Razonamiento Matemático",
-      subtema: "Planteo de Ecuaciones",
-      enunciado: "Pedro tiene el triple de la edad de Luis. Juntos tienen $40$ años. ¿Cuántos años tiene Luis?",
-      alternativas: ["A) 8", "B) 10", "C) 12", "D) 15"],
-      respuesta: "B"
-    },
-    // MEDIO
-    {
-      id: "pe_m1",
-      nivel: "medio",
-      tema: "Razonamiento Matemático",
-      subtema: "Planteo de Ecuaciones",
-      enunciado: "Si a un número se le suma su tercera parte y se le resta $4$, se obtiene $20$. ¿Cuál es el número?",
-      alternativas: ["A) 15", "B) 18", "C) 21", "D) 24"],
-      respuesta: "B"
-    },
-    {
-      id: "pe_m2",
-      nivel: "medio",
-      tema: "Razonamiento Matemático",
-      subtema: "Planteo de Ecuaciones",
-      enunciado: "Un cajón tiene manzanas y naranjas. Hay el doble de manzanas que naranjas. Si en total hay $60$ frutas, ¿cuántas naranjas hay?",
-      alternativas: ["A) 15", "B) 20", "C) 25", "D) 30"],
-      respuesta: "B"
-    },
-    {
-      id: "pe_m3",
-      nivel: "medio",
-      tema: "Razonamiento Matemático",
-      subtema: "Planteo de Ecuaciones",
-      enunciado: "La diferencia entre el cuadrado de un número y $10$ veces dicho número es $24$. ¿Cuál es el número positivo?",
-      alternativas: ["A) 10", "B) 12", "C) 14", "D) 16"],
-      respuesta: "B"
-    },
-    // DIFÍCIL
-    {
-      id: "pe_d1",
-      nivel: "dificil",
-      tema: "Razonamiento Matemático",
-      subtema: "Planteo de Ecuaciones",
-      enunciado: "Dos canillas llenan un tanque: la primera en $4\\,h$ y la segunda en $6\\,h$. ¿En cuánto tiempo llenan el tanque juntas?",
-      alternativas: ["A) $\\dfrac{12}{5}\\,h$", "B) $2\\,h$", "C) $3\\,h$", "D) $\\dfrac{8}{3}\\,h$"],
-      respuesta: "A"
-    },
-    {
-      id: "pe_d2",
-      nivel: "dificil",
-      tema: "Razonamiento Matemático",
-      subtema: "Planteo de Ecuaciones",
-      enunciado: "Un tren sale de A a $80\\,km/h$ y otro de B a $60\\,km/h$ en sentido contrario. Si la distancia A–B es $420\\,km$, ¿en cuántas horas se encuentran?",
-      alternativas: ["A) 2 h", "B) 3 h", "C) 3,5 h", "D) 4 h"],
-      respuesta: "B"
-    },
+    { id:"pe_f1", nivel:"facil", tema:"Razonamiento Matemático", subtema:"Planteo de Ecuaciones",
+      enunciado:"El doble de un número más $5$ es $17$. ¿Cuál es el número?",
+      alternativas:["A) 5","B) 6","C) 7","D) 8"], respuesta:"B" },
+    { id:"pe_f2", nivel:"facil", tema:"Razonamiento Matemático", subtema:"Planteo de Ecuaciones",
+      enunciado:"La suma de dos números consecutivos es $37$. ¿Cuál es el mayor?",
+      alternativas:["A) 17","B) 18","C) 19","D) 20"], respuesta:"C" },
+    { id:"pe_f3", nivel:"facil", tema:"Razonamiento Matemático", subtema:"Planteo de Ecuaciones",
+      enunciado:"Pedro tiene el triple de la edad de Luis. Juntos tienen $40$ años. ¿Cuántos años tiene Luis?",
+      alternativas:["A) 8","B) 10","C) 12","D) 15"], respuesta:"B" },
+    { id:"pe_m1", nivel:"medio", tema:"Razonamiento Matemático", subtema:"Planteo de Ecuaciones",
+      enunciado:"A un número sumado su tercera parte y restado $4$, se obtiene $20$. ¿Cuál es el número?",
+      alternativas:["A) 15","B) 18","C) 21","D) 24"], respuesta:"B" },
+    { id:"pe_m2", nivel:"medio", tema:"Razonamiento Matemático", subtema:"Planteo de Ecuaciones",
+      enunciado:"Hay el doble de manzanas que naranjas. Total $60$ frutas. ¿Cuántas naranjas hay?",
+      alternativas:["A) 15","B) 20","C) 25","D) 30"], respuesta:"B" },
+    { id:"pe_m3", nivel:"medio", tema:"Razonamiento Matemático", subtema:"Planteo de Ecuaciones",
+      enunciado:"La diferencia entre el cuadrado de $n$ y $10n$ es $24$. ¿Cuál es $n$ positivo?",
+      alternativas:["A) 10","B) 12","C) 14","D) 16"], respuesta:"B" },
+    { id:"pe_d1", nivel:"dificil", tema:"Razonamiento Matemático", subtema:"Planteo de Ecuaciones",
+      enunciado:"Dos canillas llenan un tanque en $4\\,h$ y $6\\,h$ respectivamente. Juntas lo llenan en:",
+      alternativas:["A) $\\dfrac{12}{5}\\,h$","B) $2\\,h$","C) $3\\,h$","D) $\\dfrac{8}{3}\\,h$"], respuesta:"A" },
+    { id:"pe_d2", nivel:"dificil", tema:"Razonamiento Matemático", subtema:"Planteo de Ecuaciones",
+      enunciado:"Dos trenes salen en sentido contrario a $80$ y $60\\,km/h$. Distancia $420\\,km$. Se encuentran en:",
+      alternativas:["A) 2 h","B) 3 h","C) 3,5 h","D) 4 h"], respuesta:"B" },
   ],
 
   fracciones: [
-    // FÁCIL
-    {
-      id: "fr_f1",
-      nivel: "facil",
-      tema: "Razonamiento Matemático",
-      subtema: "Fracciones",
-      enunciado: "Calcule: $\\dfrac{1}{2} + \\dfrac{1}{4}$",
-      alternativas: ["A) $\\dfrac{1}{3}$", "B) $\\dfrac{3}{4}$", "C) $\\dfrac{2}{6}$", "D) $\\dfrac{1}{6}$"],
-      respuesta: "B"
-    },
-    {
-      id: "fr_f2",
-      nivel: "facil",
-      tema: "Razonamiento Matemático",
-      subtema: "Fracciones",
-      enunciado: "¿Cuánto es $\\dfrac{3}{5}$ de $25$?",
-      alternativas: ["A) 10", "B) 12", "C) 15", "D) 20"],
-      respuesta: "C"
-    },
-    {
-      id: "fr_f3",
-      nivel: "facil",
-      tema: "Razonamiento Matemático",
-      subtema: "Fracciones",
-      enunciado: "Simplifica: $\\dfrac{12}{18}$",
-      alternativas: ["A) $\\dfrac{2}{3}$", "B) $\\dfrac{3}{4}$", "C) $\\dfrac{1}{2}$", "D) $\\dfrac{4}{6}$"],
-      respuesta: "A"
-    },
-    // MEDIO
-    {
-      id: "fr_m1",
-      nivel: "medio",
-      tema: "Razonamiento Matemático",
-      subtema: "Fracciones",
-      enunciado: "Calcule: $\\dfrac{3}{4} \\div \\dfrac{9}{16}$",
-      alternativas: ["A) $\\dfrac{4}{3}$", "B) $\\dfrac{3}{4}$", "C) $\\dfrac{27}{64}$", "D) $\\dfrac{16}{12}$"],
-      respuesta: "A"
-    },
-    {
-      id: "fr_m2",
-      nivel: "medio",
-      tema: "Razonamiento Matemático",
-      subtema: "Fracciones",
-      enunciado: "Si $\\dfrac{2}{3}$ de un número es $18$, ¿cuánto es $\\dfrac{3}{4}$ de dicho número?",
-      alternativas: ["A) 18", "B) 20", "C) 24", "D) 27"],
-      respuesta: "A"
-    },
-    {
-      id: "fr_m3",
-      nivel: "medio",
-      tema: "Razonamiento Matemático",
-      subtema: "Fracciones",
-      enunciado: "Ordene de mayor a menor: $\\dfrac{5}{6},\\; \\dfrac{3}{4},\\; \\dfrac{7}{9}$",
-      alternativas: ["A) $\\dfrac{7}{9} > \\dfrac{5}{6} > \\dfrac{3}{4}$", "B) $\\dfrac{5}{6} > \\dfrac{7}{9} > \\dfrac{3}{4}$", "C) $\\dfrac{3}{4} > \\dfrac{5}{6} > \\dfrac{7}{9}$", "D) Todas iguales"],
-      respuesta: "B"
-    },
-    // DIFÍCIL
-    {
-      id: "fr_d1",
-      nivel: "dificil",
-      tema: "Razonamiento Matemático",
-      subtema: "Fracciones",
-      enunciado: "Simplifique: $\\dfrac{\\;\\dfrac{1}{2}+\\dfrac{1}{3}\\;}{\\;\\dfrac{1}{4}-\\dfrac{1}{6}\\;}$",
-      alternativas: ["A) $\\dfrac{10}{1}$", "B) $\\dfrac{5}{1}$", "C) $10$", "D) $5$"],
-      respuesta: "C"
-    },
-    {
-      id: "fr_d2",
-      nivel: "dificil",
-      tema: "Razonamiento Matemático",
-      subtema: "Fracciones",
-      enunciado: "Halle $x$: $\\;\\dfrac{x+1}{3} - \\dfrac{x-1}{4} = \\dfrac{5}{6}$",
-      alternativas: ["A) $x = 3$", "B) $x = 5$", "C) $x = 7$", "D) $x = 9$"],
-      respuesta: "B"
-    },
+    { id:"fr_f1", nivel:"facil", tema:"Razonamiento Matemático", subtema:"Fracciones",
+      enunciado:"Calcule: $\\dfrac{1}{2} + \\dfrac{1}{4}$",
+      alternativas:["A) $\\dfrac{1}{3}$","B) $\\dfrac{3}{4}$","C) $\\dfrac{2}{6}$","D) $\\dfrac{1}{6}$"], respuesta:"B" },
+    { id:"fr_f2", nivel:"facil", tema:"Razonamiento Matemático", subtema:"Fracciones",
+      enunciado:"¿Cuánto es $\\dfrac{3}{5}$ de $25$?",
+      alternativas:["A) 10","B) 12","C) 15","D) 20"], respuesta:"C" },
+    { id:"fr_f3", nivel:"facil", tema:"Razonamiento Matemático", subtema:"Fracciones",
+      enunciado:"Simplifique: $\\dfrac{12}{18}$",
+      alternativas:["A) $\\dfrac{2}{3}$","B) $\\dfrac{3}{4}$","C) $\\dfrac{1}{2}$","D) $\\dfrac{4}{6}$"], respuesta:"A" },
+    { id:"fr_m1", nivel:"medio", tema:"Razonamiento Matemático", subtema:"Fracciones",
+      enunciado:"Calcule: $\\dfrac{3}{4} \\div \\dfrac{9}{16}$",
+      alternativas:["A) $\\dfrac{4}{3}$","B) $\\dfrac{3}{4}$","C) $\\dfrac{27}{64}$","D) $\\dfrac{16}{12}$"], respuesta:"A" },
+    { id:"fr_m2", nivel:"medio", tema:"Razonamiento Matemático", subtema:"Fracciones",
+      enunciado:"Si $\\dfrac{2}{3}$ de un número es $18$, ¿cuánto es $\\dfrac{3}{4}$ de dicho número?",
+      alternativas:["A) 18","B) 20","C) 24","D) 27"], respuesta:"A" },
+    { id:"fr_m3", nivel:"medio", tema:"Razonamiento Matemático", subtema:"Fracciones",
+      enunciado:"Ordene de mayor a menor: $\\dfrac{5}{6},\\;\\dfrac{3}{4},\\;\\dfrac{7}{9}$",
+      alternativas:["A) $\\dfrac{7}{9}>\\dfrac{5}{6}>\\dfrac{3}{4}$","B) $\\dfrac{5}{6}>\\dfrac{7}{9}>\\dfrac{3}{4}$","C) $\\dfrac{3}{4}>\\dfrac{5}{6}>\\dfrac{7}{9}$","D) Todas iguales"], respuesta:"B" },
+    { id:"fr_d1", nivel:"dificil", tema:"Razonamiento Matemático", subtema:"Fracciones",
+      enunciado:"Simplifique: $\\dfrac{\\frac{1}{2}+\\frac{1}{3}}{\\frac{1}{4}-\\frac{1}{6}}$",
+      alternativas:["A) $10$","B) $5$","C) $\\dfrac{5}{2}$","D) $2$"], respuesta:"A" },
+    { id:"fr_d2", nivel:"dificil", tema:"Razonamiento Matemático", subtema:"Fracciones",
+      enunciado:"Halle $x$: $\\;\\dfrac{x+1}{3} - \\dfrac{x-1}{4} = \\dfrac{5}{6}$",
+      alternativas:["A) $3$","B) $5$","C) $7$","D) $9$"], respuesta:"B" },
   ],
 
   tantoPorCiento: [
-    // FÁCIL
-    {
-      id: "tp_f1",
-      nivel: "facil",
-      tema: "Razonamiento Matemático",
-      subtema: "Tanto por ciento",
-      enunciado: "¿Cuánto es el $20\\%$ de $150$?",
-      alternativas: ["A) 25", "B) 30", "C) 35", "D) 40"],
-      respuesta: "B"
-    },
-    {
-      id: "tp_f2",
-      nivel: "facil",
-      tema: "Razonamiento Matemático",
-      subtema: "Tanto por ciento",
-      enunciado: "Un artículo cuesta S/ $80$ y tiene $25\\%$ de descuento. ¿Cuánto se paga?",
-      alternativas: ["A) S/ 55", "B) S/ 60", "C) S/ 65", "D) S/ 70"],
-      respuesta: "B"
-    },
-    {
-      id: "tp_f3",
-      nivel: "facil",
-      tema: "Razonamiento Matemático",
-      subtema: "Tanto por ciento",
-      enunciado: "$15$ es el $\\_ \\%$ de $60$.",
-      alternativas: ["A) 20%", "B) 25%", "C) 30%", "D) 15%"],
-      respuesta: "B"
-    },
-    // MEDIO
-    {
-      id: "tp_m1",
-      nivel: "medio",
-      tema: "Razonamiento Matemático",
-      subtema: "Tanto por ciento",
-      enunciado: "El precio de un producto subió $10\\%$ y luego bajó $10\\%$. El precio final respecto al original es:",
-      alternativas: ["A) Igual", "B) $1\\%$ menor", "C) $1\\%$ mayor", "D) $2\\%$ menor"],
-      respuesta: "B"
-    },
-    {
-      id: "tp_m2",
-      nivel: "medio",
-      tema: "Razonamiento Matemático",
-      subtema: "Tanto por ciento",
-      enunciado: "En una prueba de $40$ preguntas, un alumno responde bien el $85\\%$. ¿Cuántas responde bien?",
-      alternativas: ["A) 32", "B) 34", "C) 36", "D) 38"],
-      respuesta: "B"
-    },
-    {
-      id: "tp_m3",
-      nivel: "medio",
-      tema: "Razonamiento Matemático",
-      subtema: "Tanto por ciento",
-      enunciado: "Si después de un aumento del $20\\%$ un sueldo es S/ $2\\,400$, ¿cuánto era antes?",
-      alternativas: ["A) S/ 1 800", "B) S/ 2 000", "C) S/ 2 100", "D) S/ 2 200"],
-      respuesta: "B"
-    },
-    // DIFÍCIL
-    {
-      id: "tp_d1",
-      nivel: "dificil",
-      tema: "Razonamiento Matemático",
-      subtema: "Tanto por ciento",
-      enunciado: "Una tienda aplica $30\\%$ de descuento y luego $20\\%$ adicional. ¿Cuál es el descuento total equivalente?",
-      alternativas: ["A) $44\\%$", "B) $50\\%$", "C) $46\\%$", "D) $48\\%$"],
-      respuesta: "A"
-    },
-    {
-      id: "tp_d2",
-      nivel: "dificil",
-      tema: "Razonamiento Matemático",
-      subtema: "Tanto por ciento",
-      enunciado: "Un capital de S/ $5\\,000$ se invierte al $8\\%$ anual compuesto. ¿Cuánto habrá al cabo de 2 años? Use $C_f = C_0(1+r)^n$.",
-      alternativas: ["A) S/ 5 700", "B) S/ 5 832", "C) S/ 5 850", "D) S/ 6 000"],
-      respuesta: "B"
-    },
+    { id:"tp_f1", nivel:"facil", tema:"Razonamiento Matemático", subtema:"Tanto por ciento",
+      enunciado:"¿Cuánto es el $20\\%$ de $150$?",
+      alternativas:["A) 25","B) 30","C) 35","D) 40"], respuesta:"B" },
+    { id:"tp_f2", nivel:"facil", tema:"Razonamiento Matemático", subtema:"Tanto por ciento",
+      enunciado:"Un artículo cuesta S/ $80$ con $25\\%$ de descuento. ¿Cuánto se paga?",
+      alternativas:["A) S/ 55","B) S/ 60","C) S/ 65","D) S/ 70"], respuesta:"B" },
+    { id:"tp_f3", nivel:"facil", tema:"Razonamiento Matemático", subtema:"Tanto por ciento",
+      enunciado:"$15$ es el $\\_\\%$ de $60$.",
+      alternativas:["A) 20%","B) 25%","C) 30%","D) 15%"], respuesta:"B" },
+    { id:"tp_m1", nivel:"medio", tema:"Razonamiento Matemático", subtema:"Tanto por ciento",
+      enunciado:"Un precio sube $10\\%$ y luego baja $10\\%$. Respecto al original es:",
+      alternativas:["A) Igual","B) $1\\%$ menor","C) $1\\%$ mayor","D) $2\\%$ menor"], respuesta:"B" },
+    { id:"tp_m2", nivel:"medio", tema:"Razonamiento Matemático", subtema:"Tanto por ciento",
+      enunciado:"En $40$ preguntas un alumno acierta el $85\\%$. ¿Cuántas acierta?",
+      alternativas:["A) 32","B) 34","C) 36","D) 38"], respuesta:"B" },
+    { id:"tp_m3", nivel:"medio", tema:"Razonamiento Matemático", subtema:"Tanto por ciento",
+      enunciado:"Tras un aumento del $20\\%$, un sueldo es S/ $2\\,400$. ¿Cuánto era antes?",
+      alternativas:["A) S/ 1 800","B) S/ 2 000","C) S/ 2 100","D) S/ 2 200"], respuesta:"B" },
+    { id:"tp_d1", nivel:"dificil", tema:"Razonamiento Matemático", subtema:"Tanto por ciento",
+      enunciado:"Descuento de $30\\%$ y luego $20\\%$ adicional. ¿Descuento total equivalente?",
+      alternativas:["A) $44\\%$","B) $50\\%$","C) $46\\%$","D) $48\\%$"], respuesta:"A" },
+    { id:"tp_d2", nivel:"dificil", tema:"Razonamiento Matemático", subtema:"Tanto por ciento",
+      enunciado:"S/ $5\\,000$ al $8\\%$ anual compuesto. Monto al cabo de $2$ años ($C_f=C_0(1+r)^n$):",
+      alternativas:["A) S/ 5 700","B) S/ 5 832","C) S/ 5 850","D) S/ 6 000"], respuesta:"B" },
   ],
 
   // ══════════════════════════════════════════════════════════
-  // MATEMÁTICAS
+  // MATEMÁTICAS — niveles facil/medio/dificil
   // ══════════════════════════════════════════════════════════
 
   operacionesAlgebraicas: [
-    // FÁCIL
-    {
-      id: "oa_f1",
-      nivel: "facil",
-      tema: "Matemáticas",
-      subtema: "Operaciones Algebraicas",
-      enunciado: "Simplifique: $3x + 5x - 2x$",
-      alternativas: ["A) $6x$", "B) $7x$", "C) $5x$", "D) $4x$"],
-      respuesta: "A"
-    },
-    {
-      id: "oa_f2",
-      nivel: "facil",
-      tema: "Matemáticas",
-      subtema: "Operaciones Algebraicas",
-      enunciado: "Expanda: $(x+3)^2$",
-      alternativas: ["A) $x^2+9$", "B) $x^2+6x+9$", "C) $x^2+3x+9$", "D) $x^2+6x+6$"],
-      respuesta: "B"
-    },
-    {
-      id: "oa_f3",
-      nivel: "facil",
-      tema: "Matemáticas",
-      subtema: "Operaciones Algebraicas",
-      enunciado: "Factorice: $x^2 - 9$",
-      alternativas: ["A) $(x-3)^2$", "B) $(x+3)(x-3)$", "C) $(x+9)(x-1)$", "D) No factoriza"],
-      respuesta: "B"
-    },
-    // MEDIO
-    {
-      id: "oa_m1",
-      nivel: "medio",
-      tema: "Matemáticas",
-      subtema: "Operaciones Algebraicas",
-      enunciado: "Si $P(x) = 2x^3 - 3x^2 + x - 5$, halle $P(2)$.",
-      alternativas: ["A) 1", "B) 3", "C) 5", "D) 7"],
-      respuesta: "A"
-    },
-    {
-      id: "oa_m2",
-      nivel: "medio",
-      tema: "Matemáticas",
-      subtema: "Operaciones Algebraicas",
-      enunciado: "Simplifique: $\\dfrac{x^2 - 4}{x+2}$, con $x \\neq -2$.",
-      alternativas: ["A) $x - 2$", "B) $x + 2$", "C) $x^2 - 2$", "D) $x - 4$"],
-      respuesta: "A"
-    },
-    {
-      id: "oa_m3",
-      nivel: "medio",
-      tema: "Matemáticas",
-      subtema: "Operaciones Algebraicas",
-      enunciado: "Resuelva: $2x^2 - 5x + 3 = 0$. Las raíces son:",
-      alternativas: ["A) $x=1$ y $x=\\dfrac{3}{2}$", "B) $x=2$ y $x=3$", "C) $x=-1$ y $x=-3$", "D) $x=0$ y $x=3$"],
-      respuesta: "A"
-    },
-    // DIFÍCIL
-    {
-      id: "oa_d1",
-      nivel: "dificil",
-      tema: "Matemáticas",
-      subtema: "Operaciones Algebraicas",
-      enunciado: "Si $x + \\dfrac{1}{x} = 3$, halle $x^2 + \\dfrac{1}{x^2}$.",
-      alternativas: ["A) 7", "B) 9", "C) 11", "D) 6"],
-      respuesta: "A"
-    },
-    {
-      id: "oa_d2",
-      nivel: "dificil",
-      tema: "Matemáticas",
-      subtema: "Operaciones Algebraicas",
-      enunciado: "Halle el residuo de dividir $P(x) = x^4 - 2x^3 + x - 1$ entre $(x-1)$.",
-      alternativas: ["A) $-1$", "B) $0$", "C) $1$", "D) $-2$"],
-      respuesta: "A"
-    },
+    { id:"oa_f1", nivel:"facil", tema:"Matemáticas", subtema:"Operaciones Algebraicas",
+      enunciado:"Simplifique: $3x + 5x - 2x$",
+      alternativas:["A) $6x$","B) $7x$","C) $5x$","D) $4x$"], respuesta:"A" },
+    { id:"oa_f2", nivel:"facil", tema:"Matemáticas", subtema:"Operaciones Algebraicas",
+      enunciado:"Expanda: $(x+3)^2$",
+      alternativas:["A) $x^2+9$","B) $x^2+6x+9$","C) $x^2+3x+9$","D) $x^2+6x+6$"], respuesta:"B" },
+    { id:"oa_f3", nivel:"facil", tema:"Matemáticas", subtema:"Operaciones Algebraicas",
+      enunciado:"Factorice: $x^2 - 9$",
+      alternativas:["A) $(x-3)^2$","B) $(x+3)(x-3)$","C) $(x+9)(x-1)$","D) No factoriza"], respuesta:"B" },
+    { id:"oa_m1", nivel:"medio", tema:"Matemáticas", subtema:"Operaciones Algebraicas",
+      enunciado:"Si $P(x)=2x^3-3x^2+x-5$, halle $P(2)$.",
+      alternativas:["A) 1","B) 3","C) 5","D) 7"], respuesta:"A" },
+    { id:"oa_m2", nivel:"medio", tema:"Matemáticas", subtema:"Operaciones Algebraicas",
+      enunciado:"Simplifique: $\\dfrac{x^2-4}{x+2}$, con $x \\neq -2$.",
+      alternativas:["A) $x-2$","B) $x+2$","C) $x^2-2$","D) $x-4$"], respuesta:"A" },
+    { id:"oa_m3", nivel:"medio", tema:"Matemáticas", subtema:"Operaciones Algebraicas",
+      enunciado:"Resuelva: $2x^2-5x+3=0$. Las raíces son:",
+      alternativas:["A) $x=1$ y $x=\\frac{3}{2}$","B) $x=2$ y $x=3$","C) $x=-1$ y $x=-3$","D) $x=0$ y $x=3$"], respuesta:"A" },
+    { id:"oa_d1", nivel:"dificil", tema:"Matemáticas", subtema:"Operaciones Algebraicas",
+      enunciado:"Si $x+\\dfrac{1}{x}=3$, halle $x^2+\\dfrac{1}{x^2}$.",
+      alternativas:["A) 7","B) 9","C) 11","D) 6"], respuesta:"A" },
+    { id:"oa_d2", nivel:"dificil", tema:"Matemáticas", subtema:"Operaciones Algebraicas",
+      enunciado:"Halle el residuo de dividir $P(x)=x^4-2x^3+x-1$ entre $(x-1)$.",
+      alternativas:["A) $-1$","B) $0$","C) $1$","D) $-2$"], respuesta:"A" },
   ],
 
   sumaAngulosTriangulo: [
-    // FÁCIL
-    {
-      id: "sat_f1",
-      nivel: "facil",
-      tema: "Matemáticas",
-      subtema: "Suma de ángulos en el triángulo",
-      enunciado: "En un triángulo, dos ángulos miden $60°$ y $80°$. ¿Cuánto mide el tercero?",
-      alternativas: ["A) $30°$", "B) $40°$", "C) $50°$", "D) $60°$"],
-      respuesta: "B"
-    },
-    {
-      id: "sat_f2",
-      nivel: "facil",
-      tema: "Matemáticas",
-      subtema: "Suma de ángulos en el triángulo",
-      enunciado: "Un triángulo equilátero tiene todos sus ángulos iguales a:",
-      alternativas: ["A) $45°$", "B) $60°$", "C) $90°$", "D) $120°$"],
-      respuesta: "B"
-    },
-    {
-      id: "sat_f3",
-      nivel: "facil",
-      tema: "Matemáticas",
-      subtema: "Suma de ángulos en el triángulo",
-      enunciado: "La suma de los ángulos interiores de cualquier triángulo es:",
-      alternativas: ["A) $90°$", "B) $270°$", "C) $360°$", "D) $180°$"],
-      respuesta: "D"
-    },
-    // MEDIO
-    {
-      id: "sat_m1",
-      nivel: "medio",
-      tema: "Matemáticas",
-      subtema: "Suma de ángulos en el triángulo",
-      enunciado: "En un triángulo, los ángulos están en razón $1:2:3$. ¿Cuánto mide el mayor?",
-      alternativas: ["A) $60°$", "B) $90°$", "C) $80°$", "D) $120°$"],
-      respuesta: "B"
-    },
-    {
-      id: "sat_m2",
-      nivel: "medio",
-      tema: "Matemáticas",
-      subtema: "Suma de ángulos en el triángulo",
-      enunciado: "El ángulo exterior de un triángulo mide $110°$. Si uno de los ángulos no adyacentes es $50°$, ¿cuánto mide el otro?",
-      alternativas: ["A) $50°$", "B) $60°$", "C) $70°$", "D) $40°$"],
-      respuesta: "B"
-    },
-    {
-      id: "sat_m3",
-      nivel: "medio",
-      tema: "Matemáticas",
-      subtema: "Suma de ángulos en el triángulo",
-      enunciado: "En el $\\triangle ABC$, $\\angle A = 2\\angle B$ y $\\angle C = \\angle B + 20°$. Halle $\\angle B$.",
-      alternativas: ["A) $30°$", "B) $40°$", "C) $50°$", "D) $60°$"],
-      respuesta: "B"
-    },
-    // DIFÍCIL
-    {
-      id: "sat_d1",
-      nivel: "dificil",
-      tema: "Matemáticas",
-      subtema: "Suma de ángulos en el triángulo",
-      enunciado: "En el $\\triangle ABC$, la bisectriz interior desde $A$ divide al lado $BC$ en segmentos $BD = 6$ y $DC = 9$. Si $AB = 8$, halle $AC$.",
-      alternativas: ["A) 10", "B) 12", "C) 14", "D) 16"],
-      respuesta: "B"
-    },
-    {
-      id: "sat_d2",
-      nivel: "dificil",
-      tema: "Matemáticas",
-      subtema: "Suma de ángulos en el triángulo",
-      enunciado: "En un triángulo isósceles, el ángulo del vértice mide $\\alpha$ y la base mide $b$. El ángulo de la base es: $\\beta = \\dfrac{180°-\\alpha}{2}$. Si $\\alpha = 36°$ y $b = 10$, ¿cuánto mide $\\beta$?",
-      alternativas: ["A) $72°$", "B) $54°$", "C) $60°$", "D) $36°$"],
-      respuesta: "A"
-    },
+    { id:"sat_f1", nivel:"facil", tema:"Matemáticas", subtema:"Suma de ángulos",
+      enunciado:"En un triángulo, dos ángulos miden $60°$ y $80°$. ¿El tercero mide?",
+      alternativas:["A) $30°$","B) $40°$","C) $50°$","D) $60°$"], respuesta:"B" },
+    { id:"sat_f2", nivel:"facil", tema:"Matemáticas", subtema:"Suma de ángulos",
+      enunciado:"Un triángulo equilátero tiene todos sus ángulos iguales a:",
+      alternativas:["A) $45°$","B) $60°$","C) $90°$","D) $120°$"], respuesta:"B" },
+    { id:"sat_f3", nivel:"facil", tema:"Matemáticas", subtema:"Suma de ángulos",
+      enunciado:"La suma de los ángulos interiores de cualquier triángulo es:",
+      alternativas:["A) $90°$","B) $270°$","C) $360°$","D) $180°$"], respuesta:"D" },
+    { id:"sat_m1", nivel:"medio", tema:"Matemáticas", subtema:"Suma de ángulos",
+      enunciado:"Los ángulos de un triángulo están en razón $1:2:3$. ¿El mayor mide?",
+      alternativas:["A) $60°$","B) $90°$","C) $80°$","D) $120°$"], respuesta:"B" },
+    { id:"sat_m2", nivel:"medio", tema:"Matemáticas", subtema:"Suma de ángulos",
+      enunciado:"Ángulo exterior $110°$. Uno de los no adyacentes es $50°$. ¿El otro mide?",
+      alternativas:["A) $50°$","B) $60°$","C) $70°$","D) $40°$"], respuesta:"B" },
+    { id:"sat_m3", nivel:"medio", tema:"Matemáticas", subtema:"Suma de ángulos",
+      enunciado:"En $\\triangle ABC$, $\\angle A=2\\angle B$ y $\\angle C=\\angle B+20°$. Halle $\\angle B$.",
+      alternativas:["A) $30°$","B) $40°$","C) $50°$","D) $60°$"], respuesta:"B" },
+    { id:"sat_d1", nivel:"dificil", tema:"Matemáticas", subtema:"Suma de ángulos",
+      enunciado:"La bisectriz desde $A$ divide $BC$ en $BD=6$ y $DC=9$. Si $AB=8$, halle $AC$.",
+      alternativas:["A) 10","B) 12","C) 14","D) 16"], respuesta:"B" },
+    { id:"sat_d2", nivel:"dificil", tema:"Matemáticas", subtema:"Suma de ángulos",
+      enunciado:"En isósceles con $\\alpha=36°$ (vértice), la base mide $\\beta = \\dfrac{180°-36°}{2} =$",
+      alternativas:["A) $72°$","B) $54°$","C) $60°$","D) $36°$"], respuesta:"A" },
   ],
 
   teoremaPitagoras: [
-    // FÁCIL
-    {
-      id: "tp2_f1",
-      nivel: "facil",
-      tema: "Matemáticas",
-      subtema: "Teorema de Pitágoras",
-      enunciado: "En un triángulo rectángulo con catetos $3$ y $4$, la hipotenusa mide:",
-      alternativas: ["A) 6", "B) 7", "C) 5", "D) 8"],
-      respuesta: "C"
-    },
-    {
-      id: "tp2_f2",
-      nivel: "facil",
-      tema: "Matemáticas",
-      subtema: "Teorema de Pitágoras",
-      enunciado: "Si la hipotenusa es $13$ y un cateto es $5$, el otro cateto mide:",
-      alternativas: ["A) 10", "B) 11", "C) 12", "D) 8"],
-      respuesta: "C"
-    },
-    {
-      id: "tp2_f3",
-      nivel: "facil",
-      tema: "Matemáticas",
-      subtema: "Teorema de Pitágoras",
-      enunciado: "El teorema de Pitágoras establece: $c^2 = a^2 + b^2$, donde $c$ es:",
-      alternativas: ["A) Un cateto", "B) La hipotenusa", "C) El perímetro", "D) El área"],
-      respuesta: "B"
-    },
-    // MEDIO
-    {
-      id: "tp2_m1",
-      nivel: "medio",
-      tema: "Matemáticas",
-      subtema: "Teorema de Pitágoras",
-      enunciado: "Una escalera de $10\\,m$ apoya su base a $6\\,m$ del muro. ¿A qué altura llega?",
-      alternativas: ["A) $6\\,m$", "B) $7\\,m$", "C) $8\\,m$", "D) $9\\,m$"],
-      respuesta: "C"
-    },
-    {
-      id: "tp2_m2",
-      nivel: "medio",
-      tema: "Matemáticas",
-      subtema: "Teorema de Pitágoras",
-      enunciado: "¿Forman triángulo rectángulo los lados $7, 24, 25$?",
-      alternativas: ["A) No, $7^2+24^2 \\neq 25^2$", "B) Sí, $7^2+24^2 = 25^2$", "C) No se puede saber", "D) Solo si es isósceles"],
-      respuesta: "B"
-    },
-    {
-      id: "tp2_m3",
-      nivel: "medio",
-      tema: "Matemáticas",
-      subtema: "Teorema de Pitágoras",
-      enunciado: "Halle la diagonal de un cuadrado de lado $5\\,cm$.",
-      alternativas: ["A) $5\\sqrt{2}\\,cm$", "B) $10\\,cm$", "C) $5\\sqrt{3}\\,cm$", "D) $25\\,cm$"],
-      respuesta: "A"
-    },
-    // DIFÍCIL
-    {
-      id: "tp2_d1",
-      nivel: "dificil",
-      tema: "Matemáticas",
-      subtema: "Teorema de Pitágoras",
-      enunciado: "En el triángulo rectángulo $ABC$ ($\\angle C = 90°$), la altura $h$ sobre la hipotenusa satisface $h^2 = m \\cdot n$. Si $m = 4$ y $n = 9$, ¿cuánto mide $h$?",
-      alternativas: ["A) 5", "B) 6", "C) 7", "D) 8"],
-      respuesta: "B"
-    },
-    {
-      id: "tp2_d2",
-      nivel: "dificil",
-      tema: "Matemáticas",
-      subtema: "Teorema de Pitágoras",
-      enunciado: "En un rombo de diagonal mayor $24$ y diagonal menor $10$, halle el lado usando el Teorema de Pitágoras.",
-      alternativas: ["A) 11", "B) 12", "C) 13", "D) 14"],
-      respuesta: "C"
-    },
+    { id:"tp2_f1", nivel:"facil", tema:"Matemáticas", subtema:"Teorema de Pitágoras",
+      enunciado:"Catetos $3$ y $4$. La hipotenusa mide:",
+      alternativas:["A) 6","B) 7","C) 5","D) 8"], respuesta:"C" },
+    { id:"tp2_f2", nivel:"facil", tema:"Matemáticas", subtema:"Teorema de Pitágoras",
+      enunciado:"Hipotenusa $13$, cateto $5$. El otro cateto mide:",
+      alternativas:["A) 10","B) 11","C) 12","D) 8"], respuesta:"C" },
+    { id:"tp2_f3", nivel:"facil", tema:"Matemáticas", subtema:"Teorema de Pitágoras",
+      enunciado:"En $c^2=a^2+b^2$, $c$ es:",
+      alternativas:["A) Un cateto","B) La hipotenusa","C) El perímetro","D) El área"], respuesta:"B" },
+    { id:"tp2_m1", nivel:"medio", tema:"Matemáticas", subtema:"Teorema de Pitágoras",
+      enunciado:"Escalera de $10\\,m$, base a $6\\,m$ del muro. ¿A qué altura llega?",
+      alternativas:["A) $6\\,m$","B) $7\\,m$","C) $8\\,m$","D) $9\\,m$"], respuesta:"C" },
+    { id:"tp2_m2", nivel:"medio", tema:"Matemáticas", subtema:"Teorema de Pitágoras",
+      enunciado:"¿Forman triángulo rectángulo los lados $7, 24, 25$?",
+      alternativas:["A) No","B) Sí, $7^2+24^2=25^2$","C) No se puede saber","D) Solo si isósceles"], respuesta:"B" },
+    { id:"tp2_m3", nivel:"medio", tema:"Matemáticas", subtema:"Teorema de Pitágoras",
+      enunciado:"Diagonal de un cuadrado de lado $5\\,cm$:",
+      alternativas:["A) $5\\sqrt{2}\\,cm$","B) $10\\,cm$","C) $5\\sqrt{3}\\,cm$","D) $25\\,cm$"], respuesta:"A" },
+    { id:"tp2_d1", nivel:"dificil", tema:"Matemáticas", subtema:"Teorema de Pitágoras",
+      enunciado:"Altura sobre hipotenusa: $h^2=m \\cdot n$. Si $m=4$ y $n=9$, entonces $h=$",
+      alternativas:["A) 5","B) 6","C) 7","D) 8"], respuesta:"B" },
+    { id:"tp2_d2", nivel:"dificil", tema:"Matemáticas", subtema:"Teorema de Pitágoras",
+      enunciado:"Rombo con diagonales $24$ y $10$. El lado mide:",
+      alternativas:["A) 11","B) 12","C) 13","D) 14"], respuesta:"C" },
   ],
 
   funcionesTrigonometricas: [
-    // FÁCIL
-    {
-      id: "ft_f1",
-      nivel: "facil",
-      tema: "Matemáticas",
-      subtema: "Funciones Trigonométricas",
-      enunciado: "El valor de $\\sin(30°)$ es:",
-      alternativas: ["A) $\\dfrac{\\sqrt{3}}{2}$", "B) $\\dfrac{1}{2}$", "C) $\\dfrac{\\sqrt{2}}{2}$", "D) $1$"],
-      respuesta: "B"
-    },
-    {
-      id: "ft_f2",
-      nivel: "facil",
-      tema: "Matemáticas",
-      subtema: "Funciones Trigonométricas",
-      enunciado: "¿Cuánto es $\\cos(60°)$?",
-      alternativas: ["A) $\\dfrac{\\sqrt{3}}{2}$", "B) $0$", "C) $\\dfrac{1}{2}$", "D) $1$"],
-      respuesta: "C"
-    },
-    {
-      id: "ft_f3",
-      nivel: "facil",
-      tema: "Matemáticas",
-      subtema: "Funciones Trigonométricas",
-      enunciado: "En un triángulo rectángulo, $\\tan(\\theta) = \\dfrac{\\text{cateto opuesto}}{\\text{cateto adyacente}}$. Si el opuesto es $3$ y el adyacente es $4$, entonces $\\tan(\\theta) =$",
-      alternativas: ["A) $\\dfrac{4}{3}$", "B) $\\dfrac{3}{5}$", "C) $\\dfrac{3}{4}$", "D) $\\dfrac{5}{3}$"],
-      respuesta: "C"
-    },
-    // MEDIO
-    {
-      id: "ft_m1",
-      nivel: "medio",
-      tema: "Matemáticas",
-      subtema: "Funciones Trigonométricas",
-      enunciado: "Verifique la identidad: $\\sin^2(\\theta) + \\cos^2(\\theta) = ?$",
-      alternativas: ["A) $0$", "B) $2$", "C) $1$", "D) Depende de $\\theta$"],
-      respuesta: "C"
-    },
-    {
-      id: "ft_m2",
-      nivel: "medio",
-      tema: "Matemáticas",
-      subtema: "Funciones Trigonométricas",
-      enunciado: "Si $\\sin(\\theta) = \\dfrac{4}{5}$ y $\\theta$ está en el primer cuadrante, ¿cuánto es $\\cos(\\theta)$?",
-      alternativas: ["A) $\\dfrac{3}{5}$", "B) $\\dfrac{4}{5}$", "C) $\\dfrac{3}{4}$", "D) $\\dfrac{5}{3}$"],
-      respuesta: "A"
-    },
-    {
-      id: "ft_m3",
-      nivel: "medio",
-      tema: "Matemáticas",
-      subtema: "Funciones Trigonométricas",
-      enunciado: "¿En qué cuadrante es $\\sin(\\theta) < 0$ y $\\cos(\\theta) > 0$?",
-      alternativas: ["A) I", "B) II", "C) III", "D) IV"],
-      respuesta: "D"
-    },
-    // DIFÍCIL
-    {
-      id: "ft_d1",
-      nivel: "dificil",
-      tema: "Matemáticas",
-      subtema: "Funciones Trigonométricas",
-      enunciado: "Simplifique: $\\dfrac{\\sin^2\\theta - \\cos^2\\theta}{\\sin\\theta + \\cos\\theta}$",
-      alternativas: ["A) $\\sin\\theta + \\cos\\theta$", "B) $\\sin\\theta - \\cos\\theta$", "C) $1$", "D) $\\tan\\theta$"],
-      respuesta: "B"
-    },
-    {
-      id: "ft_d2",
-      nivel: "dificil",
-      tema: "Matemáticas",
-      subtema: "Funciones Trigonométricas",
-      enunciado: "Resuelva en $[0°, 360°]$: $\\;2\\cos^2\\theta - \\cos\\theta - 1 = 0$",
-      alternativas: ["A) $\\theta = 60°$ y $\\theta = 180°$", "B) $\\theta = 60°, 180°, 300°$", "C) $\\theta = 90°$ y $\\theta = 270°$", "D) $\\theta = 0°$ y $\\theta = 180°$"],
-      respuesta: "B"
-    },
-  ]
+    { id:"ft_f1", nivel:"facil", tema:"Matemáticas", subtema:"Funciones Trigonométricas",
+      enunciado:"El valor de $\\sin(30°)$ es:",
+      alternativas:["A) $\\dfrac{\\sqrt{3}}{2}$","B) $\\dfrac{1}{2}$","C) $\\dfrac{\\sqrt{2}}{2}$","D) $1$"], respuesta:"B" },
+    { id:"ft_f2", nivel:"facil", tema:"Matemáticas", subtema:"Funciones Trigonométricas",
+      enunciado:"¿Cuánto es $\\cos(60°)$?",
+      alternativas:["A) $\\dfrac{\\sqrt{3}}{2}$","B) $0$","C) $\\dfrac{1}{2}$","D) $1$"], respuesta:"C" },
+    { id:"ft_f3", nivel:"facil", tema:"Matemáticas", subtema:"Funciones Trigonométricas",
+      enunciado:"Si cateto opuesto $=3$ y adyacente $=4$, entonces $\\tan\\theta=$",
+      alternativas:["A) $\\dfrac{4}{3}$","B) $\\dfrac{3}{5}$","C) $\\dfrac{3}{4}$","D) $\\dfrac{5}{3}$"], respuesta:"C" },
+    { id:"ft_m1", nivel:"medio", tema:"Matemáticas", subtema:"Funciones Trigonométricas",
+      enunciado:"$\\sin^2\\theta + \\cos^2\\theta =$",
+      alternativas:["A) $0$","B) $2$","C) $1$","D) Depende de $\\theta$"], respuesta:"C" },
+    { id:"ft_m2", nivel:"medio", tema:"Matemáticas", subtema:"Funciones Trigonométricas",
+      enunciado:"$\\sin\\theta=\\dfrac{4}{5}$ (1er cuadrante). ¿Cuánto es $\\cos\\theta$?",
+      alternativas:["A) $\\dfrac{3}{5}$","B) $\\dfrac{4}{5}$","C) $\\dfrac{3}{4}$","D) $\\dfrac{5}{3}$"], respuesta:"A" },
+    { id:"ft_m3", nivel:"medio", tema:"Matemáticas", subtema:"Funciones Trigonométricas",
+      enunciado:"¿En qué cuadrante es $\\sin\\theta < 0$ y $\\cos\\theta > 0$?",
+      alternativas:["A) I","B) II","C) III","D) IV"], respuesta:"D" },
+    { id:"ft_d1", nivel:"dificil", tema:"Matemáticas", subtema:"Funciones Trigonométricas",
+      enunciado:"Simplifique: $\\dfrac{\\sin^2\\theta-\\cos^2\\theta}{\\sin\\theta+\\cos\\theta}$",
+      alternativas:["A) $\\sin\\theta+\\cos\\theta$","B) $\\sin\\theta-\\cos\\theta$","C) $1$","D) $\\tan\\theta$"], respuesta:"B" },
+    { id:"ft_d2", nivel:"dificil", tema:"Matemáticas", subtema:"Funciones Trigonométricas",
+      enunciado:"Resuelva en $[0°,360°]$: $2\\cos^2\\theta-\\cos\\theta-1=0$",
+      alternativas:["A) $60°$ y $180°$","B) $60°, 180°, 300°$","C) $90°$ y $270°$","D) $0°$ y $180°$"], respuesta:"B" },
+  ],
 };
 
-// ── Configuración de subtemas por sección ──────────────────
+// ── Configuración de niveles y subtemas ──────────────────────
 const CONFIG = {
-  razonamientoMatematico: {
-    label: "Razonamiento Matemático",
-    totalPreguntas: 15,
-    subtemas: [
-      { key: "sucesiones",          label: "Sucesiones" },
-      { key: "razonamientoLogico",  label: "Razonamiento Lógico" },
-      { key: "planteoEcuaciones",   label: "Planteo de Ecuaciones" },
-      { key: "fracciones",          label: "Fracciones" },
-      { key: "tantoPorCiento",      label: "Tanto por ciento" },
-    ]
+  principiante: {
+    label: "Principiante",
+    color: "#4a90d9",
+    subtemas_rm: [
+      { key: "enunciadosAlg",   label: "Enunciados a expresiones" },
+      { key: "mcdMcm",          label: "MCD y MCM" },
+      { key: "decimales",       label: "Cálculo con decimales" },
+      { key: "divisibilidad",   label: "Divisibilidad básica" },
+      { key: "despejarX",       label: "Despejar x" },
+    ],
+    subtemas_mat: [
+      { key: "operBasicasNeg",   label: "Operaciones con negativos" },
+      { key: "fraccionesNeg",    label: "Fracciones negativas" },
+      { key: "factorizacionBasica", label: "Factorización básica" },
+      { key: "sumaExpAlg",       label: "Suma de expresiones algebraicas" },
+      { key: "multExpAlg",       label: "Multiplicación algebraica" },
+      { key: "angulosNotables",  label: "Ángulos notables" },
+    ],
+    totalRM: 15,
+    totalMat: 15,
   },
-  matematicas: {
-    label: "Matemáticas",
-    totalPreguntas: 15,
-    subtemas: [
+  facil: {
+    label: "Fácil",
+    color: "#27ae60",
+    subtemas_rm: [
+      { key: "sucesiones",        label: "Sucesiones" },
+      { key: "razonamientoLogico",label: "Razonamiento Lógico" },
+      { key: "planteoEcuaciones", label: "Planteo de Ecuaciones" },
+      { key: "fracciones",        label: "Fracciones" },
+      { key: "tantoPorCiento",    label: "Tanto por ciento" },
+    ],
+    subtemas_mat: [
       { key: "operacionesAlgebraicas",   label: "Operaciones Algebraicas" },
-      { key: "sumaAngulosTriangulo",     label: "Suma de ángulos en el triángulo" },
+      { key: "sumaAngulosTriangulo",     label: "Suma de ángulos" },
       { key: "teoremaPitagoras",         label: "Teorema de Pitágoras" },
       { key: "funcionesTrigonometricas", label: "Funciones Trigonométricas" },
-    ]
-  }
+    ],
+    totalRM: 15,
+    totalMat: 15,
+    nivelDB: "facil",
+  },
+  medio: {
+    label: "Medio",
+    color: "#e67e22",
+    subtemas_rm: [
+      { key: "sucesiones",        label: "Sucesiones" },
+      { key: "razonamientoLogico",label: "Razonamiento Lógico" },
+      { key: "planteoEcuaciones", label: "Planteo de Ecuaciones" },
+      { key: "fracciones",        label: "Fracciones" },
+      { key: "tantoPorCiento",    label: "Tanto por ciento" },
+    ],
+    subtemas_mat: [
+      { key: "operacionesAlgebraicas",   label: "Operaciones Algebraicas" },
+      { key: "sumaAngulosTriangulo",     label: "Suma de ángulos" },
+      { key: "teoremaPitagoras",         label: "Teorema de Pitágoras" },
+      { key: "funcionesTrigonometricas", label: "Funciones Trigonométricas" },
+    ],
+    totalRM: 15,
+    totalMat: 15,
+    nivelDB: "medio",
+  },
+  dificil: {
+    label: "Difícil",
+    color: "#c0392b",
+    subtemas_rm: [
+      { key: "sucesiones",        label: "Sucesiones" },
+      { key: "razonamientoLogico",label: "Razonamiento Lógico" },
+      { key: "planteoEcuaciones", label: "Planteo de Ecuaciones" },
+      { key: "fracciones",        label: "Fracciones" },
+      { key: "tantoPorCiento",    label: "Tanto por ciento" },
+    ],
+    subtemas_mat: [
+      { key: "operacionesAlgebraicas",   label: "Operaciones Algebraicas" },
+      { key: "sumaAngulosTriangulo",     label: "Suma de ángulos" },
+      { key: "teoremaPitagoras",         label: "Teorema de Pitágoras" },
+      { key: "funcionesTrigonometricas", label: "Funciones Trigonométricas" },
+    ],
+    totalRM: 15,
+    totalMat: 15,
+    nivelDB: "dificil",
+  },
 };
