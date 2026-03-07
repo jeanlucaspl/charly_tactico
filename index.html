@@ -14,12 +14,6 @@
   </script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.0/es5/tex-mml-chtml.js" async></script>
 
-  <script>
-    const script = document.createElement('script');
-    script.src = 'questions.js?v=' + new Date().getTime();
-    document.head.appendChild(script);
-  </script>
-
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;700&display=swap');
 
@@ -33,24 +27,35 @@
     .bg-effects { position:fixed; inset:0; z-index:0; background:radial-gradient(ellipse 80% 60% at 50% -10%,rgba(201,168,76,.12) 0%,transparent 70%), radial-gradient(ellipse 50% 40% at 90% 100%,rgba(155,35,53,.08) 0%,transparent 60%); pointer-events:none;}
     .screen-wrap { position:relative; z-index:1; display:flex; flex-direction:column; min-height:100vh; }
     
-    header { text-align:center; padding:2.5rem 1.5rem 2rem; border-bottom:1px solid rgba(201,168,76,.3); background:linear-gradient(180deg,rgba(0,0,0,.4) 0%,transparent 100%); }
+    header { text-align:center; padding:2rem 1.5rem 1.5rem; border-bottom:1px solid rgba(201,168,76,.3); background:linear-gradient(180deg,rgba(0,0,0,.4) 0%,transparent 100%); }
     .badge { display:inline-block; border:1px solid var(--gold); color:var(--gold); font-family:'JetBrains Mono',monospace; font-size:.68rem; letter-spacing:.18em; padding:.22rem .9rem; text-transform:uppercase; margin-bottom:1rem; }
     .site-title { font-family:'Bebas Neue',sans-serif; font-size:clamp(2.8rem,8vw,6rem); line-height:.92; color:var(--white); }
     .site-title span { color:var(--gold); display:block; }
-    .site-subtitle { margin-top:.7rem; font-size:.95rem; color:var(--silver); letter-spacing:.07em; }
 
-    main { flex:1; max-width:860px; margin:2.5rem auto; padding:0 1rem; width:100%; }
-    .panel { background:rgba(15,32,64,.85); border:1px solid rgba(201,168,76,.2); border-radius:4px; padding:2rem; }
-    .panel-title { font-family:'Bebas Neue',sans-serif; font-size:1.5rem; letter-spacing:.1em; color:var(--gold); margin-bottom:1.5rem; }
+    main { flex:1; max-width:1000px; margin:2rem auto; padding:0 1rem; width:100%; }
+    .panel { background:rgba(15,32,64,.85); border:1px solid rgba(201,168,76,.2); border-radius:4px; padding:2rem; margin-bottom: 2rem;}
+    .panel-title { font-family:'Bebas Neue',sans-serif; font-size:1.5rem; letter-spacing:.1em; color:var(--gold); margin-bottom:1.5rem; display: flex; justify-content: space-between; align-items: center;}
 
-    .nivel-group { display:grid; grid-template-columns:repeat(4,1fr); gap:.7rem; }
+    /* NIVELES */
+    .nivel-group { display:grid; grid-template-columns:repeat(4,1fr); gap:.7rem; margin-bottom: 1.5rem;}
     .nivel-btn input { display:none; }
-    .nivel-btn label { display:block; text-align:center; padding:.9rem .3rem; border:1.5px solid rgba(201,168,76,.25); border-radius:3px; cursor:pointer; background:rgba(0,0,0,.2); transition: 0.2s;}
-    .nivel-icon { font-size:1.5rem; display:block; margin-bottom:.25rem; }
-    .nivel-name { font-family:'Bebas Neue',sans-serif; font-size:1rem; letter-spacing:.12em; display:block; color:var(--cream); }
-    .nivel-btn input:checked+label { border-color:var(--gold); background:rgba(201,168,76,.12); box-shadow:0 0 18px rgba(201,168,76,.2); }
+    .nivel-btn label { display:block; text-align:center; padding:.8rem .3rem; border:1.5px solid rgba(201,168,76,.25); border-radius:3px; cursor:pointer; background:rgba(0,0,0,.2); transition: 0.2s;}
+    .nivel-name { font-family:'Bebas Neue',sans-serif; font-size:1.1rem; letter-spacing:.12em; color:var(--cream); }
+    .nivel-btn input:checked+label { border-color:var(--gold); background:rgba(201,168,76,.12); box-shadow:0 0 15px rgba(201,168,76,.2); }
 
-    .btn-generar { width:100%; padding:1rem; background:linear-gradient(135deg,var(--gold) 0%,var(--gold2) 50%,var(--gold) 100%); color:var(--navy); border:none; border-radius:3px; font-family:'Bebas Neue',sans-serif; font-size:1.35rem; cursor:pointer; margin-top:2rem; box-shadow:0 4px 20px rgba(201,168,76,.35);}
+    /* MATRIZ DE TEMAS (NUEVO) */
+    .matriz-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; transition: opacity 0.3s; }
+    .curso-card { background: rgba(0,0,0,.3); border: 1px solid rgba(201,168,76,.15); border-radius: 4px; padding: 1.2rem; }
+    .curso-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(201,168,76,.2); padding-bottom: 0.8rem; margin-bottom: 0.8rem; }
+    .curso-title { font-family: 'Bebas Neue', sans-serif; font-size: 1.2rem; letter-spacing: .08em; color: var(--gold); }
+    .check-todos { display: flex; align-items: center; gap: 6px; font-size: 0.8rem; color: var(--silver); cursor: pointer;}
+    .check-todos input { cursor: pointer; }
+    
+    .tema-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .tema-item { display: flex; align-items: center; gap: 8px; font-size: 0.9rem; color: var(--cream); cursor: pointer;}
+    .tema-item input { accent-color: var(--gold); width: 16px; height: 16px; cursor: pointer;}
+
+    .btn-generar { width:100%; padding:1.2rem; background:linear-gradient(135deg,var(--gold) 0%,var(--gold2) 50%,var(--gold) 100%); color:var(--navy); border:none; border-radius:3px; font-family:'Bebas Neue',sans-serif; font-size:1.35rem; cursor:pointer; margin-top:2rem; box-shadow:0 4px 20px rgba(201,168,76,.35); text-transform: uppercase; letter-spacing: .1em;}
     .spinner { display:none; text-align:center; padding:1.2rem; color:var(--gold); font-family:'Bebas Neue',sans-serif; letter-spacing:.15em; }
     .spinner.active { display:block; }
 
@@ -59,7 +64,6 @@
     ════════════════════════════════════════════ */
     body.preview-active { background: #525659; overflow: auto; }
     body.preview-active .bg-effects, body.preview-active .screen-wrap { display: none; }
-    
     #preview-overlay { display: none; padding: 20px 0; }
     body.preview-active #preview-overlay { display: block; }
 
@@ -69,80 +73,45 @@
     .btn-download { background: var(--gold); color: var(--navy); border: none; font-weight: bold;}
 
     /* ════════════════════════════════════════════
-       LAS HOJAS A4
+       LAS HOJAS A4 FÍSICAS
     ════════════════════════════════════════════ */
-    .a4-page {
-      width: 210mm; height: 297mm; background: #fff; color: #000;
-      font-family: 'Crimson Pro', Georgia, serif; 
-      margin: 0 auto 20px auto; padding: 15mm; 
-      box-shadow: 0 8px 30px rgba(0,0,0,.4); box-sizing: border-box;
-      display: flex; flex-direction: column; position: relative; overflow: hidden; 
-    }
-
+    .a4-page { width: 210mm; height: 297mm; background: #fff; color: #000; font-family: 'Crimson Pro', Georgia, serif; margin: 0 auto 20px auto; padding: 15mm; box-shadow: 0 8px 30px rgba(0,0,0,.4); box-sizing: border-box; display: flex; flex-direction: column; position: relative; overflow: hidden; }
     .exam-header { text-align:center; border-bottom:2.5px solid #0a1628; padding-bottom:5px; margin-bottom:8px; }
     .exam-header-small { text-align:right; font-size:8pt; border-bottom:1px solid #ccc; padding-bottom:3px; margin-bottom:10px; color:#555;}
     .exam-institution { font-size:7pt; letter-spacing:.2em; text-transform:uppercase; color:#333; font-family:'JetBrains Mono',monospace; }
     .exam-title { font-family:'Bebas Neue',sans-serif; font-size:20pt; letter-spacing:.08em; color:#0a1628; line-height:1; margin:2px 0; }
-    
     .alumno-fields { margin: 12px 0 20px; font-size: 8pt; width: 100%;}
     .field-label { font-size: 7pt; text-transform: uppercase; letter-spacing: .1em; color: #444; margin-bottom: 2px; }
     .field-line { border-bottom: 1px solid #777; min-height: 18px; width: 100%;}
 
     .page-content { flex-grow: 1; column-count: 2; column-gap: 8mm; column-fill: auto; width: 100%; height: 100%; overflow: hidden; }
 
-    .seccion-header {
-      column-span: all; -webkit-column-span: all; background: #0a1628; color: #fff;
-      font-family: 'Bebas Neue', sans-serif; font-size: 10pt; letter-spacing: .12em;
-      padding: 5px 10px; margin: 5px 0 12px 0; display: flex; justify-content: space-between; align-items: center; break-after: avoid; 
-    }
+    .seccion-header { column-span: all; -webkit-column-span: all; background: #0a1628; color: #fff; font-family: 'Bebas Neue', sans-serif; font-size: 10pt; letter-spacing: .12em; padding: 5px 10px; margin: 5px 0 12px 0; display: flex; justify-content: space-between; align-items: center; break-after: avoid; }
     .seccion-pts { font-family:'JetBrains Mono',monospace;font-size:7.5pt;opacity:.85; }
 
-    /* Interlineado ajustado para matemáticas perfectas */
     .q-item, .sol-item { break-inside: avoid; page-break-inside: avoid; margin-bottom: 14px; line-height: 1.6; }
     .q-subtema { font-size:6.5pt; color:#333; font-family:'JetBrains Mono',monospace; text-transform:uppercase; font-weight:bold; margin-bottom:2px; line-height: 1; }
     .q-num { font-weight:700; color:#0a1628; font-size:9.5pt; }
     .q-enunciado { margin-bottom:4px; font-size:9.5pt; color:#000;}
     .q-alts { list-style:none; display:grid; grid-template-columns:1fr 1fr; gap:2px 6px; }
     .q-alts li { font-size:8.5pt; color:#000;}
-    
     .sol-rta { display:inline-block; background:#0a1628; color:#fff; font-family:'JetBrains Mono',monospace; font-size:7.5pt; padding:1px 5px; border-radius:2px; margin:0 4px 2px 0; vertical-align:middle; }
     .sol-text { font-size:9pt; color:#111; margin-top:2px; line-height: 1.5; }
 
     #render-buffer { width: 86mm; position: absolute; left: -9999px; top: -9999px; visibility: hidden; }
 
     /* ════════════════════════════════════════════
-       LA CLAVE MAGICA: MOTOR DE IMPRESIÓN NATIVO
-       Esto asegura que la impresora del celular
-       corte el A4 exacto sin páginas en blanco.
+       MOTOR DE IMPRESIÓN NATIVO (LA PERFECCIÓN)
     ════════════════════════════════════════════ */
     @media print {
       @page { size: A4 portrait; margin: 0; }
       body { background: #fff; margin: 0; padding: 0; }
-      
-      /* Oculta los botones y fondo oscuro */
       .bg-effects, .screen-wrap, .preview-actions { display: none !important; }
-      
       #preview-overlay { display: block !important; padding: 0 !important; background: transparent !important; }
-
-      /* La hoja se adapta al papel de la impresora exactamente */
-      .a4-page {
-        margin: 0 !important;
-        box-shadow: none !important;
-        border: none !important;
-        page-break-after: always !important; /* Salto de página obligatorio limpio */
-        page-break-inside: avoid !important;
-      }
-      
-      /* Forzar colores oscuros para que no salgan grises en papel */
+      .a4-page { margin: 0 !important; box-shadow: none !important; border: none !important; page-break-after: always !important; page-break-inside: avoid !important; }
       * { color: #000 !important; }
-      .seccion-header, .sol-rta { 
-        background: #0a1628 !important; 
-        color: #fff !important; 
-        -webkit-print-color-adjust: exact; 
-        print-color-adjust: exact; 
-      }
+      .seccion-header, .sol-rta { background: #0a1628 !important; color: #fff !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
     }
-
   </style>
 </head>
 <body>
@@ -151,22 +120,26 @@
 
 <div class="screen-wrap">
   <header>
-    <div class="badge">Academia PNP · Sistema de Evaluación17</div>
+    <div class="badge">Academia PNP · Sistema de Evaluación</div>
     <h1 class="site-title">Charly<span>Táctico</span></h1>
-    <p class="site-subtitle">Generador de Prácticas Semanales — Suboficiales &amp; Oficiales</p>
   </header>
 
   <main>
     <div class="panel">
-      <div class="panel-title">⚙ Generar Práctica</div>
+      <div class="panel-title">1. Nivel de Exigencia</div>
       <div class="nivel-group">
-        <div class="nivel-btn"><input type="radio" name="nivel" id="n-princ" value="principiante"><label for="n-princ"><span class="nivel-icon">🔵</span><span class="nivel-name">Principiante</span></label></div>
-        <div class="nivel-btn"><input type="radio" name="nivel" id="n-facil" value="facil"><label for="n-facil"><span class="nivel-icon">🟢</span><span class="nivel-name">Fácil</span></label></div>
-        <div class="nivel-btn"><input type="radio" name="nivel" id="n-medio" value="medio" checked><label for="n-medio"><span class="nivel-icon">🟡</span><span class="nivel-name">Medio</span></label></div>
-        <div class="nivel-btn"><input type="radio" name="nivel" id="n-dificil" value="dificil"><label for="n-dificil"><span class="nivel-icon">🔴</span><span class="nivel-name">Difícil</span></label></div>
+        <div class="nivel-btn"><input type="radio" name="nivel" id="n-princ" value="principiante"><label for="n-princ"><span class="nivel-name">Principiante</span></label></div>
+        <div class="nivel-btn"><input type="radio" name="nivel" id="n-facil" value="facil"><label for="n-facil"><span class="nivel-name">Fácil</span></label></div>
+        <div class="nivel-btn"><input type="radio" name="nivel" id="n-medio" value="medio" checked><label for="n-medio"><span class="nivel-name">Medio</span></label></div>
+        <div class="nivel-btn"><input type="radio" name="nivel" id="n-dificil" value="dificil"><label for="n-dificil"><span class="nivel-name">Difícil</span></label></div>
       </div>
-      <button class="btn-generar" onclick="iniciarGeneracion()">▶ GENERAR Y PREVISUALIZAR</button>
-      <div class="spinner" id="spinner">Renderizando Matemáticas y Paginando...</div>
+
+      <div class="panel-title" style="margin-top: 2rem;">2. Selección de Cursos y Temas</div>
+      <div id="matriz-temas" class="matriz-container">
+        </div>
+
+      <button class="btn-generar" onclick="iniciarGeneracion()">▶ GENERAR PRÁCTICA</button>
+      <div class="spinner" id="spinner">Analizando base de datos y renderizando...</div>
     </div>
   </main>
 </div>
@@ -177,9 +150,8 @@
   <div class="preview-container">
     <div class="preview-actions">
       <button class="btn-back" onclick="cerrarPreview()">← VOLVER AL MENÚ</button>
-      <button class="btn-download" onclick="window.print()">🖨 IMPRIMIR / GUARDAR PDF</button>
+      <button class="btn-download" onclick="window.print()">🖨 GUARDAR COMO PDF (NATIVO)</button>
     </div>
-    
     <div id="pdf-wrapper">
       <div id="paginas-examen"></div>
       <div id="paginas-soluciones"></div>
@@ -188,35 +160,201 @@
 </div>
 
 <script>
+/* ════════════════════════════════════════════
+   MASTER CONFIGURACIÓN (LA MATRIZ DINÁMICA)
+   ¡Si agregas un curso aquí, todo se dibuja solo!
+════════════════════════════════════════════ */
+const MASTER_CONFIG = {
+  mate: {
+    label: "Matemáticas",
+    file: "mate.js",          // Archivo que debe existir
+    globalVar: "DB_MATE",     // Nombre de la variable dentro del archivo
+    totalPreguntas: 15,
+    temas: [
+      { key: "operAlgebraicas", label: "Operaciones Algebraicas" },
+      { key: "angulosTriangulo", label: "Suma de ángulos en el triángulo" },
+      { key: "pitagoras", label: "Teorema de Pitágoras" },
+      { key: "trigonometria", label: "Funciones Trigonométricas" }
+    ]
+  },
+  rm: {
+    label: "Razonamiento Matemático",
+    file: "rm.js",
+    globalVar: "DB_RM",
+    totalPreguntas: 15,
+    temas: [
+      { key: "sucesiones", label: "Sucesiones" },
+      { key: "razonLogico", label: "Razonamiento Lógico" },
+      { key: "planteoEcuaciones", label: "Planteo de Ecuaciones" },
+      { key: "fracciones", label: "Fracciones" },
+      { key: "tantoPorCiento", label: "Tanto por ciento" }
+    ]
+  },
+  rv: {
+    label: "Razonamiento Verbal",
+    file: "rv.js",
+    globalVar: "DB_RV",
+    totalPreguntas: 15,
+    temas: [
+      { key: "sinonimos", label: "Sinónimos" },
+      { key: "antonimos", label: "Antónimos" },
+      { key: "comprension", label: "Comprensión de lectura" },
+      { key: "conectores", label: "Conectores Lógicos" },
+      { key: "planRedaccion", label: "Plan de Redacción" }
+    ]
+  }
+};
+
+// Carga la base de principiante (fija)
+const PRINCIPIANTE_FILE = "principiante.js";
+const PRINCIPIANTE_VAR = "DB_PRINCIPIANTE";
+const PRINCIPIANTE_TEMAS = ["operBasicasNeg","fraccionesNeg","factorizacionBasica","sumaExpAlg","enunciadosAlg","mcdMcm","decimales","divisibilidad","multExpAlg","despejarX","angulosNotables"];
+
+/* ════════════════════════════════════════════
+   INICIALIZACIÓN Y CONSTRUCCIÓN DE LA UI
+════════════════════════════════════════════ */
+document.addEventListener("DOMContentLoaded", () => {
+  const version = new Date().getTime();
+  
+  // 1. Cargar Archivos JS Dinámicamente (Cache-Busting activo)
+  const scriptsToLoad = [PRINCIPIANTE_FILE, ...Object.values(MASTER_CONFIG).map(c => c.file)];
+  scriptsToLoad.forEach(file => {
+    let s = document.createElement('script');
+    s.src = `${file}?v=${version}`;
+    document.head.appendChild(s);
+  });
+
+  // 2. Construir la Matriz de la Interfaz
+  const matrizContainer = document.getElementById('matriz-temas');
+  
+  for (const [courseKey, courseData] of Object.entries(MASTER_CONFIG)) {
+    let card = document.createElement('div');
+    card.className = 'curso-card';
+    
+    // Header con Checkbox de "Todos"
+    let headerHTML = `
+      <div class="curso-header">
+        <div class="curso-title">${courseData.label}</div>
+        <label class="check-todos">
+          <input type="checkbox" id="todos_${courseKey}" checked onchange="toggleAll('${courseKey}')"> Todos
+        </label>
+      </div>
+      <ul class="tema-list" id="lista_${courseKey}">
+    `;
+    
+    // Lista de Temas
+    let temasHTML = courseData.temas.map(tema => `
+      <label class="tema-item">
+        <input type="checkbox" class="chk_${courseKey}" value="${tema.key}" checked onchange="checkSync('${courseKey}')">
+        ${tema.label}
+      </label>
+    `).join('');
+    
+    card.innerHTML = headerHTML + temasHTML + `</ul>`;
+    matrizContainer.appendChild(card);
+  }
+
+  // 3. Lógica para opacar matriz si elige Principiante
+  document.querySelectorAll('input[name="nivel"]').forEach(radio => {
+    radio.addEventListener('change', (e) => {
+      if (e.target.value === 'principiante') {
+        matrizContainer.style.opacity = '0.3';
+        matrizContainer.style.pointerEvents = 'none';
+      } else {
+        matrizContainer.style.opacity = '1';
+        matrizContainer.style.pointerEvents = 'auto';
+      }
+    });
+  });
+});
+
+// Funciones UI de los Checkboxes
+function toggleAll(courseKey) {
+  let master = document.getElementById(`todos_${courseKey}`).checked;
+  document.querySelectorAll(`.chk_${courseKey}`).forEach(chk => chk.checked = master);
+}
+function checkSync(courseKey) {
+  let allChecked = Array.from(document.querySelectorAll(`.chk_${courseKey}`)).every(chk => chk.checked);
+  document.getElementById(`todos_${courseKey}`).checked = allChecked;
+}
+
+/* ════════════════════════════════════════════
+   ALGORITMOS DE SELECCIÓN INTELIGENTE
+════════════════════════════════════════════ */
 function shuffle(arr) {
   const a=[...arr];
   for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}
   return a;
 }
 
-function extraerPreguntas(db, subtemasConfig, nivel, totalRequerido) {
-  let seleccionadas = [];
-  let poolSobrantes = [];
+// Extrae de forma proporcional compensando déficit
+function extraerProporcional(dbInfo, selectedKeys, nivel, totalReq) {
+  if (!window[dbInfo.globalVar]) return []; // Si el archivo JS falta, lo omite
+  const db = window[dbInfo.globalVar];
   
-  subtemasConfig.forEach(sub => {
-    if(db[sub.key]) {
-      let disponibles = shuffle(db[sub.key].filter(q => q.nivel === nivel));
-      let cuota = Math.ceil(totalRequerido / subtemasConfig.length);
-      seleccionadas.push(...disponibles.splice(0, cuota));
-      poolSobrantes.push(...disponibles);
-    }
+  let disponiblesPorTema = {};
+  let totalDisponible = 0;
+
+  // Filtrar los que coinciden con el nivel
+  selectedKeys.forEach(key => {
+    let preguntas = shuffle((db[key] || []).filter(q => q.nivel === nivel));
+    disponiblesPorTema[key] = preguntas;
+    totalDisponible += preguntas.length;
   });
 
-  if (seleccionadas.length > totalRequerido) {
-    seleccionadas = shuffle(seleccionadas).slice(0, totalRequerido);
-  } else if (seleccionadas.length < totalRequerido) {
-    poolSobrantes = shuffle(poolSobrantes);
-    let faltan = totalRequerido - seleccionadas.length;
-    seleccionadas.push(...poolSobrantes.slice(0, faltan));
+  if (totalDisponible === 0) return [];
+  if (totalDisponible <= totalReq) {
+    // Si la base tiene menos del total pedido, devuelve todo lo que hay mezclado
+    let todo = [];
+    selectedKeys.forEach(key => todo.push(...disponiblesPorTema[key]));
+    return shuffle(todo);
   }
+
+  // Lógica de Reparto Proporcional Equitativo
+  let seleccionadas = [];
+  let cuotas = {};
+  selectedKeys.forEach(k => cuotas[k] = 0);
+  
+  let temasActivos = [...selectedKeys];
+  let faltan = totalReq;
+
+  while (faltan > 0 && temasActivos.length > 0) {
+    let cuotaBase = Math.floor(faltan / temasActivos.length);
+    let extra = faltan % temasActivos.length;
+    let nuevosTemasActivos = [];
+    let alguienSeSaturó = false;
+
+    for (let i = 0; i < temasActivos.length; i++) {
+      let tema = temasActivos[i];
+      let pedir = cuotaBase + (i < extra ? 1 : 0);
+      let asignado = cuotas[tema];
+      let disponibleTotal = disponiblesPorTema[tema].length;
+
+      if (asignado + pedir >= disponibleTotal) {
+        cuotas[tema] = disponibleTotal;
+        faltan -= (disponibleTotal - asignado);
+        alguienSeSaturó = true;
+      } else {
+        cuotas[tema] += pedir;
+        faltan -= pedir;
+        nuevosTemasActivos.push(tema);
+      }
+    }
+    if (!alguienSeSaturó) break; 
+    temasActivos = nuevosTemasActivos;
+  }
+
+  // Recolectar según cuota
+  selectedKeys.forEach(tema => {
+    if(cuotas[tema] > 0) seleccionadas.push(...disponiblesPorTema[tema].splice(0, cuotas[tema]));
+  });
+
   return shuffle(seleccionadas);
 }
 
+/* ════════════════════════════════════════════
+   GENERACIÓN DE HTML
+════════════════════════════════════════════ */
 function crearBloquePregunta(q, num) {
   let div = document.createElement('div');
   div.className = 'q-item';
@@ -241,7 +379,6 @@ function crearEncabezadoSeccion(titulo, cantidad) {
 function crearHojaA4(pageNum, isSol, nivelStr) {
   const page = document.createElement('div');
   page.className = 'a4-page';
-  
   const header = document.createElement('div');
   if (pageNum === 1) {
     header.className = 'exam-header';
@@ -255,22 +392,17 @@ function crearHojaA4(pageNum, isSol, nivelStr) {
     header.className = 'exam-header-small';
     header.innerHTML = `Academia Charly Táctico — ${isSol ? 'Soluciones' : 'Práctica'} — Pág. ${pageNum}`;
   }
-  
   page.appendChild(header);
-  
   const content = document.createElement('div');
   content.className = 'page-content';
   page.appendChild(content);
-  
   return { page, content };
 }
 
+/* ════════════════════════════════════════════
+   EL MOTOR PRINCIPAL
+════════════════════════════════════════════ */
 async function iniciarGeneracion() {
-  if (typeof QUESTIONS_DB === 'undefined') {
-    alert("Cargando la base de datos. Espera 2 segundos e intenta de nuevo."); 
-    return;
-  }
-
   const nivel = document.querySelector('input[name="nivel"]:checked')?.value || 'medio';
   document.getElementById('spinner').classList.add('active');
 
@@ -281,26 +413,55 @@ async function iniciarGeneracion() {
 
       let itemsExamen = [];
       let itemsSolucion = [];
-      const esP = (nivel === 'principiante');
+      let pregCounter = 1;
 
-      if (esP) {
-        let pPrinc = extraerPreguntas(QUESTIONS_DB, CONFIG.principiante.subtemas, 'principiante', 30);
-        itemsExamen.push(crearEncabezadoSeccion('Matemática — Nivel Principiante', pPrinc.length));
+      if (nivel === 'principiante') {
+        if (!window[PRINCIPIANTE_VAR]) throw new Error("Falta el archivo principiante.js");
+        let pPrinc = extraerProporcional({globalVar: PRINCIPIANTE_VAR}, PRINCIPIANTE_TEMAS, 'principiante', 30);
+        
+        itemsExamen.push(crearEncabezadoSeccion('Matemática Básica — Nivel Principiante', pPrinc.length));
         itemsSolucion.push(crearEncabezadoSeccion('Soluciones — Nivel Principiante', null));
-        pPrinc.forEach((q, i) => { itemsExamen.push(crearBloquePregunta(q, i+1)); itemsSolucion.push(crearBloqueSolucion(q, i+1)); });
+        
+        pPrinc.forEach(q => {
+          itemsExamen.push(crearBloquePregunta(q, pregCounter)); 
+          itemsSolucion.push(crearBloqueSolucion(q, pregCounter));
+          pregCounter++;
+        });
+
       } else {
-        let pRM = extraerPreguntas(QUESTIONS_DB, CONFIG.razonamientoMatematico.subtemas, nivel, 15);
-        let pMat = extraerPreguntas(QUESTIONS_DB, CONFIG.matematicas.subtemas, nivel, 15);
+        // Recorrer los cursos activos en la Matriz
+        let seccionRoma = ['I', 'II', 'III', 'IV', 'V'];
+        let secIndex = 0;
 
-        itemsExamen.push(crearEncabezadoSeccion('SECCIÓN I — Razonamiento Matemático', pRM.length));
-        itemsSolucion.push(crearEncabezadoSeccion('SECCIÓN I — Soluciones', null));
-        pRM.forEach((q, i) => { itemsExamen.push(crearBloquePregunta(q, i+1)); itemsSolucion.push(crearBloqueSolucion(q, i+1)); });
-
-        itemsExamen.push(crearEncabezadoSeccion('SECCIÓN II — Matemáticas', pMat.length));
-        itemsSolucion.push(crearEncabezadoSeccion('SECCIÓN II — Soluciones', null));
-        pMat.forEach((q, i) => { itemsExamen.push(crearBloquePregunta(q, pRM.length+i+1)); itemsSolucion.push(crearBloqueSolucion(q, pRM.length+i+1)); });
+        for (const [courseKey, courseData] of Object.entries(MASTER_CONFIG)) {
+          // Obtener qué checkboxes seleccionó el usuario para este curso
+          let selectedChecks = Array.from(document.querySelectorAll(`.chk_${courseKey}:checked`)).map(chk => chk.value);
+          
+          if (selectedChecks.length > 0) {
+            let pCurso = extraerProporcional(courseData, selectedChecks, nivel, courseData.totalPreguntas);
+            
+            if (pCurso.length > 0) {
+              itemsExamen.push(crearEncabezadoSeccion(`SECCIÓN ${seccionRoma[secIndex]} — ${courseData.label}`, pCurso.length));
+              itemsSolucion.push(crearEncabezadoSeccion(`SECCIÓN ${seccionRoma[secIndex]} — Soluciones`, null));
+              
+              pCurso.forEach(q => { 
+                itemsExamen.push(crearBloquePregunta(q, pregCounter)); 
+                itemsSolucion.push(crearBloqueSolucion(q, pregCounter)); 
+                pregCounter++;
+              });
+              secIndex++;
+            }
+          }
+        }
       }
 
+      if(itemsExamen.length === 0) {
+        alert("No hay preguntas disponibles para los temas seleccionados en este nivel.");
+        document.getElementById('spinner').classList.remove('active');
+        return;
+      }
+
+      // Renderizar MathJax
       itemsExamen.forEach(el => buffer.appendChild(el));
       itemsSolucion.forEach(el => buffer.appendChild(el));
 
@@ -310,10 +471,10 @@ async function iniciarGeneracion() {
 
       document.body.classList.add('preview-active');
       
+      // Paginador
       function paginarElementos(arrayDOM, contenedorDestinoID, isSol) {
         const destino = document.getElementById(contenedorDestinoID);
         destino.innerHTML = '';
-        
         let pageNum = 1;
         let actual = crearHojaA4(pageNum, isSol, nivel);
         destino.appendChild(actual.page);
@@ -339,10 +500,10 @@ async function iniciarGeneracion() {
       document.getElementById('spinner').classList.remove('active');
 
     } catch(err) {
-      alert("Error: " + err.message);
+      alert("Aviso: " + err.message);
       document.getElementById('spinner').classList.remove('active');
     }
-  }, 100); 
+  }, 200); 
 }
 
 function cerrarPreview() {
