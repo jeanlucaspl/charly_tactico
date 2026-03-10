@@ -26,7 +26,7 @@ window.DB_RM = {
   ],
   //----------------------------------------------------------------------------------------------------------------------------------------
   fracciones: [
-    { nivel:"medio", subtema:"Fracciones", enunciado:"Gasto $1/3$ de mi dinero y luego $1/4$ del resto. Me quedan 30 soles. ¿Tenía?", alternativas:["A) 50","B) 60","C) 80","D) 100"], respuesta:"B", solucion:"Queda $3/4$ de $2/3$, que es $1/2$. La mitad es 30, el total es 60." }
+    { nivel:"medio", subtema:"Fracciones", enunciado:"Gasto $1/3$ de mi dinero y luego $1/4$ del resto. Me quedan 30 soles. ¿Tenía?", alternativas:["A) 50","B) 60","C) 80","D) 100"], respuesta:"B", solucion:"Queda $3/4$ de $2/3$, que es $1/2$. La mitad es 30, el total es 60." },
     [
   {
     "nivel": "facil",
@@ -1329,7 +1329,7 @@ window.DB_RM = {
     "solucion": "$3 \\times \\dfrac{2}{9}=\\dfrac{6}{9}=\\dfrac{2}{3}$. A y B son equivalentes."
   }
 ]
-  ],
+    [
   //----------------------------------------------------------------------------------------------------------------------------------------
   tantoPorCiento: [
     { nivel:"medio", subtema:"Porcentajes", enunciado:"El $20\\%$ del $30\\%$ de $500$ es:", alternativas:["A) 20","B) 30","C) 40","D) 50"], respuesta:"B", solucion:"$0{,}20 \\times 0{,}30 \\times 500 = 30$." }
